@@ -1,0 +1,41 @@
+version: '2'
+
+services:
+    db:
+        container_name: db-${MS_NAME}
+        image: mysql:${MYSQL_VERSION}
+        environment:
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_DATABASE: ${DB_NAME}
+        ports:
+            - ${DB_DEV_PORT}:3306
+
+    php:
+        container_name: php-${MS_NAME}
+        build:
+            context: .
+            dockerfile: docker/development/php/Dockerfile
+        volumes:
+            - .:/var/www
+        environment:
+            SYMFONY__DATABASE__HOST: ${DB_HOST}
+            SYMFONY__DATABASE__PORT: ${DB_PORT}
+            SYMFONY__DATABASE__NAME: ${DB_NAME}
+            SYMFONY__DATABASE__USER: ${DB_USERNAME}
+            SYMFONY__DATABASE__PASSWORD: ${DB_PASSWORD}
+            PHP_IDE_CONFIG: "serverName=ouicar.ms"
+
+    nginx:
+        container_name: nginx-${MS_NAME}
+        build:
+            context: .
+            dockerfile: docker/development/nginx/Dockerfile
+        ports:
+            - ${NGINX_DEV_PORT}:80
+        volumes:
+            - .:/var/www
+        depends_on:
+            - php
+        environment:
+            PHP_HOST: php
+            PHP_PORT: 9000
