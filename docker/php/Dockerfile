@@ -39,9 +39,9 @@ RUN mkdir -p /usr/local/bin
 RUN curl -LsS https://symfony.com/installer -o /usr/local/bin/symfony
 RUN chmod a+x /usr/local/bin/symfony
 
-COPY docker/development/php/php.ini /usr/local/etc/php/
+COPY docker/php/php.ini /usr/local/etc/php/
 
-COPY docker/development/php/entrypoint.sh /entrypoint.sh
+COPY docker/php/entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
 
 WORKDIR /var/www

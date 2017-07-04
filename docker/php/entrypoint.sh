@@ -15,6 +15,6 @@ composer install
 #bin/console doctrine:migration:migrate --no-interaction
 #bin/console doctrine:fixtures:load --fixtures=tests/DataFixtures/ORM --no-interaction
 
-chown -R www-data:www-data var/cache var/logs
+chown -R www-data:www-data var/cache var/logs var/sessions
 
 exec "$@"

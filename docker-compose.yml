@@ -2,7 +2,7 @@ version: '2'
 
 services:
     db:
-        container_name: db-${MS_NAME}
+        container_name: db
         image: mysql:${MYSQL_VERSION}
         environment:
             MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
@@ -11,10 +11,10 @@ services:
             - ${DB_DEV_PORT}:3306
 
     php:
-        container_name: php-${MS_NAME}
+        container_name: php
         build:
             context: .
-            dockerfile: docker/development/php/Dockerfile
+            dockerfile: docker/php/Dockerfile
         volumes:
             - .:/var/www
         environment:
@@ -26,10 +26,10 @@ services:
             PHP_IDE_CONFIG: "serverName=ouicar.ms"
 
     nginx:
-        container_name: nginx-${MS_NAME}
+        container_name: nginx
         build:
             context: .
-            dockerfile: docker/development/nginx/Dockerfile
+            dockerfile: docker/nginx/Dockerfile
         ports:
             - ${NGINX_DEV_PORT}:80
         volumes:
