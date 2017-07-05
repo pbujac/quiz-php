@@ -72,14 +72,14 @@ class User
     private $createdAt;
 
     /**
-     * @var ArrayCollection
+     * @var ArrayCollection|Quiz[]
      *
      * @ORM\OneToMany(targetEntity="Quiz", mappedBy="author")
      */
     private $quizzes;
 
     /**
-     * @var ArrayCollection
+     * @var ArrayCollection|Result[]
      *
      * @ORM\OneToMany(targetEntity="Result", mappedBy="user")
      */
@@ -212,36 +212,61 @@ class User
     }
 
     /**
-     * @return ArrayCollection
+     * @param Quiz $quiz
+     *
+     * @return User
      */
-    public function getQuizzes(): ArrayCollection
+    public function addQuiz(Quiz $quiz)
+    {
+        if (!$this->quizzes->contains($quiz)) {
+            $this->quizzes->add($quiz);
+        }
+        return $this;
+    }
+
+    /**
+     * @param Quiz $quiz
+     */
+    public function removeQuiz(Quiz $quiz)
+    {
+        $this->quizzes->removeElement($quiz);
+    }
+
+    /**
+     * @return ArrayCollection|Quiz[]
+     */
+    public function getQuizzes()
     {
         return $this->quizzes;
     }
 
     /**
-     * @param ArrayCollection $quizzes
+     * @param Result $result
+     *
+     * @return User
      */
-    public function setQuizzes(ArrayCollection $quizzes)
+    public function addResult(Result $result)
     {
-        $this->quizzes = $quizzes;
+        if (!$this->results->contains($result)) {
+            $this->results->add($result);
+        }
+        return $this;
     }
 
     /**
-     * @return ArrayCollection
+     * @param Result $result
      */
-    public function getResults(): ArrayCollection
+    public function removeResult(Result $result)
+    {
+        $this->results->removeElement($result);
+    }
+
+    /**
+     * @return ArrayCollection|Result[]
+     */
+    public function getResults()
     {
         return $this->results;
     }
-
-    /**
-     * @param ArrayCollection $results
-     */
-    public function setResults(ArrayCollection $results)
-    {
-        $this->results = $results;
-    }
-
 }
 

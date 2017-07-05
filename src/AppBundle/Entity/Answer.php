@@ -45,7 +45,7 @@ class Answer
     private $correct;
 
     /**
-     * @var ArrayCollection
+     * @var ArrayCollection|ResultAnswer[]
      *
      * @ORM\OneToMany(targetEntity="ResultAnswer", mappedBy="answer")
      */
@@ -113,20 +113,32 @@ class Answer
     }
 
     /**
-     * @return ArrayCollection
+     * @param ResultAnswer $resultAnswer
+     *
+     * @return Answer
      */
-    public function getResultAnswers(): ArrayCollection
+    public function addResultAnswer(ResultAnswer $resultAnswer)
     {
-        return $this->resultAnswers;
+        if (!$this->resultAnswers->contains($resultAnswer)) {
+            $this->resultAnswers->add($resultAnswer);
+        }
+        return $this;
     }
 
     /**
-     * @param ArrayCollection $resultAnswers
+     * @param ResultAnswer $resultAnswer
      */
-    public function setResultAnswers(ArrayCollection $resultAnswers)
+    public function removeResultAnswer(ResultAnswer $resultAnswer)
     {
-        $this->resultAnswers = $resultAnswers;
+        $this->resultAnswers->removeElement($resultAnswer);
     }
 
+    /**
+     * @return ArrayCollection|ResultAnswer[]
+     */
+    public function getResultAnswers()
+    {
+        return $this->resultAnswers;
+    }
 }
 

@@ -58,14 +58,14 @@ class Quiz
     private $description;
 
     /**
-     * @var ArrayCollection
+     * @var ArrayCollection|Question[]
      *
      * @ORM\OneToMany(targetEntity="Question", mappedBy="quiz")
      */
     private $questions;
 
     /**
-     * @var ArrayCollection
+     * @var ArrayCollection|Result[]
      *
      * @ORM\OneToMany(targetEntity="Result", mappedBy="quiz")
      */
@@ -175,35 +175,61 @@ class Quiz
     }
 
     /**
-     * @return ArrayCollection
+     * @param Question $question
+     *
+     * @return Quiz
      */
-    public function getQuestions(): ArrayCollection
+    public function addQuestion(Question $question)
+    {
+        if (!$this->questions->contains($question)) {
+            $this->questions->add($question);
+        }
+        return $this;
+    }
+
+    /**
+     * @param Question $question
+     */
+    public function removeQuestion(Question $question)
+    {
+        $this->questions->removeElement($question);
+    }
+
+    /**
+     * @return ArrayCollection|Question[]
+     */
+    public function getQuestions()
     {
         return $this->questions;
     }
 
     /**
-     * @param ArrayCollection $questions
+     * @param Result $result
+     *
+     * @return Quiz
      */
-    public function setQuestions(ArrayCollection $questions)
+    public function addResult(Result $result)
     {
-        $this->questions = $questions;
+        if (!$this->results->contains($result)) {
+            $this->results->add($result);
+        }
+        return $this;
     }
 
     /**
-     * @return ArrayCollection
+     * @param Result $result
      */
-    public function getResults(): ArrayCollection
+    public function removeResult(Result $result)
+    {
+        $this->results->removeElement($result);
+    }
+
+    /**
+     * @return ArrayCollection|Result[]
+     */
+    public function getResults()
     {
         return $this->results;
-    }
-
-    /**
-     * @param ArrayCollection $results
-     */
-    public function setResults(ArrayCollection $results)
-    {
-        $this->results = $results;
     }
 }
 

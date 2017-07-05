@@ -30,7 +30,7 @@ class Category
     private $title;
 
     /**
-     * @var ArrayCollection
+     * @var ArrayCollection|Quiz[]
      *
      * @ORM\OneToMany(targetEntity="Quiz", mappedBy="category")
      */
@@ -66,22 +66,33 @@ class Category
     }
 
     /**
-     * @return ArrayCollection
+     * @param Quiz $quiz
+     *
+     * @return Category
      */
-    public function getQuizzes(): ArrayCollection
+    public function addQuiz(Quiz $quiz)
     {
-        return $this->quizzes;
+        if (!$this->quizzes->contains($quiz)) {
+            $this->quizzes->add($quiz);
+        }
+        return $this;
     }
 
     /**
-     * @param ArrayCollection $quizzes
+     * @param Quiz $quiz
+     *
      */
-    public function setQuizzes(ArrayCollection $quizzes)
+    public function removeQuiz(Quiz $quiz)
     {
-        $this->quizzes = $quizzes;
+        $this->quizzes->removeElement($quiz);
     }
 
-
-
+    /**
+     * @return ArrayCollection|Quiz[]
+     */
+    public function getQuizzes()
+    {
+        return $this->quizzes;
+    }
 }
 

@@ -38,14 +38,14 @@ class Question
     private $text;
 
     /**
-     * @var ArrayCollection
+     * @var ArrayCollection|Answer[]
      *
      * @ORM\OneToMany(targetEntity="Answer", mappedBy="question")
      */
     private $answers;
 
     /**
-     * @var ArrayCollection
+     * @var ArrayCollection|ResultAnswer[]
      *
      * @ORM\OneToMany(targetEntity="ResultAnswer", mappedBy="question")
      */
@@ -98,35 +98,61 @@ class Question
     }
 
     /**
-     * @return ArrayCollection
+     * @param Answer $answer
+     *
+     * @return Question
      */
-    public function getAnswers(): ArrayCollection
+    public function addAnswer(Answer $answer)
+    {
+        if (!$this->resultAnswers->contains($answer)) {
+            $this->resultAnswers->add($answer);
+        }
+        return $this;
+    }
+
+    /**
+     * @param Answer $answer
+     */
+    public function removeAnswer(Answer $answer)
+    {
+        $this->answers->removeElement($answer);
+    }
+
+    /**
+     * @return ArrayCollection|Answer[]
+     */
+    public function getAnswers()
     {
         return $this->answers;
     }
 
     /**
-     * @param ArrayCollection $answers
+     * @param ResultAnswer $answer
+     *
+     * @return Question
      */
-    public function setAnswers(ArrayCollection $answers)
+    public function addResultAnswer(ResultAnswer $answer)
     {
-        $this->answers = $answers;
+        if (!$this->answers->contains($answer)) {
+            $this->answers->add($answer);
+        }
+        return $this;
     }
 
     /**
-     * @return ArrayCollection
+     * @param ResultAnswer $resultAnswer
      */
-    public function getResultAnswers(): ArrayCollection
+    public function removeResultAnswer(ResultAnswer $resultAnswer)
+    {
+        $this->resultAnswers->removeElement($resultAnswer);
+    }
+
+    /**
+     * @return ArrayCollection|ResultAnswer[]
+     */
+    public function getResultAnswers()
     {
         return $this->resultAnswers;
-    }
-
-    /**
-     * @param ArrayCollection $resultAnswers
-     */
-    public function setResultAnswers(ArrayCollection $resultAnswers)
-    {
-        $this->resultAnswers = $resultAnswers;
     }
 
 
