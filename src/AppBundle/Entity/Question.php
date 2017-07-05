@@ -104,8 +104,8 @@ class Question
      */
     public function addAnswer(Answer $answer)
     {
-        if (!$this->resultAnswers->contains($answer)) {
-            $this->resultAnswers->add($answer);
+        if (!$this->answers->contains($answer)) {
+            $this->answers->add($answer);
         }
         return $this;
     }
@@ -127,14 +127,14 @@ class Question
     }
 
     /**
-     * @param ResultAnswer $answer
+     * @param ResultAnswer $resultAnswer
      *
      * @return Question
      */
-    public function addResultAnswer(ResultAnswer $answer)
+    public function addResultAnswer(ResultAnswer $resultAnswer)
     {
-        if (!$this->answers->contains($answer)) {
-            $this->answers->add($answer);
+        if (!$this->resultAnswers->contains($resultAnswer)) {
+            $this->resultAnswers->add($resultAnswer);
         }
         return $this;
     }
