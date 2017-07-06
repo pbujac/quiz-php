@@ -46,9 +46,9 @@ class Result
     private $createdAt;
 
     /**
-     * @var int
+     * @var int|null
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $score;
 
@@ -129,17 +129,17 @@ class Result
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getScore(): int
+    public function getScore(): ?int
     {
         return $this->score;
     }
 
     /**
-     * @param int $score
+     * @param int|null $score
      */
-    public function setScore(int $score)
+    public function setScore(?int $score)
     {
         $this->score = $score;
     }
