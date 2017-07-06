@@ -15,7 +15,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $userRoles = array("ADMIN", "ROLE1", "ROLE2");
+        $userRoles = ["ADMIN", "ROLE1", "ROLE2"];
 
         $faker = Factory::create();
 
