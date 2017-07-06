@@ -9,7 +9,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
 
 
-class LoadQuizData implements FixtureInterface
+class LoadQuizData extends AbstractFixture implements OrderedFixtureInterface, FixtureInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -25,10 +25,9 @@ class LoadQuizData implements FixtureInterface
 
         $manager->flush();
     }
+
     public function getOrder()
     {
-        // the order in which fixtures will be loaded
-        // the lower the number, the sooner that this fixture is loaded
         return 3;
     }
 
