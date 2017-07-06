@@ -2,12 +2,13 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\User;
 use Faker\Factory;
 
-class LoadUserData implements FixtureInterface
+class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * @param ObjectManager $manager
@@ -22,19 +23,22 @@ class LoadUserData implements FixtureInterface
             $user = new User();
             $user->setUsername($faker->userName);
             $user->setPassword($faker->password());
-            $user->setActive(1);
+            $user->setActive($faker->boolean());
             $user->setCreatedAt(
-                $faker->dateTimeBetween(
-                    $startDate = '-3 years',
-                    $endDate = 'now',
-                    $timezone = date_default_timezone_get())
+                $faker->dateTimeBetween('-3 years', 'now')
             );
             $user->setFirstName($faker->firstName);
             $user->setLastName($faker->lastName);
-            $user->setRole($userRoles[array_rand($userRoles, 1)]);
+            $user->setRole($faker->randomElement($userRoles));
 
             $manager->persist($user);
-            $manager->flush();
         }
+
+        $manager->flush();
+    }
+
+    public function getOrder()
+    {
+        return 1;
     }
 }
