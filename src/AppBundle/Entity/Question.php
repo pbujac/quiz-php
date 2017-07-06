@@ -155,6 +155,5 @@ class Question
         return $this->resultAnswers;
     }
 
-
 }
 

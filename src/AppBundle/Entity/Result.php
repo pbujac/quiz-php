@@ -72,12 +72,13 @@ class Result
     }
 
     /**
-     * @param int $id
+     * @return int
      */
-    public function setId(int $id)
+    public function getId(): int
     {
-        $this->id = $id;
+        return $this->id;
     }
+
 
     /**
      * @return User
