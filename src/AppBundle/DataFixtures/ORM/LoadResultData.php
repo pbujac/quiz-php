@@ -17,20 +17,17 @@ class LoadResultData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-
         $faker = Factory::create();
         $users = $manager->getRepository(User::class)->findAll();
         $quizzes = $manager->getRepository(Quiz::class)->findAll();
-
 
         for ($i = 0; $i < 10; $i++) {
             $result = new Result();
             $result->setUser($faker->randomElement($users));
             $result->setQuiz($faker->randomElement($quizzes));
             $result->setCreatedAt($faker->dateTime);
-            $result->setScore($faker->numberBetween([0][100]));
+            $result->setScore($faker->numberBetween(0, 100));
             $result->setFinished($faker->boolean());
-
 
             $manager->persist($result);
         }

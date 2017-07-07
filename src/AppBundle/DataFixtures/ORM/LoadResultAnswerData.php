@@ -14,16 +14,14 @@ use Faker\Factory;
 class LoadResultAnswerData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
- * @param ObjectManager $manager
- */
+     * @param ObjectManager $manager
+     */
     public function load(ObjectManager $manager)
     {
-
         $faker = Factory::create();
         $results = $manager->getRepository(Result::class)->findAll();
         $questions = $manager->getRepository(Question::class)->findAll();
         $answers = $manager->getRepository(Answer::class)->findAll();
-
 
         for ($i = 0; $i < 10; $i++) {
             $resultAnswer = new ResultAnswer();
@@ -35,12 +33,10 @@ class LoadResultAnswerData extends AbstractFixture implements OrderedFixtureInte
         }
 
         $manager->flush();
+    }
 
-}
-
-
-public function getOrder()
-{
-    return 4;
-}
+    public function getOrder()
+    {
+        return 4;
+    }
 }
