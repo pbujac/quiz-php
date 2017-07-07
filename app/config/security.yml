@@ -21,9 +21,7 @@ security:
             logout:
                 path:   /logout
                 target: /
-
             anonymous: ~
-            http_basic: ~
             provider: our_db_provider
 
     access_control:
