@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * User
@@ -11,8 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="users")
  * @ORM\Entity
  */
-class User
+class User implements UserInterface, \Serializable
 {
+    const ROLE_ADMIN = "ROLE_ADMIN";
+    const ROLE_MANAGER = "ROLE_MANAGER";
+    const ROLE_USER = "ROLE_USER";
+
     /**
      * @var int
      *
@@ -44,11 +49,11 @@ class User
     private $active;
 
     /**
-     * @var string
+     * @var string[]
      *
-     * @ORM\Column(type="string", length=45)
+     * @ORM\Column(type="simple_array")
      */
-    private $role;
+    private $roles;
 
     /**
      * @var string
@@ -70,6 +75,13 @@ class User
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $salt;
 
     /**
      * @var ArrayCollection|Quiz[]
@@ -150,22 +162,6 @@ class User
     /**
      * @return string
      */
-    public function getRole(): string
-    {
-        return $this->role;
-    }
-
-    /**
-     * @param string $role
-     */
-    public function setRole(string $role)
-    {
-        $this->role = $role;
-    }
-
-    /**
-     * @return string
-     */
     public function getFirstName(): string
     {
         return $this->firstName;
@@ -210,6 +206,23 @@ class User
     {
         $this->createdAt = $createdAt;
     }
+
+    /**
+     * @return string[]
+     */
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
+
+    /**
+     * @param string[] $roles
+     */
+    public function setRoles(array $roles)
+    {
+        $this->roles = $roles;
+    }
+
 
     /**
      * @param Quiz $quiz
@@ -267,6 +280,44 @@ class User
     public function getResults()
     {
         return $this->results;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSalt()
+    {
+        return $this->salt;
+    }
+
+
+    public function eraseCredentials()
+    {
+    }
+
+    /**
+     * @return string|null
+     */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->username,
+            $this->password
+        ));
+    }
+
+    /**
+     * @param string $serialized
+     * @return void
+     */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->password
+            ) = unserialize($serialized);
     }
 }
 
