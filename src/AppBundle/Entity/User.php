@@ -208,21 +208,33 @@ class User implements UserInterface, \Serializable
     }
 
     /**
+     * @param string $role
+     *
+     * @return User
+     */
+    public function addRole(string $role)
+    {
+        $this->roles[] = $role;
+        return $this;
+    }
+
+    /**
+     * @param string $role
+     */
+    public function removeRole(string $role)
+    {
+        if (array_search($role, $this->roles, true) === true) {
+            unset($this->roles[$role]);
+        }
+    }
+
+    /**
      * @return string[]
      */
     public function getRoles(): array
     {
         return $this->roles;
     }
-
-    /**
-     * @param string[] $roles
-     */
-    public function setRoles(array $roles)
-    {
-        $this->roles = $roles;
-    }
-
 
     /**
      * @param Quiz $quiz
@@ -285,11 +297,18 @@ class User implements UserInterface, \Serializable
     /**
      * @return string|null
      */
-    public function getSalt()
+    public function getSalt(): ?string
     {
         return $this->salt;
     }
 
+    /**
+     * @param null|string $salt
+     */
+    public function setSalt(?string $salt)
+    {
+        $this->salt = $salt;
+    }
 
     public function eraseCredentials()
     {
