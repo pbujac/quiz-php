@@ -15,7 +15,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $userRoles = ["ADMIN", "ROLE1", "ROLE2"];
+        $userRoles = [User::ROLE_ADMIN, User::ROLE_MANAGER, User::ROLE_USER];
 
         $faker = Factory::create();
 
@@ -29,7 +29,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
             );
             $user->setFirstName($faker->firstName);
             $user->setLastName($faker->lastName);
-            $user->setRole($faker->randomElement($userRoles));
+            $user->setRoles($faker->randomElements($userRoles));
 
             $manager->persist($user);
         }
