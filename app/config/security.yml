@@ -20,7 +20,13 @@ security:
             pattern:  ^/
             logout:
                 path:   /logout
-                target: /
+                target: /login
+            form_login:
+                login_path: /login
+                check_path: /login
+                always_use_default_target_path: true
+                default_target_path: /admin
+
             anonymous: ~
             provider: our_db_provider
 
