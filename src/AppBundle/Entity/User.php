@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="users")
  * @ORM\Entity
  */
-class User implements UserInterface, \Serializable
+class User implements UserInterface
 {
     const ROLE_ADMIN = "ROLE_ADMIN";
     const ROLE_MANAGER = "ROLE_MANAGER";
@@ -312,31 +312,6 @@ class User implements UserInterface, \Serializable
 
     public function eraseCredentials()
     {
-    }
-
-    /**
-     * @return string|null
-     */
-    public function serialize()
-    {
-        return serialize(array(
-            $this->id,
-            $this->username,
-            $this->password
-        ));
-    }
-
-    /**
-     * @param string $serialized
-     * @return void
-     */
-    public function unserialize($serialized)
-    {
-        list (
-            $this->id,
-            $this->username,
-            $this->password
-            ) = unserialize($serialized);
     }
 }
 

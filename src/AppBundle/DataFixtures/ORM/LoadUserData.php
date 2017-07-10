@@ -29,7 +29,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
             );
             $user->setFirstName($faker->firstName);
             $user->setLastName($faker->lastName);
-            $user->setRoles($faker->randomElements($userRoles));
+            $user->addRole($faker->randomElement($userRoles));
 
             $manager->persist($user);
         }
