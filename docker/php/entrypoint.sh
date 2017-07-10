@@ -11,9 +11,11 @@ fi
 
 composer install
 
-#bin/console doctrine:database:create --if-not-exists
-#bin/console doctrine:migration:migrate --no-interaction
-#bin/console doctrine:fixtures:load --fixtures=tests/DataFixtures/ORM --no-interaction
+bin/console doctrine:database:create --if-not-exists
+bin/console doctrine:migration:migrate --no-interaction
+bin/console doctrine:fixtures:load --no-interaction
+
+bower install --allow-root
 
 chown -R www-data:www-data var/cache var/logs var/sessions
 

@@ -13,7 +13,8 @@ RUN apt-get update \
     unzip \
     zlib1g-dev \
     supervisor \
-    npm\
+    nodejs-legacy \
+    npm \
     && pecl install apcu \
     && pecl install apcu_bc-1.0.3 \
     && apt-get clean
@@ -40,8 +41,6 @@ RUN mkdir -p /usr/local/bin
 RUN curl -LsS https://symfony.com/installer -o /usr/local/bin/symfony
 RUN chmod a+x /usr/local/bin/symfony
 
-RUN apt-get install -y -qq npm
-RUN ln -s /usr/bin/nodejs /usr/bin/node
 RUN npm install --global bower
 
 COPY docker/php/php.ini /usr/local/etc/php/
