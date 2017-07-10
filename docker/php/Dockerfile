@@ -13,6 +13,8 @@ RUN apt-get update \
     unzip \
     zlib1g-dev \
     supervisor \
+    nodejs-legacy \
+    npm \
     && pecl install apcu \
     && pecl install apcu_bc-1.0.3 \
     && apt-get clean
@@ -38,6 +40,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN mkdir -p /usr/local/bin
 RUN curl -LsS https://symfony.com/installer -o /usr/local/bin/symfony
 RUN chmod a+x /usr/local/bin/symfony
+
+RUN npm install --global bower
 
 COPY docker/php/php.ini /usr/local/etc/php/
 
