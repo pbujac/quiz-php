@@ -15,6 +15,7 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
     public function load(ObjectManager $manager)
     {
         $faker = Faker\Factory::create();
+
         for ($i = 0; $i < 10; $i++) {
 
             $category = new Category();
