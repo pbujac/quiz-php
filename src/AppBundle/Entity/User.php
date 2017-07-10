@@ -17,6 +17,7 @@ class User implements UserInterface
     const ROLE_ADMIN = "ROLE_ADMIN";
     const ROLE_MANAGER = "ROLE_MANAGER";
     const ROLE_USER = "ROLE_USER";
+    const ROLES = [self::ROLE_ADMIN, self::ROLE_MANAGER, self::ROLE_USER];
 
     /**
      * @var int
@@ -223,8 +224,8 @@ class User implements UserInterface
      */
     public function removeRole(string $role)
     {
-        if (array_search($role, $this->roles, true) === true) {
-            unset($this->roles[$role]);
+        if (($key = array_search($role, $this->roles)) !== false) {
+            unset($this->roles[$key]);
         }
     }
 
