@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Result
  *
  * @ORM\Table(name="results")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ResultRepository")
  */
 class Result
 {
