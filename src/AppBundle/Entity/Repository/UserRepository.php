@@ -1,6 +1,8 @@
 <?php
 
 namespace AppBundle\Entity\Repository;
+
+use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 use Doctrine\ORM\EntityRepository;
@@ -16,8 +18,8 @@ class UserRepository extends EntityRepository
      */
     public function getAllUsers($currentPage = 1)
     {
-        $query = $this->createQueryBuilder('p')
-            ->orderBy('p.created', 'DESC')
+        $query = $this->createQueryBuilder('u')
+            ->orderBy('u.createdAt', 'DESC')
             ->getQuery();
 
         $paginator = $this->paginate($query, $currentPage);
@@ -26,7 +28,7 @@ class UserRepository extends EntityRepository
     }
 
     /**
-     * @param Doctrine\ORM\Query $dql   DQL Query Object
+     * @param Query $dql   DQL Query Object
      * @param integer            $page  Current page (defaults to 1)
      * @param integer            $limit The total number per page (defaults to 19)
      *
