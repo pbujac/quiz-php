@@ -8,22 +8,7 @@ use AppBundle\Entity\Repository\UserRepository;
 
 
 class ListOfUsersController extends DefaultController
-{/**
- * @Route("/userList/{page}",name="user_list",requirements={"page": "\d+"})
- */
-    public function listAction($page)
-    {
-        $repository = $this->getDoctrine()
-            ->getRepository(User::class);
-        $users = $repository->findAll();
-
-        return $this->render(
-            'userList/list.html.twig',
-            array('users' => $users)
-        );
-
-    }
-
+{
     /**
      * @Route("/userList/{page}",name="user_index")
      */
@@ -33,17 +18,15 @@ class ListOfUsersController extends DefaultController
             ->getRepository(User::class);
         $users = $repository->getAllUsers($page); // Returns 19 users out of 20
 
+        $limit = 5;
+        $maxPages = ceil($users->count() / $limit);
+        $thisPage = $page;
 
-        # Total fetched (ie: `19` users)
-        $totalUsersReturned = $users->getIterator()->count();
-
-        # Count of ALL users (ie: `20` users)
-        $totalUsers = $users->count();
-
-        # ArrayIterator
-        $iterator = $users->getIterator();
-
-        return $this->render('userList/list2.html.twig', compact('categories', 'maxPages', 'thisPage'));
+        return $this->render('userList/list2.html.twig', [
+            'users' => $users->getQuery()->getResult(),
+            'maxPages' => $maxPages,
+            'thisPage' => $thisPage,
+        ]);
     }
 
 
