@@ -5,10 +5,8 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ResultAnswer
- *
  * @ORM\Table(name="result_answers")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ResultAnswerRepository")
  */
 class ResultAnswer
 {
