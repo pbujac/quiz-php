@@ -4,13 +4,19 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
  * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\UserRepository")
  */
-class User
+class User implements AdvancedUserInterface
 {
+    const ROLE_ADMIN = "ROLE_ADMIN";
+    const ROLE_MANAGER = "ROLE_MANAGER";
+    const ROLE_USER = "ROLE_USER";
+    const ROLES = [self::ROLE_ADMIN, self::ROLE_MANAGER, self::ROLE_USER];
+
     /**
      * @var int
      *
@@ -42,11 +48,11 @@ class User
     private $active;
 
     /**
-     * @var string
+     * @var string[]
      *
-     * @ORM\Column(type="string", length=45)
+     * @ORM\Column(type="simple_array")
      */
-    private $role;
+    private $roles;
 
     /**
      * @var string
@@ -68,6 +74,13 @@ class User
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $salt;
 
     /**
      * @var ArrayCollection|Quiz[]
@@ -148,22 +161,6 @@ class User
     /**
      * @return string
      */
-    public function getRole(): string
-    {
-        return $this->role;
-    }
-
-    /**
-     * @param string $role
-     */
-    public function setRole(string $role)
-    {
-        $this->role = $role;
-    }
-
-    /**
-     * @return string
-     */
     public function getFirstName(): string
     {
         return $this->firstName;
@@ -207,6 +204,35 @@ class User
     public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @param string $role
+     *
+     * @return User
+     */
+    public function addRole(string $role)
+    {
+        $this->roles[] = $role;
+        return $this;
+    }
+
+    /**
+     * @param string $role
+     */
+    public function removeRole(string $role)
+    {
+        if (($key = array_search($role, $this->roles)) !== false) {
+            unset($this->roles[$key]);
+        }
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getRoles(): array
+    {
+        return $this->roles;
     }
 
     /**
@@ -265,6 +291,58 @@ class User
     public function getResults()
     {
         return $this->results;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSalt(): ?string
+    {
+        return $this->salt;
+    }
+
+    /**
+     * @param null|string $salt
+     */
+    public function setSalt(?string $salt)
+    {
+        $this->salt = $salt;
+    }
+
+    public function eraseCredentials()
+    {
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAccountNonExpired(): bool
+    {
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAccountNonLocked(): bool
+    {
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCredentialsNonExpired(): bool
+    {
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnabled(): bool
+    {
+        return $this->isActive();
     }
 }
 
