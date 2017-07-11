@@ -6,6 +6,7 @@
         <tr>
             <th><span>Username</span></th>
             <th><span>Name and Surname</span></th>
+            <th><span>Password</span></th>
             <th><span>Role</span></th>
             <th ><span>Status</span></th>
         </tr>
@@ -13,16 +14,19 @@
         <tbody >
         <tr>
             {% for user in users %}
-            <td width="200" align="center">
+            <td width="200" >
                 {{ user.username }}
             </td>
-            <td width="200" align="center">
+            <td width="200" >
                 {{ user.firstname }} {{ user.lastname }}
             </td>
-            <td width="200" align="center">
+            <td width="200" >
+                {{ user.password }}
+            </td>
+            <td width="200" >
                 {{ user.role }}
             </td>
-            <td width="200" align="center" >
+            <td width="200" >
                 {%  if user.active %} Active {% else %} Inactive   {% endif %}
             </td>
         </tr>
