@@ -8,20 +8,34 @@ use Doctrine\Common\Persistence\ObjectManager;
 use AppBundle\Entity\User;
 use Faker\Factory;
 use Faker\Generator;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 
-class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
+class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
+
     /**
      * @param ObjectManager $manager
      */
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create();
+        $encoder = $this->container->get('security.password_encoder');
 
         for ($i = 0; $i < 10; $i++) {
             $user = new User();
             $user->setUsername($faker->userName);
-            $user->setPassword(password_hash('test', PASSWORD_BCRYPT));
+            $user->setPassword($encoder->encodePassword($user, 'test'));
             $user->setActive($faker->boolean());
             $user->setCreatedAt(
                 $faker->dateTimeBetween('-3 years', 'now')
@@ -33,7 +47,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
             $manager->persist($user);
         }
 
-        $this->createAdminUser($faker, $manager);
+        $this->createAdminUser($faker, $manager, $encoder);
 
         $manager->flush();
     }
@@ -41,12 +55,13 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
     /**
      * @param Generator $faker
      * @param ObjectManager $manager
+     * @param UserPasswordEncoder $encoder
      */
-    private function createAdminUser($faker, ObjectManager $manager)
+    private function createAdminUser(Generator $faker, ObjectManager $manager, UserPasswordEncoder $encoder)
     {
         $user = new User();
         $user->setUsername('admin');
-        $user->setPassword(password_hash('admin', PASSWORD_BCRYPT));
+        $user->setPassword($encoder->encodePassword($user, 'admin'));
         $user->setActive(1);
         $user->setCreatedAt(
             $faker->dateTimeBetween('-3 years', 'now')
