@@ -45,5 +45,4 @@ class UserRepository extends EntityRepository
         return $paginator;
     }
 
-
 }
