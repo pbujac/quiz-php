@@ -15,7 +15,7 @@ class PaginatorManager
      *
      * @return Paginator
      */
-    public static function paginate(Query $query, int $page = 1)
+    public function paginate(Query $query, int $page = 1)
     {
         $paginator = new Paginator($query);
         $paginator
