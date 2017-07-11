@@ -1,0 +1,48 @@
+{% extends '@Admin/base.html.twig' %}
+
+{% block title %}Categories{% endblock %}
+
+{% block body %}
+
+    {% if is_granted('ROLE_ADMIN') %}
+
+        <table class="table user-list">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Quizzes</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                {% for category in categories %}
+                <td>
+                    {{ category.title }}
+                </td>
+                <td>
+                    <a href="#">#ID</a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        {% if maxPages > 1 %}
+            <ul class="pagination pagination-sm">
+                <td {{ currentPage == 1 ? 'class="disabled"' }}>
+                    <a href="1">«</a>
+                </td>
+                {% for pageNumber in 1..maxPages %}
+                    <td {{ currentPage == pageNumber ? 'class="active"' }}>
+                        <a href="{{ pageNumber }}">{{ pageNumber }}</a>
+                    </td>
+                {% endfor %}
+
+                <td {{ currentPage == maxPages ? 'class="disabled"' }}>
+                    <a href="{{ maxPages }}">»</a>
+                </td>
+            </ul>
+        {% endif %}
+    {% endif %}
+
+{% endblock %}

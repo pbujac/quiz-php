@@ -304,7 +304,7 @@ class User implements AdvancedUserInterface
     /**
      * @param null|string $salt
      */
-    public function setSalt(?string $salt)
+    public function setSalt(string $salt)
     {
         $this->salt = $salt;
     }
