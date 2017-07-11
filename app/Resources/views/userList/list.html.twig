@@ -1,0 +1,49 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <table class="table user-list" >
+        <thead>
+        <tr>
+            <th><span>Username</span></th>
+            <th><span>Name and Surname</span></th>
+            <th><span>Role</span></th>
+            <th ><span>Status</span></th>
+        </tr>
+        </thead>
+        <tbody >
+        <tr>
+            {% for user in users %}
+            <td width="200" align="center">
+                {{ user.username }}
+            </td>
+            <td width="200" align="center">
+                {{ user.firstname }} {{ user.lastname }}
+            </td>
+            <td width="200" align="center">
+                {{ user.role }}
+            </td>
+            <td width="200" align="center" >
+                {%  if user.active %} Active {% else %} Inactive   {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% if maxPages > 1 %}
+        <ul class="pagination pagination-sm">
+            <td {{ thisPage == 1 ? 'class="disabled"' }}>
+                <a href="1">«</a>
+            </td>
+            {% for pageNumber in 1..maxPages %}
+                <td {{ thisPage == pageNumber ? 'class="active"' }}>
+                    <a href="{{ pageNumber }}">{{ pageNumber }}</a>
+                </td>
+            {% endfor %}
+
+
+            <td {{ thisPage == maxPages ? 'class="disabled"' }}>
+                <a href="{{ maxPages }}">»</a>
+            </td>
+        </ul>
+    {% endif %}
+{% endblock %}
