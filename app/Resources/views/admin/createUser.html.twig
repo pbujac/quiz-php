@@ -1,0 +1,24 @@
+{% extends 'admin/dashboard.html.twig' %}
+
+{% block content %}
+    <div class="col-md-10 content">
+        <div class="panel panel-default">
+            <div class="panel-heading">Create User</div>
+
+            <div class="panel-body">
+
+                {{ form_start(form) }}
+                {{ form_row(form.firstName) }}
+                {{ form_row(form.lastName) }}
+                {{ form_row(form.username) }}
+                {{ form_row(form.password) }}
+                {{ form_row(form.active) }}
+                {{ form_row(form.roles) }}
+                <button type="submit">Create</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+

@@ -107,7 +107,7 @@ class User implements UserInterface
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -115,7 +115,7 @@ class User implements UserInterface
     /**
      * @return string
      */
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
         return $this->username;
     }
@@ -131,7 +131,7 @@ class User implements UserInterface
     /**
      * @return string
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -147,7 +147,7 @@ class User implements UserInterface
     /**
      * @return bool
      */
-    public function isActive(): bool
+    public function isActive(): ?bool
     {
         return $this->active;
     }
@@ -163,7 +163,7 @@ class User implements UserInterface
     /**
      * @return string
      */
-    public function getFirstName(): string
+    public function getFirstName(): ?string
     {
         return $this->firstName;
     }
@@ -179,7 +179,7 @@ class User implements UserInterface
     /**
      * @return string
      */
-    public function getLastName(): string
+    public function getLastName(): ?string
     {
         return $this->lastName;
     }
@@ -195,7 +195,7 @@ class User implements UserInterface
     /**
      * @return \DateTime
      */
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): ?\DateTime
     {
         return $this->createdAt;
     }
@@ -232,7 +232,7 @@ class User implements UserInterface
     /**
      * @return string[]
      */
-    public function getRoles(): array
+    public function getRoles(): ?array
     {
         return $this->roles;
     }
@@ -342,7 +342,7 @@ class User implements UserInterface
     /**
      * @return bool
      */
-    public function isEnabled(): bool
+    public function isEnabled(): ?bool
     {
         return $this->isActive();
     }
