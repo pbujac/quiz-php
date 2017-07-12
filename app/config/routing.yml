@@ -10,6 +10,8 @@ app:
 logout:
     path: /logout
 
-admin.user.list:
-    path:     /admin/user
-    defaults: { _controller: AdminBundle:User:userList }
+root:
+    path: /
+    defaults:
+        _controller: AdminBundle:Security:login
+        permanent: true

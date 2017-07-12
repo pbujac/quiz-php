@@ -22,7 +22,7 @@ class UserController extends Controller
         $limit = 19;
         $maxPages = ceil($users->count() / $limit);
 
-        return $this->render('AdminBundle:userList:list.html.twig', [
+        return $this->render('userList/list.html.twig', [
             'users' => $users->getQuery()->getResult(),
             'maxPages' => $maxPages,
             'thisPage' => $page,
