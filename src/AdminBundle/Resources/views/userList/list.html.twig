@@ -36,17 +36,17 @@
     {% if maxPages > 1 %}
         <ul class="pagination pagination-sm">
             <td {{ thisPage == 1 ? 'class="disabled"' }}>
-                <a href="1">«</a>
+                <a href="/app_dev.php/admin/user?page=1">«</a>
             </td>
             {% for pageNumber in 1..maxPages %}
                 <td {{ thisPage == pageNumber ? 'class="active"' }}>
-                    <a href="{{ pageNumber }}">{{ pageNumber }}</a>
+                    <a href="user?page={{ pageNumber }}">{{ pageNumber }}</a>
                 </td>
             {% endfor %}
 
 
             <td {{ thisPage == maxPages ? 'class="disabled"' }}>
-                <a href="{{ maxPages }}">»</a>
+                <a href="/app_dev.php/admin/user?page={{ maxPages }}">»</a>
             </td>
         </ul>
     {% endif %}
