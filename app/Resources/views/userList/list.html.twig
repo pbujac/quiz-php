@@ -5,7 +5,7 @@
 {% block content %}
 <div class="col-md-10 content">
     <div class="panel panel-default">
-        <div class="panel-heading">Dashboard</div>
+        <div class="panel-heading">User list</div>
         <div class="panel-body">
         <table class="table user-list">
             <thead>
@@ -49,8 +49,6 @@
                         <a href="user?page={{ pageNumber }}">{{ pageNumber }}</a>
                     </td>
                 {% endfor %}
-
-
                 <td {{ thisPage == maxPages ? 'class="disabled"' }}>
                     <a href="user?page={{ maxPages }}">»</a>
                 </td>
@@ -59,4 +57,4 @@
         </div>
     </div>
 </div>
-        {% endblock %}
+{% endblock %}
