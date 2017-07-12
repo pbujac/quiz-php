@@ -2,46 +2,20 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Form\UserType;
-use AppBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class RegistrationController extends Controller
+class DefaultController extends Controller
 {
     /**
-     * @Route("/register", name="user_registration")
+     * @Route("/", name="homepage")
      */
-    public function registerAction(Request $request)
+    public function indexAction(Request $request)
     {
-        // 1) build the form
-        $user = new User();
-        $user->setFirstName('');
-        $user->setLastName('');
-        $user->setUserName('');
-        $user->setPassword('');
-
-        $form = $this->createForm(UserType::class, $user);
-
-        // 2) handle the submit (will only happen on POST)
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            // 3) Encode the password (you could also do this via Doctrine listener)
-            $password = $this->get('security.password_encoder')
-                ->encodePassword($user, $user->getPassword());
-            $user->setPassword($password);
-
-            // 4) save the User!
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
-        }
-
-        return $this->render(
-            'registration/register.html.twig',
-            array('form' => $form->createView())
-        );
+        // replace this example code with whatever you need
+        return $this->render('default/index.html.twig', [
+            'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
+        ]);
     }
 }

@@ -1,29 +1,12 @@
 <?php
 
-
-namespace AppBundle\Form;
-
-use AppBundle\Entity\User;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-
-class UserType extends AbstractType
+/**
+ * Created by PhpStorm.
+ * User: nlaptedulce
+ * Date: 7/12/17
+ * Time: 11:19 AM
+ */
+class UserType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-            ->add('firstName')
-            ->add('lastName')
-            ->add('userName')
-            ->add('password')
-        ;
-    }
 
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => User::class,
-        ));
-    }
 }

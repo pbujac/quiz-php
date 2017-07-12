@@ -1,3 +1,8 @@
+admin:
+    resource: "@AdminBundle/Controller/"
+    type:     annotation
+    prefix:   /admin
+
 app:
     resource: '@AppBundle/Controller/'
     type: annotation
@@ -5,3 +10,6 @@ app:
 user_registration:
     path:     /register
     defaults: { _controller: AppBundle:Registration:register }
+
+logout:
+    path: /logout
