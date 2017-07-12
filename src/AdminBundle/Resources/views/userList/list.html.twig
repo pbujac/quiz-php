@@ -1,4 +1,4 @@
-{% extends '::base.html.twig' %}
+{% extends '@Admin/base.html.twig' %}
 
 {% block body %}
     <table class="table user-list" >
@@ -24,7 +24,7 @@
                 {{ user.password }}
             </td>
             <td width="200" >
-                {{ user.role }}
+                {{ user.roles|join }}
             </td>
             <td width="200" >
                 {%  if user.active %} Active {% else %} Inactive   {% endif %}

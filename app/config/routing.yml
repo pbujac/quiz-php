@@ -9,3 +9,7 @@ app:
 
 logout:
     path: /logout
+
+user_list:
+    path:     /userList/{page}
+    defaults: { _controller: AdminBundle:User:userList }
