@@ -1,10 +1,14 @@
 /*FORM PANEL*/
 .center-panel {
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .center-panel .panel-heading {
     border-bottom: 1px solid #c9c9c9;
     padding: 10px 10px 20px;
     margin-bottom: 10px;
+}
+
+.panel-body .submit {
+    width: 200px;
 }

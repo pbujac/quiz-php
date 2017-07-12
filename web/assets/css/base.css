@@ -15,7 +15,6 @@ input[type="text"], input[type="password"] {
 /*BOOTSTRAP*/
 .btn {
     border-radius: 0;
-    width: 200px;
 }
 
 .table thead {

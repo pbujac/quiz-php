@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+    <nav class="navbar navbar-default navbar-static-top">
+
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#"> Brand</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href={{ path('logout') }}>
+                            <span class="glyphicon glyphicon-log-out"></span>
+                            Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block sidebar %}
+    <div class="col-md-2 sidebar">
+        <ul class="nav nav-pills nav-stacked">
+            <li class="active">
+                <a href="{{ path('admin.dashboard') }}">
+                    <span class="glyphicon glyphicon-dashboard"></span>
+                    Dashboard
+                </a>
+            </li>
+            <li><a href="#">
+                    <span class="glyphicon glyphicon-list"></span>
+                    Users
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('admin.category.list', {'page': 1}) }}">
+                    <span class="glyphicon glyphicon-list-alt"></span>
+                     Categories
+                </a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block footer %}
+    <footer class="pull-left footer">
+        <hr class="divider">
+        <p class="col-md-12">
+            Copyright &COPY; 2017 Internship Team Pentalog
+        </p>
+    </footer>
+{% endblock %}
+

@@ -1,18 +1,17 @@
-{% extends '@Admin/base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
 {% block title %}Categories{% endblock %}
 
-{% block body %}
-    <div class="container">
-
+{% block content %}
+    <div class="col-md-10">
         <div class="panel panel-default panel-table">
             <div class="panel-heading">
                 <div class="row">
-                    <div class="col col-xs-6">
+                    <div class="col-md-6">
                         <h1 class="panel-title">Categories</h1>
                     </div>
-                    <div class="col col-xs-6 text-right">
-                        <a href="{{ path('create_category') }}"
+                    <div class="col-md-6 text-right">
+                        <a href="{{ path('admin.category.create') }}"
                            class="btn btn-sm btn-primary btn-create">
                             Create New
                         </a>
@@ -61,7 +60,6 @@
                                     <li {{ currentPage == maxPages ? 'class="disabled"' }}>
                                         <a href="{{ maxPages }}">»</a>
                                     </li>
-
                                 </ul>
                             {% endif %}
                         </ul>
@@ -69,6 +67,5 @@
                 </div>
             </div>
         </div>
-
     </div>
 {% endblock %}

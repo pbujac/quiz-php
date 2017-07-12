@@ -17,7 +17,7 @@ class CategoryController extends Controller
      * @param int $page
      * @return RedirectResponse|Response
      *
-     * @Route("/category/list/{page}", name="list_categories")
+     * @Route("/category/list/{page}", name="admin.category.list")
      */
     public function listAction(int $page)
     {
@@ -27,7 +27,7 @@ class CategoryController extends Controller
 
         $maxPages = ceil($categories->count() / PaginatorManager::PAGE_LIMIT);
 
-        return $this->render('AdminBundle:admin/category:categories-list.html.twig', [
+        return $this->render('admin/category/list.html.twig', [
             'categories' => $categories->getQuery()->getResult(),
             'maxPages' => $maxPages,
             'currentPage' => $page,
@@ -38,7 +38,7 @@ class CategoryController extends Controller
      * @param Request $request
      * @return RedirectResponse|Response
      *
-     * @Route("/category/create", name="create_category")
+     * @Route("/category/create", name="admin.category.create")
      */
     public function createAction(Request $request)
     {
@@ -54,12 +54,12 @@ class CategoryController extends Controller
             $em->flush();
 
             return $this->redirect($this->generateUrl(
-                'list_categories',
+                'admin.category.list',
                 ['page' => 1]
             ));
 
         }
-        return $this->render('AdminBundle:admin/category:create.html.twig', [
+        return $this->render('admin/category/create.html.twig', [
             'form' => $form->createView()
         ]);
     }

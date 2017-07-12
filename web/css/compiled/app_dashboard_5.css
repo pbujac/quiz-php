@@ -1,0 +1,19 @@
+h1.page-header {
+    margin-top: -5px;
+}
+
+.sidebar {
+    padding: 10px;
+}
+
+.main-container {
+    background: #FFF;
+    padding-top: 15px;
+    margin-top: -20px;
+}
+.main-container span{
+    padding-right: 5px;
+}
+.footer {
+    width: 100%;
+}

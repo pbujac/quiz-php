@@ -3,9 +3,11 @@ admin:
     type:     annotation
     prefix:   /admin
 
-app:
-    resource: '@AppBundle/Controller/'
-    type: annotation
-
 logout:
     path: /logout
+
+root:
+    path: /
+    defaults:
+        _controller: AdminBundle:Security:login
+        permanent: true
