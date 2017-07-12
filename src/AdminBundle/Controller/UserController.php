@@ -10,6 +10,7 @@ class UserController extends Controller
 {
     /**
      * @Route("admin.user.list/{page}",name="user_list_page")
+     * @Route("admin.user.list/",name="user_list_zero_page")
      *
      */
     public function userListAction($page=1)

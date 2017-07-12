@@ -13,3 +13,7 @@ logout:
 user_list:
     path:     admin.user.list/{page}
     defaults: { _controller: AdminBundle:User:userList }
+
+user_list_page:
+    path:     admin.user.list/
+    defaults: { _controller: AdminBundle:User:userList }
