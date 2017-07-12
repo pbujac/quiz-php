@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class UserController extends Controller
 {
     /**
-     * @Route("/userList/{page}",name="user_list_page")
+     * @Route("admin.user.list/{page}",name="user_list_page")
      *
      */
     public function userListAction($page=1)
