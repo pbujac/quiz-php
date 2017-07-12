@@ -5,15 +5,14 @@ namespace AdminBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\Request;
 
-class AdminController extends Controller
+class MainController extends Controller
 {
     /**
-     * @Route("/", name="admin")
+     * @Route("/", name="admin.dashboard")
      */
     public function adminAction()
     {
-        return $this->render('AdminBundle:admin:admin.html.twig');
+        return $this->render('admin/dashboard.html.twig');
     }
 }

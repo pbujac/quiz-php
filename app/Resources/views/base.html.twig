@@ -1,15 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>{% block title %}Welcome!{% endblock %}</title>
+
+    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/dist/css/bootstrap.min.css') }}">
+
     {% block stylesheets %}{% endblock %}
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    <link rel="stylesheet"
-          href="{{ asset('assets/vendor/bootstrap/dist/css/bootstrap.min.css') }}">
+
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
 </head>
 <body>
-{% block body %}{% endblock %}
+
+{% block header %}{% endblock %}
+
+<div class="container-fluid main-container">
+    <div class="row">
+        {% block sidebar %}{% endblock %}
+
+        {% block content %}{% endblock %}
+
+        {% block footer %}{% endblock %}
+    </div>
+</div>
+
 {% block javascripts %}{% endblock %}
+
 </body>
 </html>
