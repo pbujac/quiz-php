@@ -34,7 +34,7 @@
     {% block sidebar %}
         <div class="col-md-2 sidebar">
             <ul class="nav nav-pills nav-stacked">
-                <li class="active"><a href="#"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
+                <li class="active"><a href="{{ path('admin') }}"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
                 <li><a href="#"><span class="glyphicon glyphicon-list"></span> Users </a></li>
                 <li><a href="#">Link</a></li>
                 <li><a href="#">Link</a></li>
@@ -42,19 +42,16 @@
             </ul>
         </div>
     {% endblock %}
-
-    {% block body %}{% endblock %}
-
+    {% block content %}{% endblock %}
     {% block footer %}
         <footer class="pull-left footer">
-            <p class="col-md-12">
             <hr class="divider">
+            <p class="col-md-12">
             Copyright &COPY; 2017 Internship Team Pentalog
             </p>
         </footer>
     {% endblock %}
 </div>
-
 {% block javascripts %}{% endblock %}
 </body>
 </html>
