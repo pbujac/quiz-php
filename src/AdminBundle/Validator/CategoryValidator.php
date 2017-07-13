@@ -9,9 +9,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class CategoryValidator extends ConstraintValidator
 {
-    /**
-     * @param EntityManagerInterface $em
-     */
+    /** @var EntityManagerInterface */
     private $em;
 
     /**
