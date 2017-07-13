@@ -53,12 +53,9 @@ class CategoryController extends Controller
             $em->persist($category);
             $em->flush();
 
-            return $this->redirect($this->generateUrl(
-                'admin.category.list',
-                ['page' => 1]
-            ));
-
+            return $this->redirectToRoute('admin.category.list');
         }
+
         return $this->render('admin/category/create.html.twig', [
             'form' => $form->createView()
         ]);
