@@ -1,2 +1,6 @@
-#services:
-#
+services:
+    _defaults:
+        autoconfigure: true
+
+    AdminBundle\Validator\CategoryValidator:
+        arguments: ["@doctrine.orm.entity_manager"]
