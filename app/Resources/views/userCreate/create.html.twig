@@ -1,9 +1,9 @@
-{% extends 'admin/dashboard.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
 
 {% block stylesheets %}
 
-    <link rel="stylesheet" href="{{ asset('assets/css/createUser.css') }}">
+{{ parent() }}
     {% form_theme form 'bootstrap_3_layout.html.twig' %}
 {% endblock %}
 
@@ -18,7 +18,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">Create User</div>
 
-            <div class="panel-body">
+            <div class="panel-body user-panel">
 
                 {{ form_start(form) }}
                 <p>{{ form_row(form.firstName) }}</p>
