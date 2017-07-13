@@ -9,6 +9,12 @@
 
 {% block content %}
     <div class="col-md-10 content">
+        {% if form_errors(form) %}
+            <div class="alert alert-danger" role="alert">
+                {{ form_errors(form) }}
+            </div>
+        {% endif %}
+
         <div class="panel panel-default">
             <div class="panel-heading">Create User</div>
 
