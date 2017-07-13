@@ -4,7 +4,7 @@
     <nav class="navbar navbar-default navbar-static-top">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#"> Brand</a>
+                <a class="navbar-brand" href="#"> Admin page</a>
             </div>
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -27,8 +27,8 @@
     <div class="col-md-2 sidebar">
         <ul class="nav nav-pills nav-stacked">
             <li class="active"><a href="{{ path('admin.dashboard') }}"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon-list"></span> Users </a></li>
-            <li><a href="#">Link</a></li>
+            <li><a href="{{ path('admin.user.list', {'page': 1})}}"><span class="glyphicon glyphicon-list"></span> Users </a></li>
+            <li><a href="#">Categories</a></li>
             <li><a href="#">Link</a></li>
             <li><a href="#">Link</a></li>
         </ul>

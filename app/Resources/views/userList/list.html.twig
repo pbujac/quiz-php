@@ -1,0 +1,60 @@
+{% extends 'admin/dashboard.html.twig' %}
+
+{% block title %}User list{% endblock %}
+
+{% block content %}
+<div class="col-md-10 content">
+    <div class="panel panel-default">
+        <div class="panel-heading">User list</div>
+        <div class="panel-body">
+        <table class="table user-list">
+            <thead>
+            <tr>
+                <th><span>Username</span></th>
+                <th><span>Name and Surname</span></th>
+                <th><span>Password</span></th>
+                <th><span>Role</span></th>
+                <th><span>Status</span></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                {% for user in users %}
+                <td width="200">
+                    {{ user.username }}
+                </td>
+                <td width="200">
+                    {{ user.firstname }} {{ user.lastname }}
+                </td>
+                <td width="200">
+                    {{ user.password }}
+                </td>
+                <td width="200">
+                    {{ user.roles|join(', ') }}
+                </td>
+                <td width="200">
+                    {% if user.active %} Active {% else %} Inactive   {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% if maxPages > 1 %}
+            <ul class="pagination pagination-sm">
+                <td {{ thisPage == 1 ? 'class="disabled"' }}>
+                    <a href="user?page=1">«</a>
+                </td>
+                {% for pageNumber in 1..maxPages %}
+                    <td {{ thisPage == pageNumber ? 'class="active"' }}>
+                        <a href="user?page={{ pageNumber }}">{{ pageNumber }}</a>
+                    </td>
+                {% endfor %}
+                <td {{ thisPage == maxPages ? 'class="disabled"' }}>
+                    <a href="user?page={{ maxPages }}">»</a>
+                </td>
+            </ul>
+        {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
