@@ -4,9 +4,21 @@
     <meta charset="UTF-8"/>
     <title>{% block title %}Welcome!{% endblock %}</title>
 
-    <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap/dist/css/bootstrap.min.css') }}">
+    {% block stylesheets %}
+        {% stylesheets
+        'assets/vendor/bootstrap/dist/css/bootstrap.min.css'
+        'assets/css/base.css'
+        'assets/css/login.css'
+        'assets/css/form.css'
+        'assets/css/dashboard.css'
+        'assets/css/main.css'
+        filter='cssrewrite' output='css/compiled/app.css' %}
 
-    {% block stylesheets %}{% endblock %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+
+        {% endstylesheets %}
+
+    {% endblock %}
 
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
 </head>
