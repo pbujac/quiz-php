@@ -14,6 +14,7 @@ composer install
 bin/console doctrine:database:create --if-not-exists
 bin/console doctrine:migration:migrate --no-interaction
 bin/console doctrine:fixtures:load --no-interaction
+bin/console assetic:dump
 
 bower install --allow-root
 
