@@ -1,5 +1,12 @@
 {% extends 'admin/dashboard.html.twig' %}
 
+
+{% block stylesheets %}
+
+    <link rel="stylesheet" href="{{ asset('assets/css/createUser.css') }}">
+    {% form_theme form 'bootstrap_3_layout.html.twig' %}
+{% endblock %}
+
 {% block content %}
     <div class="col-md-10 content">
         <div class="panel panel-default">
@@ -8,14 +15,16 @@
             <div class="panel-body">
 
                 {{ form_start(form) }}
-                {{ form_row(form.firstName) }}
-                {{ form_row(form.lastName) }}
-                {{ form_row(form.username) }}
-                {{ form_row(form.password) }}
-                {{ form_row(form.active) }}
-                {{ form_row(form.roles) }}
-                <button type="submit">Create</button>
+                <p>{{ form_row(form.firstName) }}</p>
+                <p>{{ form_row(form.lastName) }}</p>
+                <p>{{ form_row(form.username) }}</p>
+                <p>{{ form_row(form.password) }}</p>
+                <p>{{ form_row(form.roles) }}</p>
+                <p>{{ form_row(form.active) }}</p>
+                <button class="btn btn-primary input-medium pull-left" type="submit">Create</button>
+
                 {{ form_end(form) }}
+
             </div>
         </div>
     </div>

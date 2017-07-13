@@ -18,7 +18,7 @@ class UserType extends AbstractType
         $builder
             ->add('username')
             ->add('password', PasswordType::class)
-            ->add('active', RadioType::class)
+            ->add('active')
             ->add('firstName')
             ->add('lastName')
             ->add('roles', ChoiceType::class, [
@@ -32,7 +32,6 @@ class UserType extends AbstractType
                     new Count(['max' => 1])
                 ],
             ]);
-
 
     }
 
