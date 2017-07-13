@@ -27,8 +27,8 @@
     <div class="col-md-2 sidebar">
         <ul class="nav nav-pills nav-stacked">
             <li class="active"><a href="{{ path('admin.dashboard') }}"><span class="glyphicon glyphicon-dashboard"></span> Dashboard</a></li>
-            <li><a href="http://localhost/app_dev.php/admin/user"><span class="glyphicon glyphicon-list"></span> Users </a></li>
-            <li><a href="#">Link</a></li>
+            <li><a href="{{ path('admin.user.list') }}"><span class="glyphicon glyphicon-list"></span> Users </a></li>
+            <li><a href="{{ path('admin.quiz.list') }}"><span class="glyphicon glyphicon-list"></span> Quizzes</a></li>
             <li><a href="#">Link</a></li>
             <li><a href="#">Link</a></li>
         </ul>
