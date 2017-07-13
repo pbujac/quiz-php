@@ -88,10 +88,15 @@ class CategoryController extends Controller
             $em->persist($category);
             $em->flush();
 
+            $this->addFlash(
+                'notice',
+                'Category has been successfully modified!'
+            );
+
             return $this->redirectToRoute('admin.category.list');
         }
 
-        return $this->render('admin/category/create.html.twig', [
+        return $this->render('admin/category/edit.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -109,6 +114,11 @@ class CategoryController extends Controller
 
         $em->remove($category);
         $em->flush();
+
+        $this->addFlash(
+            'notice',
+            'Category has been successfully removed!'
+        );
 
         return $this->redirectToRoute('admin.category.list');
 

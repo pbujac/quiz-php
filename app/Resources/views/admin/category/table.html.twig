@@ -33,18 +33,26 @@
                         <i class="glyphicon glyphicon-pencil"></i>
                         Edit
                     </a>
-
-                    <form class="inline-form" action="{{ path('admin.category.delete' , {'category': category.id}) }}">
-                        <button class="btn btn-sm btn-danger btn-edit"
-                                type="button"
-                                data-toggle="modal"
-                                data-target="#confirmDelete"
-                                data-title="Delete Category"
-                                data-message="Are you sure you want to delete this category ?">
+                    {% if category.quizzes is empty %}
+                        <form class="inline-form"
+                              action="{{ path('admin.category.delete' , {'category': category.id}) }}">
+                            <button class=" btn btn-sm btn-danger btn-edit"
+                                    type="button"
+                                    data-toggle="modal"
+                                    data-target="#confirmDelete"
+                                    data-title="Delete Category"
+                                    data-message="Are you sure you want to delete this category ?">
+                                <i class="glyphicon glyphicon-trash"></i>
+                            Delete
+                            </button>
+                        </form>
+                    {% else %}
+                        <button class="disabled btn btn-sm btn-danger btn-edit">
                             <i class="glyphicon glyphicon-trash"></i>
                             Delete
                         </button>
-                    </form>
+                    {% endif %}
+
 
                 </td>
             </tr>
