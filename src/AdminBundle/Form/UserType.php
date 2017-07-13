@@ -3,6 +3,7 @@
 namespace AdminBundle\Form;
 
 use AppBundle\Entity\User;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,11 +17,11 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username')
+            ->add('username',TextType::class)
             ->add('password', PasswordType::class)
-            ->add('active')
-            ->add('firstName')
-            ->add('lastName')
+            ->add('active',RadioType::class)
+            ->add('firstName',TextType::class)
+            ->add('lastName',TextType::class)
             ->add('roles', ChoiceType::class, [
                 'choices' => array(
                     'ROLE_ADMIN' => User::ROLE_ADMIN,
