@@ -121,6 +121,5 @@ class CategoryController extends Controller
         );
 
         return $this->redirectToRoute('admin.category.list');
-
     }
 }
