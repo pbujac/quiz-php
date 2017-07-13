@@ -15,6 +15,7 @@ class CategoryController extends Controller
 {
     /**
      * @param int $page = 1
+     *
      * @return RedirectResponse|Response
      *
      * @Route("/category/list/{page}", name="admin.category.list")
@@ -36,6 +37,7 @@ class CategoryController extends Controller
 
     /**
      * @param Request $request
+     *
      * @return RedirectResponse|Response
      *
      * @Route("/category/create", name="admin.category.create")
