@@ -16,3 +16,10 @@
 .panel-body .submit {
     width: 200px;
 }
+
+/*TABLE*/
+
+.table .btn-delete, .btn-edit {
+    width: 100px;
+    margin-right: 10px;
+}

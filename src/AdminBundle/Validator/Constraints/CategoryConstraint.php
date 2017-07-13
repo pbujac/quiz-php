@@ -10,6 +10,9 @@ use Symfony\Component\Validator\Constraint;
  */
 class CategoryConstraint extends Constraint
 {
+    /**
+     * @param string $message
+     */
     public $message = 'Category already exist!';
 
     /**
