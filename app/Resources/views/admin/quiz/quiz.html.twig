@@ -27,9 +27,21 @@
             {{ form_row(form.category) }}
             {{ form_row(form.description) }}
 
-            <button id="addQuestionButton" type="button" class="btn btn-sm btn-primary" >
+            <button id="addQuestionForm" type="button" class="btn btn-sm btn-primary" >
                 <span class="glyphicon glyphicon-plus"></span> Add Question</button>
             <button type="submit" class="btn btn-success btn-sm" >Create Quiz</button>
+
+            {#<label id="demo"></label>#}
+
+            <ul class="questions" data-prototype="{{ form_row(form.questions.vars.prototype.text)|e('html_attr') }}">
+                {% for question in form.questions %}
+                    <li>{{ form_row(question.text) }}</li>
+                {% endfor %}
+            </ul>
+
+
+
+
 
             {{ form_end(form) }}
         </div>
@@ -37,5 +49,5 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('assets/js/click_button.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/click_button.js') }}"></script>
 {% endblock %}

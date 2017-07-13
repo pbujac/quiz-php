@@ -25,7 +25,9 @@ class QuizType extends AbstractType
             ))
             ->add('description');
         $builder->add('questions', CollectionType::class, array(
-            'entry_type' => QuestionType::class
+            'entry_type' => QuestionType::class,
+            'prototype' => true,
+            'allow_add' => true,
         ));
     }
 
