@@ -2,6 +2,7 @@
 
 namespace AdminBundle\Validator;
 
+use AppBundle\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -27,7 +28,7 @@ class CategoryValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        $repository = $this->em->getRepository('AppBundle:Category');
+        $repository = $this->em->getRepository(Category::class);
         $category = $repository->findOneBy([
             'title' => $value
         ]);
