@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Repository;
 
+use AdminBundle\Manager\PaginatorManager;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\ORM\EntityRepository;
@@ -9,35 +10,17 @@ use Doctrine\ORM\EntityRepository;
 class QuizRepository extends EntityRepository
 {
     /**
-     * @param int $currentPage
+     * @param int $page
      *
      * @return Paginator
      */
-    public function getAllQuizzes($currentPage = 1)
+    public function getAllQuizzesByPage($page)
     {
+        $paginator = new PaginatorManager();
+
         $query = $this->createQueryBuilder('q')
-            ->orderBy('q.createdAt', 'DESC')
             ->getQuery();
 
-        return $this->paginate($query, $currentPage);
+        return $paginator->paginate($query, $page);
     }
-
-    /**
-     * @param Query $dql
-     * @param int $page
-     * @param int $limit
-     *
-     * @return Paginator
-     */
-    public function paginate($dql, $page = 1, $limit = 19)
-    {
-        $paginator = new Paginator($dql);
-
-        $paginator->getQuery()
-            ->setFirstResult($limit * ($page - 1))
-            ->setMaxResults($limit);
-
-        return $paginator;
-    }
-
 }

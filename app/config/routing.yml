@@ -3,10 +3,6 @@ admin:
     type:     annotation
     prefix:   /admin
 
-app:
-    resource: '@AppBundle/Controller/'
-    type: annotation
-
 logout:
     path: /logout
 

@@ -2,42 +2,24 @@
 
 namespace AppBundle\Entity\Repository;
 
-use Doctrine\ORM\Query;
+use AdminBundle\Manager\PaginatorManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\ORM\EntityRepository;
 
 class UserRepository extends EntityRepository
 {
     /**
-     * @param int $currentPage
+     * @param int $page
      *
      * @return Paginator
      */
-    public function getAllUsers($currentPage = 1)
+    public function getAllUsersByPage(int $page)
     {
+        $paginator = new PaginatorManager();
+
         $query = $this->createQueryBuilder('u')
-            ->orderBy('u.createdAt', 'DESC')
             ->getQuery();
 
-        return $this->paginate($query, $currentPage);
+        return $paginator->paginate($query, $page);
     }
-
-    /**
-     * @param Query $dql
-     * @param int $page
-     * @param int $limit
-     *
-     * @return Paginator
-     */
-    public function paginate($dql, $page = 1, $limit = 19)
-    {
-        $paginator = new Paginator($dql);
-
-        $paginator->getQuery()
-            ->setFirstResult($limit * ($page - 1))
-            ->setMaxResults($limit);
-
-        return $paginator;
-    }
-
 }
