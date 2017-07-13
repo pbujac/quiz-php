@@ -77,3 +77,7 @@ doctrine_migrations:
 twig:
     form:
         resources: ['bootstrap_3_layout.html.twig']
+
+assetic:
+    filters:
+        cssrewrite: ~
