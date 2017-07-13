@@ -15,6 +15,7 @@
                 <th><span>Password</span></th>
                 <th><span>Role</span></th>
                 <th><span>Status</span></th>
+
             </tr>
             </thead>
             <tbody>
@@ -34,6 +35,11 @@
                 </td>
                 <td width="200">
                     {% if user.active %} Active {% else %} Inactive   {% endif %}
+                </td>
+                <td width="200">
+                    <a href="{{ path('admin.user.enable',{ 'user':user.id  } ) }}">
+                        Change state
+                    </a>
                 </td>
             </tr>
             {% endfor %}

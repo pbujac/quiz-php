@@ -28,4 +28,24 @@ class UserController extends Controller
             'thisPage' => $page,
         ]);
     }
+
+    /**
+     * @param User $user
+     *
+     * @Route("/user/enable/{user}",name="admin.user.enable")
+     *
+     *
+     */
+    public function enableAction(User $user)
+    {
+        $user->isActive() ? $user->setActive(0) : $user->setActive(1);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+
+        return $this->redirectToRoute('admin.user.list');
+
+    }
+
 }
