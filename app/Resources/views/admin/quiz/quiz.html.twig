@@ -1,17 +1,41 @@
-{% extends 'admin/dashboard.html.twig' %}
+
+{% extends 'admin/base.html.twig' %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block title %}Create Quiz{% endblock %}
 
 {% block content %}
-<div class="col-md-10 content">
-    <div class="panel panel-default">
-        <div class="panel-heading">Dashboard</div>
+
+    <div class="center-panel col-md-6 col-md-offset-2">
+
+        {% if form_errors(form) %}
+            <div class="alert alert-danger" role="alert">
+                {{ form_errors(form) }}
+            </div>
+        {% endif %}
+
+        <div class="panel-heading">
+            <h1 class="panel-title">Add Quiz</h1>
+        </div>
 
         <div class="panel-body">
-{{ form_start(form) }}
-{{ form_widget(form) }}
-            <input type="submit" value="Create"
-                   class="btn btn-primary pull-right" />
-{{ form_end(form) }}
+
+            {{ form_start(form) }}
+            {#{{ form_widget(form) }}#}
+            {{ form_row(form.title) }}
+            {{ form_row(form.category) }}
+            {{ form_row(form.description) }}
+
+            <button id="addQuestionButton" type="button" class="btn btn-sm btn-primary" >
+                <span class="glyphicon glyphicon-plus"></span> Add Question</button>
+            <button type="submit" class="btn btn-success btn-sm" >Create Quiz</button>
+
+            {{ form_end(form) }}
         </div>
     </div>
-</div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/js/click_button.js') }}"></script>
 {% endblock %}

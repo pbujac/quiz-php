@@ -3,6 +3,7 @@
 namespace AdminBundle\Controller;
 
 use AdminBundle\Form\QuizType;
+use AppBundle\Entity\Question;
 use AppBundle\Entity\Quiz;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,7 +21,11 @@ class QuizController extends Controller
      */
     public function quizAction(Request $request)
     {
-        $form = $this->createForm(QuizType::class, new Quiz());
+        $quiz = new Quiz();
+        $question = new Question();
+        $quiz->getQuestions()->add($question);
+
+        $form = $this->createForm(QuizType::class,$quiz);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -28,9 +33,11 @@ class QuizController extends Controller
 
             $quiz->setCreatedAt(new \DateTime());
             $quiz->setAuthor($this->get('security.token_storage')->getToken()->getUser());
+            $question->setQuiz($quiz);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($quiz);
+            $em->persist($question);
             $em->flush();
 
             return $this->redirectToRoute('admin.dashboard');

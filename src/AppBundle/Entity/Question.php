@@ -80,9 +80,9 @@ class Question
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getText(): string
+    public function getText(): ?string
     {
         return $this->text;
     }
