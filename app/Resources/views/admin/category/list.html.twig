@@ -4,6 +4,15 @@
 
 {% block content %}
     <div class="col-md-10">
+
+        {% for message in app.flashes('notice') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
         {% include 'admin/category/table.html.twig' %}
+
+        {% include 'admin/category/confirmation-modal.html.twig' %}
     </div>
 {% endblock %}

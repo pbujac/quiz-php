@@ -36,7 +36,15 @@
     </div>
 </div>
 
-{% block javascripts %}{% endblock %}
+{% block javascripts %}
+
+    {% javascripts
+    'assets/vendor/jquery/dist/jquery.js'
+    'assets/vendor/bootstrap/dist/js/bootstrap.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+{% endblock %}
 
 </body>
 </html>

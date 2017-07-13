@@ -55,11 +55,62 @@ class CategoryController extends Controller
             $em->persist($category);
             $em->flush();
 
+            $this->addFlash(
+                'notice',
+                $category->getTitle() . ' category has been successfully added!'
+            );
+
             return $this->redirectToRoute('admin.category.list');
         }
 
         return $this->render('admin/category/create.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @param Category $category
+     * @param Request $request
+     *
+     * @return RedirectResponse|Response
+     *
+     * @Route("/category/edit/{category}", name="admin.category.edit")
+     */
+    public function editAction(Category $category, Request $request)
+    {
+        $form = $this->createForm(CategoryType::class, $category);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($category);
+            $em->flush();
+
+            return $this->redirectToRoute('admin.category.list');
+        }
+
+        return $this->render('admin/category/create.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @param Category $category
+     *
+     * @return RedirectResponse|Response
+     *
+     * @Route("/category/delete/{category}", name="admin.category.delete")
+     */
+    public function deleteAction(Category $category)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $em->remove($category);
+        $em->flush();
+
+        return $this->redirectToRoute('admin.category.list');
+
     }
 }
