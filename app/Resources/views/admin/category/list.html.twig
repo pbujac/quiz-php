@@ -4,68 +4,6 @@
 
 {% block content %}
     <div class="col-md-10">
-        <div class="panel panel-default panel-table">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h1 class="panel-title">Categories</h1>
-                    </div>
-                    <div class="col-md-6 text-right">
-                        <a href="{{ path('admin.category.create') }}"
-                           class="btn btn-sm btn-primary btn-create">
-                            Create New
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>Title</th>
-                </tr>
-                </thead>
-
-                <tbody>
-                {% for category in categories %}
-                    <tr>
-                        <td>
-                            {{ category.title }}
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-
-            </table>
-
-            <div class="panel-footer">
-                <div class="row">
-                    <div class="col col-xs-4">Page {{ currentPage }} of {{ maxPages }}
-                    </div>
-                    <div class="col col-xs-8">
-                        <ul class="pagination hidden-xs pull-right">
-                            {% if maxPages >= 1 %}
-                                <ul class="pagination pagination-sm">
-
-                                    <li {{ currentPage == 1 ? 'class="disabled"' }}>
-                                        <a href="1">«</a>
-                                    </li>
-
-                                    {% for pageNumber in 1..maxPages %}
-                                        <li {{ currentPage == pageNumber ? 'class="active"' }}>
-                                            <a href="{{ pageNumber }}">{{ pageNumber }}</a>
-                                        </li>
-                                    {% endfor %}
-
-                                    <li {{ currentPage == maxPages ? 'class="disabled"' }}>
-                                        <a href="{{ maxPages }}">»</a>
-                                    </li>
-                                </ul>
-                            {% endif %}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {% include 'admin/category/table.html.twig' %}
     </div>
 {% endblock %}

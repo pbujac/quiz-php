@@ -10,15 +10,24 @@ class CategoryValidator extends ConstraintValidator
 {
     private $em;
 
+    /**
+     * @param EntityManagerInterface $em
+     */
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }
 
+    /**
+     * @param string $value
+     * @param Constraint $constraint
+     */
     public function validate($value, Constraint $constraint)
     {
         $repository = $this->em->getRepository('AppBundle:Category');
-        $category = $repository->findOneBy(array('title' => $value));
+        $category = $repository->findOneBy([
+            'title' => $value
+        ]);
 
         if ($category) {
             $this->context->buildViolation($constraint->message)
@@ -26,6 +35,4 @@ class CategoryValidator extends ConstraintValidator
                 ->addViolation();
         }
     }
-
-
 }

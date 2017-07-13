@@ -14,12 +14,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class CategoryController extends Controller
 {
     /**
-     * @param int $page
+     * @param int $page = 1
      * @return RedirectResponse|Response
      *
      * @Route("/category/list/{page}", name="admin.category.list")
      */
-    public function listAction(int $page)
+    public function listAction(int $page = 1)
     {
         $categories = $this->getDoctrine()
             ->getRepository(Category::class)
