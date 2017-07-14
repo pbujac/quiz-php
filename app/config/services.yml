@@ -8,7 +8,7 @@ services:
         public: false
 
     AdminBundle\Validator\Constraints\UniqueUserValidator:
-        arguments:[ autowire: true ]
+        autowire: true
 
     AdminBundle\Validator\Constraints\UniqueCategoryValidator:
-        arguments:[ autowire: true ]
+        autowire: true
