@@ -23,6 +23,10 @@ class QuizController extends Controller
      */
     public function quizListAction(Request $request, int $page = 1)
     {
+        $filter = $request->get('filter');
+
+        dump ($filter);
+
         $quizzes = $this->getDoctrine()
             ->getRepository(Quiz::class)
             ->getAllQuizzesByPage($page);
@@ -37,22 +41,27 @@ class QuizController extends Controller
     }
 
     /**
-     * @Route("/quiz/filter", name="admin.quiz.filter")
+     * @Route("/quiz/list{page}", name="admin.quiz.filter")
      * @Method("GET")
      */
-    public function quizFilterAction(Request $request)
+    /*public function quizFilterAction(Request $request ,int $page=1)
     {
         $filter = $request->query->get('filter');
-        $qb = $this->getDoctrine()
+        $quizzes = $this->getDoctrine()
             ->getRepository(Quiz::class)
-            ->findAllQueryBuilder($filter);
-        $paginatedCollection = $this->get('         ')
-            ->createCollection($qb, $request, '      ');
-        $response = $this->quizListAction($paginatedCollection, 1);
-        return $response;
+            ->findQuizbyFilter($filter);
+
+        $maxPages =1 ;
 
 
-    }
+        return $this->render('admin/quiz/list.html.twig', [
+            'quizzes' => $quizzes->getQuery()->getResult(),
+            'maxPages' => $maxPages,
+            'currentPage' => $page,
+        ]);
+
+
+    }*/
 
 
 }

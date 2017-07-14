@@ -44,7 +44,7 @@
                     {% if user.active %} Active {% else %} Inactive {% endif %}
                 </td>
                 <td width="200">
-                    <a href="{{ path('admin.user.enable',{ 'user':user.id  } ) }}">
+                    <a href="{{ path('admin.user.enable', {'user': user.id }) }}">
                         Change state
                     </a>
                 </td>
