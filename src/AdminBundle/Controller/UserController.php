@@ -37,13 +37,13 @@ class UserController extends Controller
     /**
      * @param User $user
      *
-     * @Route("/user/enable/{user}",name="admin.user.enable")
+     * @Route("/user/{user}/enable",name="admin.user.enable")
      *
      *
      */
     public function enableAction(User $user)
     {
-        $user->isActive() ? $user->setActive(0) : $user->setActive(1);
+        $user->setActive(!$user->isActive());
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
