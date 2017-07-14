@@ -39,29 +39,4 @@ class QuizController extends Controller
             'currentPage' => $page,
         ]);
     }
-
-    /**
-     * @Route("/quiz/list{page}", name="admin.quiz.filter")
-     * @Method("GET")
-     */
-    /*public function quizFilterAction(Request $request ,int $page=1)
-    {
-        $filter = $request->query->get('filter');
-        $quizzes = $this->getDoctrine()
-            ->getRepository(Quiz::class)
-            ->findQuizbyFilter($filter);
-
-        $maxPages =1 ;
-
-
-        return $this->render('admin/quiz/list.html.twig', [
-            'quizzes' => $quizzes->getQuery()->getResult(),
-            'maxPages' => $maxPages,
-            'currentPage' => $page,
-        ]);
-
-
-    }*/
-
-
 }
