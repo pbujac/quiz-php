@@ -23,4 +23,19 @@ class QuizRepository extends EntityRepository
 
         return $paginator->paginate($query, $page);
     }
+
+    /**
+     * @param string $filter
+     */
+    public function findAllQueryBuilder($filter = '')
+    {
+
+        $qb = $this->createQueryBuilder('programmer');
+        if ($filter) {
+            $qb->andWhere('quiz.title LIKE :filter OR quiz.category LIKE :filter')
+                ->setParameter('filter', '%'.$filter.'%');
+        }
+        return $qb;
+
+    }
 }
