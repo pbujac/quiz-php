@@ -20,6 +20,7 @@
             </div>
 
             <div class="panel-body">
+                {{ form_start(form) }}
 
                 {{ form_row(form.title) }}
                 {{ form_row(form.category) }}
@@ -28,6 +29,7 @@
                 {% include 'admin/quiz/question-table.html.twig' %}
 
                 <input type="submit" value="Edit" class="btn btn-success pull-right submit"/>
+                {{ form_end(form, {'render_rest': false}) }}
             </div>
         </div>
     </div>

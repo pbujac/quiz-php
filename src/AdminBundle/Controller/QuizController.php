@@ -41,7 +41,7 @@ class QuizController extends Controller
      *
      * @return RedirectResponse|Response
      *
-     * @Route("/quiz/edit/{quiz}", name="admin.quiz.edit")
+     * @Route("/quiz/{quiz}/edit", name="admin.quiz.edit")
      */
     public function editAction(Quiz $quiz, Request $request)
     {
@@ -51,16 +51,16 @@ class QuizController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-//            $em = $this->getDoctrine()->getManager();
-//            $em->persist($quiz);
-//            $em->flush();
-//
-//            $this->addFlash(
-//                'notice',
-//                'Quiz has been successfully modified!'
-//            );
-//
-//            return $this->redirectToRoute('admin.quiz.edit');
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($quiz);
+            $em->flush();
+
+            $this->addFlash(
+                'notice',
+                'Quiz has been successfully modified!'
+            );
+
+            return $this->redirectToRoute('admin.quiz.edit');
         }
 
         return $this->render('admin/quiz/edit.html.twig', [

@@ -22,7 +22,7 @@ class QuestionType extends AbstractType
                 'entry_type' => AnswerType::class,
                 'prototype' => true,
                 'allow_add' => true,
-                'by_reference' => true,
+                'allow_delete' => true,
                 'attr' => [
                     'class' => 'quiz-question'
                 ]

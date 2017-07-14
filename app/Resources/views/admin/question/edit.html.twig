@@ -27,13 +27,42 @@
         <div class="panel-body">
 
             {{ form_start(form) }}
-            {{ form_widget(form) }}
-            <button type="button" class="btn btn-sm btn-primary add-answer-button">
-                <span class="glyphicon glyphicon-plus"></span> Add Answer
-            </button>
-            <input type="submit" value="Create" class="btn btn-success pull-right submit"/>
 
-            {{ form_end(form) }}
+            {{ form_row(form._token) }}
+            {{ form_row(form.text) }}
+
+            <p class="small-title">Answers:</p>
+            <ul id="answer-fields-list"
+                data-prototype="{{ form_widget(form.answers.vars.prototype)|e }}">
+
+                {% for answer in form.answers %}
+                    <li>
+                        {{ form_row(answer.text) }}
+
+                        {{ form_widget(answer.correct) }}
+                        <button type="button" class="btn btn-sm btn-danger remove-btn remove-answer">
+                            <span class="glyphicon glyphicon-plus"></span> Delete Answer
+                        </button>
+                    </li>
+                {% endfor %}
+
+            </ul>
+            <div class="row">
+                <div class="col-md-6">
+                    <button id="add-answer-form" type="button" class="btn btn-sm btn-default add-answer-btn">
+                        <span class="glyphicon glyphicon-plus"></span> Add Answer
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-sm btn-success add-answer-btn">
+                        <span class="glyphicon glyphicon-ok"></span> Edit question
+                    </button>
+                </div>
+
+
+            </div>
+
+            {{ form_end(form, {'render_rest': false}) }}
         </div>
     </div>
 {% endblock %}

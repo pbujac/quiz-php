@@ -3,4 +3,4 @@ services:
         autoconfigure: true
 
     AdminBundle\Validator\CategoryValidator:
-        arguments: ["@doctrine.orm.entity_manager"]
+         autowire: true

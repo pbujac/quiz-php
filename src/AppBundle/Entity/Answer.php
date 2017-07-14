@@ -23,7 +23,7 @@ class Answer
     /**
      * @var Question
      *
-     * @ORM\ManyToOne(targetEntity="Question", inversedBy="answers",cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Question", inversedBy="answers")
      * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
      */
     private $question;
@@ -76,6 +76,7 @@ class Answer
     public function setQuestion(Question $question)
     {
         $this->question = $question;
+        $question->addAnswer($this);
     }
 
     /**

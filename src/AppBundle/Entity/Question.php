@@ -80,9 +80,9 @@ class Question
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getText(): string
+    public function getText(): ?string
     {
         return $this->text;
     }
@@ -102,7 +102,6 @@ class Question
      */
     public function addAnswer(Answer $answer)
     {
-        $answer->setQuestion($this);
         if (!$this->answers->contains($answer)) {
             $this->answers->add($answer);
         }

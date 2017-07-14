@@ -18,27 +18,34 @@ $(document).ready(function () {
 
 
     $(function () {
-        bindAddAnswerButton();
+
+        var $collectionHolder = $('#answer-fields-list');
+
+        bindAddAnswerButton($collectionHolder);
+        removeAnswerButton();
+
+
     });
 
-    function bindAddAnswerButton() {
-        $('.add-answer-button').off('click').on('click', function () {
-
-            var $collectionHolder = $('.quiz-question');
+    function bindAddAnswerButton($collectionHolder) {
+        $('#add-answer-form').off('click').on('click', function () {
 
             $collectionHolder.data('index', $collectionHolder.find(':input').length);
 
             var prototype = $collectionHolder.data('prototype');
-
             var index = $collectionHolder.data('index') ? $collectionHolder.data('index') : 1;
 
-            console.log(index);
             var newForm = prototype.replace(/__name__/g, index);
-            //
+
             $collectionHolder.append(newForm);
-            //
             $collectionHolder.data('index', index + 1);
         });
     }
 
+    function removeAnswerButton() {
+
+        $('.remove-answer').on('click', function () {
+            $(this).parent().remove();
+        });
+    }
 });
