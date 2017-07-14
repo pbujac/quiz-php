@@ -46,10 +46,10 @@ class UserController extends Controller
             return $this->redirectToRoute('admin.user.create');
         }
 
-        return $this->render(
-            'admin/user/create.html.twig',
-            ['form' => $form->createView()
-            ]);
+        return $this->render('admin/user/create.html.twig', [
+            'form' => $form->createView()
+        ]);
+
     }
 
 }

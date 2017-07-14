@@ -3,7 +3,7 @@
 namespace AdminBundle\Form;
 
 use AdminBundle\Validator\CategoryValidator;
-use AdminBundle\Validator\Constraints\CategoryConstraint;
+use AdminBundle\Validator\Constraints\UniqueCategory;
 use AppBundle\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
@@ -25,7 +25,7 @@ class CategoryType extends AbstractType
                     'required' => true,
                     'constraints' => [
                         new NotBlank(),
-                        new CategoryConstraint(),
+                        new UniqueCategory(),
                     ]
                 ]
             );
