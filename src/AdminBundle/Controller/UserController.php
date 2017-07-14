@@ -4,13 +4,20 @@ namespace AdminBundle\Controller;
 
 use AdminBundle\Form\UserType;
 use AppBundle\Entity\User;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
 
 class UserController extends Controller
 {
     /**
+     * @param Request $request
+     *
+     * @return RedirectResponse|Response
+     *
      * @Route("/user/create", name="admin.user.create")
      */
     public function createAction(Request $request)
@@ -30,12 +37,20 @@ class UserController extends Controller
             $em->persist($user);
             $em->flush();
 
+            $this->addFlash(
+                'notice',
+                $user->getUsername() . ' user was added!'
+            );
+
+
             return $this->redirectToRoute('admin.user.create');
         }
 
         return $this->render(
-            'userCreate/create.html.twig',
-            array('form' => $form->createView())
-        );
+            'admin/user/create.html.twig',
+            ['form' => $form->createView()
+            ]);
     }
+
 }
+
