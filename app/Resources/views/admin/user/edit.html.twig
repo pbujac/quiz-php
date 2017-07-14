@@ -1,0 +1,41 @@
+{% extends 'admin/base.html.twig' %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block content %}
+
+    <div class="center-panel col-md-6 col-md-offset-2">
+
+        {% if form_errors(form) %}
+            <div class="alert alert-danger" role="alert">
+                {{ form_errors(form) }}
+            </div>
+        {% endif %}
+
+        {% for message in app.flashes('notice') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+        {% endfor %}
+
+        <div class="panel-heading">
+            <h1 class="panel-title">Edit user</h1>
+        </div>
+
+        <div class="panel-body">
+
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+
+            <input type="submit" value="Edit" class="btn btn-success pull-right submit"/>
+
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+
+
