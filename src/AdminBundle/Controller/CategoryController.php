@@ -74,7 +74,7 @@ class CategoryController extends Controller
      *
      * @return RedirectResponse|Response
      *
-     * @Route("/category/edit/{category}", name="admin.category.edit")
+     * @Route("/category/{category}/edit", name="admin.category.edit")
      */
     public function editAction(Category $category, Request $request)
     {
@@ -106,7 +106,7 @@ class CategoryController extends Controller
      *
      * @return RedirectResponse|Response
      *
-     * @Route("/category/delete/{category}", name="admin.category.delete")
+     * @Route("/category/{category}/delete", name="admin.category.delete")
      */
     public function deleteAction(Category $category)
     {
