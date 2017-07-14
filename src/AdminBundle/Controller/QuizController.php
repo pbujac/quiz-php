@@ -2,7 +2,9 @@
 
 namespace AdminBundle\Controller;
 
+use AdminBundle\Form\AnswerType;
 use AdminBundle\Form\QuizType;
+use AppBundle\Entity\Answer;
 use AppBundle\Entity\Question;
 use AppBundle\Entity\Quiz;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -17,13 +19,14 @@ class QuizController extends Controller
      * @param Request $request
      * @return RedirectResponse|Response
      *
-     * @Route("/quiz.create", name="quiz")
+     * @Route("/quiz/create", name="quiz.create")
      */
     public function quizAction(Request $request)
     {
         $quiz = new Quiz();
         $question = new Question();
-        $quiz->getQuestions()->add($question);
+        $question->addAnswer(new Answer());
+        $quiz->addQuestion($question);
 
         $form = $this->createForm(QuizType::class,$quiz);
         $form->handleRequest($request);
