@@ -2,7 +2,7 @@
 
 {% form_theme form 'bootstrap_3_layout.html.twig' %}
 
-{% block title %}Create Category{% endblock %}
+{% block title %}Edit quiz{% endblock %}
 
 {% block content %}
 
@@ -15,17 +15,20 @@
         {% endif %}
 
         <div class="panel-heading">
-            <h1 class="panel-title">Edit category</h1>
+            <h1 class="panel-title">Edit quiz</h1>
         </div>
 
         <div class="panel-body">
 
-            {{ form_start(form) }}
-            {{ form_widget(form) }}
+            {{ form_row(form.title) }}
+            {{ form_row(form.category) }}
+            {{ form_row(form.description) }}
+
+            {% include 'admin/quiz/table.html.twig' %}
 
             <input type="submit" value="Edit" class="btn btn-success pull-right submit"/>
 
-            {{ form_end(form) }}
+
         </div>
     </div>
 {% endblock %}

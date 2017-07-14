@@ -2,16 +2,13 @@
 
 namespace AdminBundle\Form;
 
-use AppBundle\Entity\Category;
-use AppBundle\Entity\Quiz;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use AppBundle\Entity\Question;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
-class QuizType extends AbstractType
+class QuestionType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -20,14 +17,9 @@ class QuizType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title')
-            ->add('category', EntityType::class, [
-                'class' => Category::class,
-                'choice_label' => 'title'
-            ])
-            ->add('description')
-            ->add('questions', CollectionType::class, [
-                'entry_type' => QuestionType::class,
+            ->add('text')
+            ->add('answers', CollectionType::class, [
+                'entry_type' => AnswerType::class,
                 'allow_add' => true,
             ]);
     }
@@ -38,7 +30,7 @@ class QuizType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Quiz::class,
+            'data_class' => Question::class,
         ]);
     }
 }
