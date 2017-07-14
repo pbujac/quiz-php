@@ -20,7 +20,12 @@ class QuestionType extends AbstractType
             ->add('text')
             ->add('answers', CollectionType::class, [
                 'entry_type' => AnswerType::class,
+                'prototype' => true,
                 'allow_add' => true,
+                'by_reference' => true,
+                'attr' => [
+                    'class' => 'quiz-question'
+                ]
             ]);
     }
 

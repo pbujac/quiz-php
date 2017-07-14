@@ -38,7 +38,7 @@ class Question
     /**
      * @var ArrayCollection|Answer[]
      *
-     * @ORM\OneToMany(targetEntity="Answer", mappedBy="question")
+     * @ORM\OneToMany(targetEntity="Answer", mappedBy="question", cascade={"persist"})
      */
     private $answers;
 
@@ -102,9 +102,11 @@ class Question
      */
     public function addAnswer(Answer $answer)
     {
+        $answer->setQuestion($this);
         if (!$this->answers->contains($answer)) {
             $this->answers->add($answer);
         }
+
         return $this;
     }
 

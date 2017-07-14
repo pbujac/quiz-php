@@ -16,4 +16,29 @@ $(document).ready(function () {
         $(this).data('form').submit();
     });
 
+
+    $(function () {
+        bindAddAnswerButton();
+    });
+
+    function bindAddAnswerButton() {
+        $('.add-answer-button').off('click').on('click', function () {
+
+            var $collectionHolder = $('.quiz-question');
+
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+            var prototype = $collectionHolder.data('prototype');
+
+            var index = $collectionHolder.data('index') ? $collectionHolder.data('index') : 1;
+
+            console.log(index);
+            var newForm = prototype.replace(/__name__/g, index);
+            //
+            $collectionHolder.append(newForm);
+            //
+            $collectionHolder.data('index', index + 1);
+        });
+    }
+
 });

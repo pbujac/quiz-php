@@ -1,0 +1,39 @@
+{% extends 'admin/base.html.twig' %}
+
+{% form_theme form _self 'bootstrap_3_layout.html.twig' %}
+
+{% block _quiz_questions_entry_answers_widget %}
+    {{ dump(form) }}
+    <h1 class="panel-title">Edit question</h1>
+{% endblock %}
+
+
+{% block title %}Edit question{% endblock %}
+
+{% block content %}
+
+    <div class="center-panel col-md-6 col-md-offset-2">
+
+        {% if form_errors(form) %}
+            <div class="alert alert-danger" role="alert">
+                {{ form_errors(form) }}
+            </div>
+        {% endif %}
+
+        <div class="panel-heading">
+            <h1 class="panel-title">Edit question</h1>
+        </div>
+
+        <div class="panel-body">
+
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button type="button" class="btn btn-sm btn-primary add-answer-button">
+                <span class="glyphicon glyphicon-plus"></span> Add Answer
+            </button>
+            <input type="submit" value="Create" class="btn btn-success pull-right submit"/>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

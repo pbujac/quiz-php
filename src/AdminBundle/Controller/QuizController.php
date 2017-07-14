@@ -3,6 +3,7 @@
 namespace AdminBundle\Controller;
 
 use AdminBundle\Form\QuizType;
+use AdminBundle\Manager\PaginatorManager;
 use AppBundle\Entity\Quiz;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -12,6 +13,28 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class QuizController extends Controller
 {
+    /**
+     * @param int $page = 1
+     *
+     * @return RedirectResponse|Response
+     *
+     * @Route("/quiz/list/{page}",name="admin.quiz.list")
+     */
+    public function userListAction(int $page = 1)
+    {
+        $quizzes = $this->getDoctrine()
+            ->getRepository(Quiz::class)
+            ->getAllQuizzesByPage($page);
+
+        $maxPages = ceil($quizzes->count() / PaginatorManager::PAGE_LIMIT);
+
+        return $this->render('admin/quiz/list.html.twig', [
+            'quizzes' => $quizzes->getQuery()->getResult(),
+            'maxPages' => $maxPages,
+            'currentPage' => $page,
+        ]);
+    }
+
     /**
      * @param Quiz $quiz
      * @param Request $request
@@ -41,7 +64,7 @@ class QuizController extends Controller
         }
 
         return $this->render('admin/quiz/edit.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 }

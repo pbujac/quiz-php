@@ -23,7 +23,7 @@ class Answer
     /**
      * @var Question
      *
-     * @ORM\ManyToOne(targetEntity="Question", inversedBy="answers")
+     * @ORM\ManyToOne(targetEntity="Question", inversedBy="answers",cascade={"persist"})
      * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
      */
     private $question;
@@ -79,9 +79,9 @@ class Answer
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getText(): string
+    public function getText(): ?string
     {
         return $this->text;
     }
@@ -95,9 +95,9 @@ class Answer
     }
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function isCorrect(): bool
+    public function isCorrect(): ?bool
     {
         return $this->correct;
     }

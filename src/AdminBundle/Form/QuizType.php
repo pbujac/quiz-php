@@ -28,6 +28,8 @@ class QuizType extends AbstractType
             ->add('description')
             ->add('questions', CollectionType::class, [
                 'entry_type' => QuestionType::class,
+                'by_reference' => true,
+                'prototype' => true,
                 'allow_add' => true,
             ]);
     }

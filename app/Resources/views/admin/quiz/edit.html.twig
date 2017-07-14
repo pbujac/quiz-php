@@ -5,30 +5,30 @@
 {% block title %}Edit quiz{% endblock %}
 
 {% block content %}
+    <div class="col-md-10">
 
-    <div class="center-panel col-md-6 col-md-offset-2">
+        <div class="center-panel">
 
-        {% if form_errors(form) %}
-            <div class="alert alert-danger" role="alert">
-                {{ form_errors(form) }}
+            {% if form_errors(form) %}
+                <div class="alert alert-danger" role="alert">
+                    {{ form_errors(form) }}
+                </div>
+            {% endif %}
+
+            <div class="panel-heading">
+                <h1 class="panel-title">Edit quiz</h1>
             </div>
-        {% endif %}
 
-        <div class="panel-heading">
-            <h1 class="panel-title">Edit quiz</h1>
-        </div>
+            <div class="panel-body">
 
-        <div class="panel-body">
+                {{ form_row(form.title) }}
+                {{ form_row(form.category) }}
+                {{ form_row(form.description) }}
 
-            {{ form_row(form.title) }}
-            {{ form_row(form.category) }}
-            {{ form_row(form.description) }}
+                {% include 'admin/quiz/question-table.html.twig' %}
 
-            {% include 'admin/quiz/table.html.twig' %}
-
-            <input type="submit" value="Edit" class="btn btn-success pull-right submit"/>
-
-
+                <input type="submit" value="Edit" class="btn btn-success pull-right submit"/>
+            </div>
         </div>
     </div>
 {% endblock %}
