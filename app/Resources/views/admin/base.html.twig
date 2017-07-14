@@ -30,7 +30,7 @@
                     Dashboard
                 </a>
             </li>
-            <li><a href="#">
+            <li><a href="{{ path('admin.user.list') }}">
                     <span class="glyphicon glyphicon-list"></span>
                     Users
                 </a>
@@ -39,6 +39,12 @@
                 <a href="{{ path('admin.category.list') }}">
                     <span class="glyphicon glyphicon-list-alt"></span>
                     Categories
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('admin.quiz.list') }}">
+                    <span class="glyphicon glyphicon-list-alt"></span>
+                    Quizzes
                 </a>
             </li>
         </ul>
