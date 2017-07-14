@@ -24,5 +24,4 @@ class AnswerType extends AbstractType
             'data_class' => Answer::class,
         ));
     }
-
 }

@@ -2,6 +2,11 @@
 
 {% form_theme form _self 'bootstrap_3_layout.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/css/quiz-create.css') }}">
+{% endblock %}
+
 {% block _quiz_questions_widget %}
     {{ form_widget(form) }}
 
@@ -12,7 +17,6 @@
 
 {% block _quiz_questions_entry_answers_widget %}
     {{ form_widget(form) }}
-    {#{{ dump(form) }}#}
 
     <button type="button" class="btn btn-sm btn-primary add-answer-button">
         <span class="glyphicon glyphicon-plus"></span> Add Answer
@@ -41,11 +45,9 @@
             {{ form_row(form.title) }}
             {{ form_row(form.category) }}
             {{ form_row(form.description) }}
-            {{ form_row(form.questions) }}
-
-            <button type="submit" class="btn btn-success btn-sm">Create Quiz</button>
-
+            {#{{ form_end(form, {'render_rest': false}) }}#}
             {{ form_end(form) }}
+            <button type="submit" class="btn btn-success btn-sm">Create Quiz</button>
         </div>
     </div>
 {% endblock %}

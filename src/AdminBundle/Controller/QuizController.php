@@ -2,7 +2,6 @@
 
 namespace AdminBundle\Controller;
 
-use AdminBundle\Form\AnswerType;
 use AdminBundle\Form\QuizType;
 use AppBundle\Entity\Answer;
 use AppBundle\Entity\Question;
@@ -25,6 +24,7 @@ class QuizController extends Controller
     {
         $quiz = new Quiz();
         $question = new Question();
+        $answer = new Answer();
         $question->addAnswer(new Answer());
         $quiz->addQuestion($question);
 
@@ -37,10 +37,13 @@ class QuizController extends Controller
             $quiz->setCreatedAt(new \DateTime());
             $quiz->setAuthor($this->get('security.token_storage')->getToken()->getUser());
             $question->setQuiz($quiz);
+//            $answer->setQuestion($question);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($quiz);
             $em->persist($question);
+//            $em->persist($answer);
+
             $em->flush();
 
             return $this->redirectToRoute('admin.dashboard');

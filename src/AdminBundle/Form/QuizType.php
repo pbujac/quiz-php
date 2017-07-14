@@ -29,6 +29,9 @@ class QuizType extends AbstractType
                 'entry_type' => QuestionType::class,
                 'prototype' => true,
                 'allow_add' => true,
+                'attr' => [
+                    'class' => 'quiz-question'
+                ]
             ));
     }
 
