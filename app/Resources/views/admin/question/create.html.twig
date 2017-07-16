@@ -1,8 +1,12 @@
 {% extends 'admin/base.html.twig' %}
 
-{% form_theme form 'bootstrap_3_layout.html.twig' %}
+{% form_theme form _self 'bootstrap_3_layout.html.twig' %}
 
-{% block title %}Create Category{% endblock %}
+{% block _quiz_questions_entry_answers_widget %}
+{% endblock %}
+
+
+{% block title %}Create question{% endblock %}
 
 {% block content %}
 
@@ -15,17 +19,46 @@
         {% endif %}
 
         <div class="panel-heading">
-            <h1 class="panel-title">Add category</h1>
+            <h1 class="panel-title">Create question</h1>
         </div>
 
         <div class="panel-body">
 
             {{ form_start(form) }}
-            {{ form_widget(form) }}
 
-            <input type="submit" value="Create" class="btn btn-success pull-right submit"/>
+            {{ form_row(form._token) }}
+            {{ form_row(form.text) }}
 
-            {{ form_end(form) }}
+            <p class="small-title">Answers:</p>
+            <ul id="answer-fields-list"
+                data-prototype="{{ form_widget(form.answers.vars.prototype)|e }}">
+
+                {% for answer in form.answers %}
+                    <li class="answer-row">
+                        {{ form_row(answer.text) }}
+
+                        {{ form_row(answer.correct) }}
+                        {{ form_row(answer.delete) }}
+                    </li>
+                {% endfor %}
+
+            </ul>
+            <div class="row">
+                <div class="col-md-6">
+                    <button id="add-answer-form" type="button" class="btn btn-sm btn-default add-answer-btn">
+                        <span class="glyphicon glyphicon-plus"></span> Add Answer
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-sm btn-success add-answer-btn">
+                        <span class="glyphicon glyphicon-ok"></span> Create question
+                    </button>
+                </div>
+
+
+            </div>
+
+            {{ form_end(form, {'render_rest': false}) }}
         </div>
     </div>
 {% endblock %}

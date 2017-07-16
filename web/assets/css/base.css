@@ -28,3 +28,9 @@ input[type="text"], input[type="password"] {
 label {
     text-transform: uppercase;
 }
+ul{
+    /*list-style: none;*/
+    /*padding-left: 0;*/
+}
+
+

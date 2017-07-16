@@ -60,7 +60,9 @@ class QuizController extends Controller
                 'Quiz has been successfully modified!'
             );
 
-            return $this->redirectToRoute('admin.quiz.edit');
+            return $this->redirectToRoute('admin.quiz.edit', [
+                'quiz' => $quiz->getId()
+            ]);
         }
 
         return $this->render('admin/quiz/edit.html.twig', [

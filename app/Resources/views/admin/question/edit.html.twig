@@ -36,13 +36,11 @@
                 data-prototype="{{ form_widget(form.answers.vars.prototype)|e }}">
 
                 {% for answer in form.answers %}
-                    <li>
+                    <li class="answer-row">
                         {{ form_row(answer.text) }}
 
-                        {{ form_widget(answer.correct) }}
-                        <button type="button" class="btn btn-sm btn-danger remove-btn remove-answer">
-                            <span class="glyphicon glyphicon-plus"></span> Delete Answer
-                        </button>
+                        {{ form_row(answer.correct) }}
+                        {{ form_row(answer.delete) }}
                     </li>
                 {% endfor %}
 

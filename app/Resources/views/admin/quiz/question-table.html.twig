@@ -6,9 +6,9 @@
             </div>
             <div class="col-md-6 text-right">
                 <a class="btn btn-sm btn-primary btn-create"
-                        href="{{ path('admin.question.create') }}"
+                   href="{{ path('admin.question.create', {'quiz' : form.vars.value.id}) }}"
                 >
-                    Create New
+                    Create New Question
                 </a>
             </div>
         </div>
@@ -37,11 +37,23 @@
                     </a>
                 </td>
                 <td>
-                    <a href="#"
-                       class="btn btn-sm btn-success btn-danger">
-                        <i class="glyphicon glyphicon-pencil"></i>
-                        Delete
-                    </a>
+                    <form class="inline-form"
+                          action="{{ path('admin.question.delete', {'question' : question.id}) }}">
+                        <button class=" btn btn-sm btn-danger btn-edit"
+                                type="button"
+                                data-toggle="modal"
+                                data-target="#confirmDelete"
+                                data-title="Delete Question"
+                                data-message="Are you sure you want to delete this question ?">
+                            <i class="glyphicon glyphicon-trash"></i>
+                            Delete
+                        </button>
+                    </form>
+                    {#<a href="{{ path('admin.question.delete', {'question' : question.id}) }}"#}
+                    {#class="btn btn-sm btn-success btn-danger">#}
+                    {#<i class="glyphicon glyphicon-pencil"></i>#}
+                    {#Delete#}
+                    {#</a>#}
                 </td>
             </tr>
         {% endfor %}

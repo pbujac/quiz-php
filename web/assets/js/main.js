@@ -20,9 +20,8 @@ $(document).ready(function () {
     $(function () {
 
         var $collectionHolder = $('#answer-fields-list');
-
+        removeAnswerButton($collectionHolder);
         bindAddAnswerButton($collectionHolder);
-        removeAnswerButton();
 
 
     });
@@ -34,18 +33,16 @@ $(document).ready(function () {
 
             var prototype = $collectionHolder.data('prototype');
             var index = $collectionHolder.data('index') ? $collectionHolder.data('index') : 1;
-
             var newForm = prototype.replace(/__name__/g, index);
 
-            $collectionHolder.append(newForm);
+            $collectionHolder.append('<li class="answer-row">' + newForm + '</li>');
             $collectionHolder.data('index', index + 1);
         });
     }
 
-    function removeAnswerButton() {
-
-        $('.remove-answer').on('click', function () {
-            $(this).parent().remove();
+    function removeAnswerButton($collectionHolder) {
+        $collectionHolder.on('click', '.remove-answer', function () {
+            $(this).closest('li').remove();
         });
     }
 });

@@ -9,6 +9,12 @@
 
         <div class="center-panel">
 
+            {% for message in app.flashes('notice') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
             {% if form_errors(form) %}
                 <div class="alert alert-danger" role="alert">
                     {{ form_errors(form) }}
@@ -22,14 +28,19 @@
             <div class="panel-body">
                 {{ form_start(form) }}
 
+                {{ form_row(form._token) }}
+
                 {{ form_row(form.title) }}
                 {{ form_row(form.category) }}
                 {{ form_row(form.description) }}
 
                 {% include 'admin/quiz/question-table.html.twig' %}
 
-                <input type="submit" value="Edit" class="btn btn-success pull-right submit"/>
+                <input type="submit" value="Edit Quiz" class="btn btn-success pull-right submit"/>
                 {{ form_end(form, {'render_rest': false}) }}
+
+
+                {% include 'admin/category/confirm-modal.html.twig' %}
             </div>
         </div>
     </div>

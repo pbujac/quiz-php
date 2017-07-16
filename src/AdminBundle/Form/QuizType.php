@@ -25,13 +25,13 @@ class QuizType extends AbstractType
                 'class' => Category::class,
                 'choice_label' => 'title'
             ])
-            ->add('description')
-            ->add('questions', CollectionType::class, [
-                'entry_type' => QuestionType::class,
-                'by_reference' => true,
-                'prototype' => true,
-                'allow_add' => true,
-            ]);
+            ->add('description');
+//            ->add('questions', CollectionType::class, [
+//                'entry_type' => QuestionType::class,
+//                'by_reference' => false,
+//                'prototype' => true,
+//                'allow_add' => true,
+//            ]);
     }
 
     /**
