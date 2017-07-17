@@ -17,9 +17,9 @@ class UserController extends Controller
      *
      * @return RedirectResponse|Response
      *
-     * @Route("/user/{page}",name="admin.user.list")
+     * @Route("/user/list/{page}",name="admin.user.list")
      */
-    public function userListAction(Request $request, int $page = 1)
+    public function userListAction( int $page = 1)
     {
         $users = $this->getDoctrine()
             ->getRepository(User::class)
@@ -33,4 +33,24 @@ class UserController extends Controller
             'currentPage' => $page,
         ]);
     }
+
+    /**
+     * @param User $user
+     *
+     * @return RedirectResponse|Response
+     *
+     * @Route("/user/{user}/enable",name="admin.user.enable")
+     */
+    public function enableAction(User $user)
+    {
+        $user->setActive(!$user->isActive());
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+
+        return $this->redirectToRoute('admin.user.list');
+
+    }
+
 }
