@@ -17,7 +17,7 @@ class UserController extends Controller
      *
      * @return RedirectResponse|Response
      *
-     * @Route("/user/{page}",name="admin.user.list")
+     * @Route("/user/list/{page}",name="admin.user.list")
      */
     public function userListAction( int $page = 1)
     {
