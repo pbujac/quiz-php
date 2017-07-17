@@ -1,6 +1,5 @@
 services:
     _defaults:
-        autoconfigure: true
-
-    AdminBundle\Validator\CategoryValidator:
         autowire: true
+        autoconfigure: true
+        public: false
