@@ -51,10 +51,12 @@ class UserController extends Controller
         $em->flush();
 
         return $this->redirectToRoute('admin.user.list');
+
     }
 
     /**
      * @param Request $request
+     * @param UserPasswordEncoder $passwordEncoder
      *
      * @return RedirectResponse|Response
      *
