@@ -46,12 +46,23 @@
 
             </ul>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <button id="add-answer-form" type="button" class="btn btn-sm btn-default add-answer-btn">
                         <span class="glyphicon glyphicon-plus"></span> Add Answer
                     </button>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
+                    <a class="btn btn-sm btn-danger add-answer-btn"
+                            href="{{ path('admin.quiz.edit', {'quiz': form.vars.id }) }}"
+                    >
+                        Create New
+                    </a>
+                    <button type="button"  >
+                        <span class="glyphicon glyphicon-ok"></span> Cancel
+                    </button>
+                </div>
+
+                <div class="col-md-4">
                     <button type="submit" class="btn btn-sm btn-success add-answer-btn">
                         <span class="glyphicon glyphicon-ok"></span> Edit question
                     </button>
