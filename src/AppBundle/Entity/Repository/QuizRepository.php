@@ -25,7 +25,7 @@ class QuizRepository extends EntityRepository
 
         if ($filter) {
             $qb->where('q.title LIKE :filter')
-                ->orWhere('c.title  = :filter')
+                ->orWhere('c.title  LIKE :filter')
                 ->setParameter('filter', $filter);
         }
 
