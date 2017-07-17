@@ -1,20 +1,18 @@
 <?php
 
-namespace AdminBundle\Validator;
+namespace AdminBundle\Validator\Constraints;
 
-use AppBundle\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use AppBundle\Entity\User;
 
-class CategoryValidator extends ConstraintValidator
+class UniqueUserValidator extends ConstraintValidator
 {
-    /** @var EntityManagerInterface */
+    /** @param EntityManagerInterface $em */
     private $em;
 
-    /**
-     * @param EntityManagerInterface $em
-     */
+    /** @param EntityManagerInterface $em */
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
@@ -26,15 +24,17 @@ class CategoryValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        $repository = $this->em->getRepository(Category::class);
-        $category = $repository->findOneBy([
-            'title' => $value
+        $repository = $this->em->getRepository(User::class);
+        $user = $repository->findOneBy([
+            'username' => $value,
         ]);
 
-        if ($category) {
+        if ($user) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ string }}', $value)
                 ->addViolation();
         }
     }
 }
+
+

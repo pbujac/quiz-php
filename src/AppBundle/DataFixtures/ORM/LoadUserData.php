@@ -24,7 +24,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $faker = Factory::create();
         $encoder = $this->container->get('security.password_encoder');
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 40; $i++) {
             $user = new User();
             $user->setUsername($faker->userName);
             $user->setPassword($encoder->encodePassword($user, 'test'));
