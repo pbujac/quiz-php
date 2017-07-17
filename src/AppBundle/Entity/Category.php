@@ -30,7 +30,7 @@ class Category
     /**
      * @var ArrayCollection|Quiz[]
      *
-     * @ORM\OneToMany(targetEntity="Quiz", mappedBy="category")
+     * @ORM\OneToMany(targetEntity="Quiz", mappedBy="category", cascade={"persist", "remove"})
      */
     private $quizzes;
 

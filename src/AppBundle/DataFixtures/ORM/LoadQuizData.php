@@ -22,7 +22,7 @@ class LoadQuizData extends AbstractFixture implements OrderedFixtureInterface, F
         $categories = $manager->getRepository(Category::class)->findAll();
 
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $quiz = new Quiz();
             $quiz->setTitle($faker->title);
             $quiz->setAuthor($faker->randomElement($users));

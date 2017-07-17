@@ -37,18 +37,20 @@ class UserController extends Controller
     }
 
     /**
-     * @param User $user
+     * @param User $user_id
      *
      * @return RedirectResponse|Response
+     * @return  RedirectResponse|Response
      *
      * @Route("/user/{user}/enable",name="admin.user.enable")
+     * @Route("/user/{user_id}/enable",name="admin.user.enable")
      */
-    public function enableAction(User $user)
+    public function enableAction(User $user_id)
     {
-        $user->setActive(!$user->isActive());
+        $user_id->setActive(!$user_id->isActive());
 
         $em = $this->getDoctrine()->getManager();
-        $em->persist($user);
+        $em->persist($user_id);
         $em->flush();
 
         return $this->redirectToRoute('admin.user.list');

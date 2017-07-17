@@ -60,7 +60,7 @@ class Result
     /**
      * @var ArrayCollection|ResultAnswer[]
      *
-     * @ORM\OneToMany(targetEntity="ResultAnswer", mappedBy="result")
+     * @ORM\OneToMany(targetEntity="ResultAnswer", mappedBy="result",  cascade={"persist", "remove"})
      */
     private $resultAnswers;
 
