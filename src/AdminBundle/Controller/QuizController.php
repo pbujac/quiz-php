@@ -25,8 +25,6 @@ class QuizController extends Controller
     {
         $filter = $request->get('filter');
 
-       dump ($filter);
-
         $quizzes = $this->getDoctrine()
             ->getRepository(Quiz::class)
             ->getQuizByFilter($filter ,$page);

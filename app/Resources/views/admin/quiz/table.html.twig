@@ -62,19 +62,22 @@
                         <ul class="pagination pagination-sm">
 
                             <li {{ currentPage == 1 ? 'class="disabled"' }}>
-                                <a href="{{ path('admin.quiz.list') }}">«</a>
+                                {% set parameters = app.request.query.all %}
+                                <a href="{{ path('admin.quiz.list',parameters) }}">«</a>
                             </li>
 
                             {% for pageNumber in 1..maxPages %}
                                 <li {{ currentPage == pageNumber ? 'class="active"' }}>
-                                    <a href="{{ path('admin.quiz.list', {'page': pageNumber }) }}">
+                                    {% set parameters = {'page':  pageNumber }|merge(app.request.query.all) %}
+                                    <a href="{{ path('admin.quiz.list', parameters) }}">
                                         {{ pageNumber }}
                                     </a>
                                 </li>
                             {% endfor %}
 
                             <li {{ currentPage == maxPages ? 'class="disabled"' }}>
-                                <a href="{{ path('admin.quiz.list', {'page':  maxPages }) }}">»</a>
+                                {% set parameters = {'page':  maxPages }|merge(app.request.query.all) %}
+                                <a href="{{ path('admin.quiz.list', parameters ) }}">»</a>
                             </li>
                         </ul>
                     {% endif %}

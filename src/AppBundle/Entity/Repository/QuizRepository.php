@@ -18,21 +18,18 @@ class QuizRepository extends EntityRepository
     {
         $paginator = new PaginatorManager();
 
-        if($filter) {
-            $qb = $this->createQueryBuilder('q')
-                ->join('q.category', 'category')
-                ->where('q.title LIKE :filter')
+        $qb = $this->createQueryBuilder('q')
+            ->addSelect('c, a')
+            ->join('q.category', 'c')
+            ->join('q.author', 'a');
+
+        if ($filter) {
+            $qb->where('q.title LIKE :filter')
                 ->orWhere('q.category  = :filter')
-                ->setParameter('filter', $filter)
-                ->getQuery();
-        }
-        else
-        {
-            $qb = $this->createQueryBuilder('q')
-            ->getQuery();
+                ->setParameter('filter', $filter);
         }
 
-        return $paginator->paginate($qb, $page);
+        return $paginator->paginate($qb->getQuery(), $page);
     }
 
 
