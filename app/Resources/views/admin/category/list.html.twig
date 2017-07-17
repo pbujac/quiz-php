@@ -28,14 +28,14 @@
                             {{ category.title }}
                         </td>
                         <td>
-                            <a href="{{ path('admin.category.edit', {'category': category.id}) }}"
+                            <a href="{{ path('admin.category.edit', {'category_id': category.id}) }}"
                                class="btn btn-sm btn-success btn-edit">
                                 <i class="glyphicon glyphicon-pencil"></i>
                                 Edit
                             </a>
                             {% if not category.hasQuizzes %}
                                 <form class="inline-form"
-                                      action="{{ path('admin.category.delete' , {'category': category.id}) }}">
+                                      action="{{ path('admin.category.delete' , {'category_id': category.id}) }}">
                                     <button class=" btn btn-sm btn-danger btn-edit"
                                             type="button"
                                             data-toggle="modal"

@@ -5,6 +5,7 @@ namespace AdminBundle\Controller;
 use AdminBundle\Manager\PaginatorManager;
 use AppBundle\Entity\Category;
 use AdminBundle\Form\CategoryType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -74,7 +75,9 @@ class CategoryController extends Controller
      *
      * @return RedirectResponse|Response
      *
-     * @Route("/category/{category}/edit", name="admin.category.edit")
+     * @Route("/category/{category_id}/edit", name="admin.category.edit")
+     *
+     * @ParamConverter("category", options={"id" = "category_id"})
      */
     public function editAction(Category $category, Request $request)
     {
@@ -106,7 +109,9 @@ class CategoryController extends Controller
      *
      * @return RedirectResponse|Response
      *
-     * @Route("/category/{category}/delete", name="admin.category.delete")
+     * @Route("/category/{category_id}/delete", name="admin.category.delete")
+     *
+     * @ParamConverter("category", options={"id" = "category_id"})
      */
     public function deleteAction(Category $category)
     {
