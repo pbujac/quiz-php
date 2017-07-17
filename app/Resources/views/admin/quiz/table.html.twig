@@ -5,11 +5,10 @@
                 <h1 class="panel-title">Quizzes</h1>
             </div>
             <div class="col-md-6 text-right">
-                <input type="text" name="categoryTitle" value="">
-                <a class="btn btn-sm btn-primary btn-find"
-                        href="{{ path('admin.quiz.list',{'page': currentPage },{}) }}"
-
-                >
+                <input type="text" name="filter" id="filter" value="test">
+                  {% set parameters = app.request.query.all %}
+                <a href="{{ path('admin.quiz.list',parameters) }}"
+                   class="btn btn-sm btn-primary btn-find">
                     Find
                 </a>
                 <a class="btn btn-sm btn-primary btn-create"
