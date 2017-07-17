@@ -98,7 +98,7 @@ class UserController extends Controller
      *
      * @return RedirectResponse|Response
      *
-     * @Route("/user/{user_id}/edit/", name="admin.user.edit")
+     * @Route("/user/{user_id}/edit", name="admin.user.edit")
      */
     public function editAction(User $user_id,Request $request)
     {
