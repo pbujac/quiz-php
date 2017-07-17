@@ -42,7 +42,6 @@ class UserController extends Controller
      * @return RedirectResponse|Response
      * @return  RedirectResponse|Response
      *
-     * @Route("/user/{user}/enable",name="admin.user.enable")
      * @Route("/user/{user_id}/enable",name="admin.user.enable")
      */
     public function enableAction(User $user_id)
@@ -95,4 +94,46 @@ class UserController extends Controller
             'form' => $form->createView()
         ]);
     }
+
+    /**
+     * @param User $user_id
+     * @param Request $request
+     *
+     * @return RedirectResponse|Response
+     *
+     * @Route("/user/edit/{user_id}", name="admin.user.edit")
+     */
+    public function editAction(User $user_id,Request $request)
+    {
+        $form = $this->createForm(UserType::class,$user_id);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $form->getData();
+
+            $password = $this->get('security.password_encoder')->encodePassword(
+                $user,
+                $user->getPassword()
+            );
+            $user->setPassword($password);
+            $user->setCreatedAtValue();
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            $this->addFlash(
+                'notice',
+                $user->getUsername() . ' user was modified!'
+            );
+
+            return $this->redirectToRoute('admin.user.list');
+        }
+
+        return $this->render(
+            'admin/user/edit.html.twig',
+            ['form' => $form->createView()
+            ]);
+    }
 }
+
