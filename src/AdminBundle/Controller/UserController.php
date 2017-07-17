@@ -19,7 +19,7 @@ class UserController extends Controller
      *
      * @Route("/user/{page}",name="admin.user.list")
      */
-    public function userListAction(Request $request, int $page = 1)
+    public function userListAction( int $page = 1)
     {
         $users = $this->getDoctrine()
             ->getRepository(User::class)
