@@ -59,7 +59,8 @@ class UserType extends AbstractType
                     'choices' => [
                         User::ROLE_ADMIN => User::ROLE_ADMIN,
                         User::ROLE_MANAGER => User::ROLE_MANAGER,
-                        User::ROLE_USER => User::ROLE_USER,],
+                        User::ROLE_USER => User::ROLE_USER,
+                    ],
                     'multiple' => true,
                     'constraints' => [
                         new Count(['max' => 1]),

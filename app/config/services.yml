@@ -7,8 +7,15 @@ services:
         autoconfigure: true
         public: false
 
-    AdminBundle\Validator\Constraints\UniqueUserValidator:
-        autowire: true
+    AppBundle\:
+        resource: '../../src/AppBundle/*'
+        exclude: '../../src/AppBundle/{Entity,Repository}'
 
-    AdminBundle\Validator\Constraints\UniqueCategoryValidator:
-        autowire: true
+    AdminBundle\:
+        resource: '../../src/AdminBundle/*'
+        exclude: '../../src/AdminBundle/{Entity,Repository}'
+
+    AdminBundle\Controller\:
+        resource: '../../src/AdminBundle/Controller'
+        public: true
+        tags: ['controller.service_arguments']
