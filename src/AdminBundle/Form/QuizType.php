@@ -2,6 +2,7 @@
 
 namespace AdminBundle\Form;
 
+use AdminBundle\Validator\Constraints\UniqueQuiz;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Quiz;
 use Doctrine\ORM\EntityRepository;
@@ -12,13 +13,21 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Count;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class QuizType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', TextType::class)
+            ->add('title', TextType::class,[
+                'required' => true,
+                'constraints' => [
+                    new NotBlank(),
+                    new UniqueQuiz(),
+                ]
+            ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,
                 'query_builder' => function (EntityRepository $er) {
@@ -26,13 +35,21 @@ class QuizType extends AbstractType
                 },
                 'choice_label' => 'title',
             ])
-            ->add('description', TextareaType::class)
+            ->add('description', TextareaType::class,[
+                'required' => true,
+                'constraints' => [
+                new NotBlank(),
+                ]
+            ])
             ->add('questions', CollectionType::class, [
                 'entry_type' => QuestionType::class,
                 'prototype' => true,
                 'allow_add' => true,
                 'attr' => [
                     'class' => 'quiz-questions'
+                ],
+                'constraints' => [
+                    new Count(['min' => 1]),
                 ],
             ]);
     }
