@@ -1,0 +1,35 @@
+/*LOGIN PAGE*/
+.login-panel .input-group-addon {
+    border-radius: 0;
+}
+
+.login-panel .input-group {
+    margin-bottom: 20px;
+}
+
+.login-panel {
+    margin-top: 100px;
+}
+
+.login-panel .panel-heading, .center-panel {
+    border: 1px solid #c9c9c9;
+    border-radius: 0;
+    padding: 15px;
+}
+
+.login-panel .panel-heading .panel-title {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.login-panel .panel-body {
+    border: 1px solid #c9c9c9;
+    border-top: none;
+    padding: 40px 20px 0;
+    border-radius: 0;
+}
+
+.login-panel .footer {
+    border-top: 1px solid #e1e1e1;
+    padding: 20px 15px 15px;
+}
