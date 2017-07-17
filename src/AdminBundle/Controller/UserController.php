@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
+
 
 class UserController extends Controller
 {
@@ -57,13 +57,12 @@ class UserController extends Controller
 
     /**
      * @param Request $request
-     * @param UserPasswordEncoder $passwordEncoder
      *
      * @return RedirectResponse|Response
      *
      * @Route("/user/create", name="admin.user.create")
      */
-    public function createAction(Request $request, UserPasswordEncoder $passwordEncoder)
+    public function createAction(Request $request)
     {
         $form = $this->createForm(UserType::class, new User());
         $form->handleRequest($request);
@@ -71,7 +70,10 @@ class UserController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
 
-            $password = $passwordEncoder->encodePassword($user, $user->getPassword());
+            $password = $this->get('security.password_encoder')->encodePassword(
+                $user,
+                $user->getPassword()
+            );
             $user->setPassword($password);
             $user->setCreatedAtValue();
 
@@ -84,13 +86,11 @@ class UserController extends Controller
                 $user->getUsername() . ' user was added!'
             );
 
-
             return $this->redirectToRoute('admin.user.list');
         }
 
         return $this->render('admin/user/create.html.twig', [
             'form' => $form->createView()
         ]);
-
     }
 }

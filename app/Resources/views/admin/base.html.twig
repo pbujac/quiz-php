@@ -22,7 +22,6 @@
 {% endblock %}
 
 {% block content %}
-
     {% for message in app.flashes('notice') %}
         <div class="alert alert-success">
             {{ message }}
@@ -39,11 +38,13 @@
                     Dashboard
                 </a>
             </li>
+
             <li><a href="{{ path('admin.user.list') }}">
                     <span class="glyphicon glyphicon-list"></span>
                     Users
                 </a>
             </li>
+
             <li>
                 <a href="{{ path('admin.category.list') }}">
                     <span class="glyphicon glyphicon-list-alt"></span>
@@ -62,4 +63,3 @@
         </p>
     </footer>
 {% endblock %}
-
