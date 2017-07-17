@@ -20,7 +20,7 @@ class QuestionType extends AbstractType
                 'prototype' => true,
                 'allow_add' => true,
                 'attr' => [
-                    'class' => 'question-answer'
+                    'class' => 'question-answers'
                 ],
             ]);
     }

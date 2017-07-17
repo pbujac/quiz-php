@@ -2,6 +2,7 @@
 
 namespace AdminBundle\Form;
 
+use AppBundle\Entity\Category;
 use AppBundle\Entity\Quiz;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -19,7 +20,7 @@ class QuizType extends AbstractType
         $builder
             ->add('title', TextType::class)
             ->add('category', EntityType::class, [
-                'class' => 'AppBundle:Category',
+                'class' => Category::class,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('c');
                 },
@@ -31,7 +32,7 @@ class QuizType extends AbstractType
                 'prototype' => true,
                 'allow_add' => true,
                 'attr' => [
-                    'class' => 'quiz-question'
+                    'class' => 'quiz-questions'
                 ],
             ]);
     }
