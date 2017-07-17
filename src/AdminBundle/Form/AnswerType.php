@@ -14,14 +14,14 @@ class AnswerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('text',TextType::class)
-            ->add('correct',CheckboxType::class );
+            ->add('text', TextType::class)
+            ->add('correct', CheckboxType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => Answer::class,
-        ));
+        ]);
     }
 }

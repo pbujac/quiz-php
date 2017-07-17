@@ -14,21 +14,21 @@ class QuestionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('text',TextType::class)
-            ->add('answers', CollectionType::class, array(
+            ->add('text', TextType::class)
+            ->add('answers', CollectionType::class, [
                 'entry_type' => AnswerType::class,
                 'prototype' => true,
                 'allow_add' => true,
                 'attr' => [
                     'class' => 'question-answer'
-                ]
-            ));
+                ],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => Question::class,
-        ));
+        ]);
     }
 }

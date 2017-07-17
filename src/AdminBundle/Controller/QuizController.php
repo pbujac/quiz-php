@@ -35,14 +35,14 @@ class QuizController extends Controller
             $quiz = $form->getData();
 
             $quiz->setCreatedAt(new \DateTime());
-            $quiz->setAuthor($this->get('security.token_storage')->getToken()->getUser());
+            $quiz->setAuthor($this->getUser());
             $question->setQuiz($quiz);
-//            $answer->setQuestion($question);
+            $answer->setQuestion($question);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($quiz);
             $em->persist($question);
-//            $em->persist($answer);
+            $em->persist($answer);
 
             $em->flush();
 
@@ -50,7 +50,7 @@ class QuizController extends Controller
         }
 
         return $this->render(
-            "admin/quiz/quiz.html.twig",
+            "admin/quiz/create.html.twig",
             array('form' => $form->createView())
         );
     }

@@ -4,23 +4,28 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('assets/css/quiz-create.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/quiz/create.css') }}">
 {% endblock %}
 
 {% block _quiz_questions_widget %}
-    {{ form_widget(form) }}
 
     <button type="button" class="btn btn-sm btn-primary add-question-button">
         <span class="glyphicon glyphicon-plus"></span> Add Question
     </button>
+
+    {{ form_widget(form) }}
+    {#{{ form_widget(form(form.questions.vars.prototype.text)|e)}}#}
+
 {% endblock %}
 
 {% block _quiz_questions_entry_answers_widget %}
-    {{ form_widget(form) }}
 
     <button type="button" class="btn btn-sm btn-primary add-answer-button">
         <span class="glyphicon glyphicon-plus"></span> Add Answer
     </button>
+
+    {{ form_widget(form) }}
+
 {% endblock %}
 
 {% block title %}Create Quiz{% endblock %}
@@ -41,11 +46,10 @@
 
         <div class="panel-body">
             {{ form_start(form) }}
-
             {{ form_row(form.title) }}
             {{ form_row(form.category) }}
             {{ form_row(form.description) }}
-            {#{{ form_end(form, {'render_rest': false}) }}#}
+            {{ form_widget(form.questions) }}
             {{ form_end(form) }}
             <button type="submit" class="btn btn-success btn-sm">Create Quiz</button>
         </div>
