@@ -21,7 +21,7 @@ class QuizRepository extends EntityRepository
         if($filter) {
             $qb = $this->createQueryBuilder('q')
                 ->join('q.category', 'category')
-                ->where('q.title =:filter')
+                ->where('q.title LIKE :filter')
                 ->orWhere('q.category  = :filter')
                 ->setParameter('filter', $filter)
                 ->getQuery();
