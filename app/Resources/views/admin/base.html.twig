@@ -45,12 +45,21 @@
     </div>
 {% endblock %}
 
-{% block footer %}
-    <footer class="pull-left footer">
-        <hr class="divider">
-        <p class="col-md-12">
-            Copyright &COPY; 2017 Internship Team Pentalog
-        </p>
-    </footer>
+{% block content %}
+
+        {% for message in app.flashes('notice') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
 {% endblock %}
+
+    {% block footer %}
+        <footer class="pull-left footer">
+            <hr class="divider">
+            <p class="col-md-12">
+                Copyright &COPY; 2017 Internship Team Pentalog
+            </p>
+        </footer>
+    {% endblock %}
 

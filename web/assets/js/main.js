@@ -1,5 +1,8 @@
 $(document).ready(function () {
 
+    $message = "Are you sure you want to delete?";
+    $title = "Delete action";
+
     $('#confirmDelete').on('show.bs.modal', function (e) {
 
         $message = $(e.relatedTarget).attr('data-message');

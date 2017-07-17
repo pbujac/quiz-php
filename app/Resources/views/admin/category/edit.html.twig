@@ -6,26 +6,6 @@
 
 {% block content %}
 
-    <div class="center-panel col-md-6 col-md-offset-2">
+    {{ include('admin/category/form.html.twig', { 'title': 'Edit Category' }) }}
 
-        {% if form_errors(form) %}
-            <div class="alert alert-danger" role="alert">
-                {{ form_errors(form) }}
-            </div>
-        {% endif %}
-
-        <div class="panel-heading">
-            <h1 class="panel-title">Edit category</h1>
-        </div>
-
-        <div class="panel-body">
-
-            {{ form_start(form) }}
-            {{ form_widget(form) }}
-
-            <input type="submit" value="Edit" class="btn btn-success pull-right submit"/>
-
-            {{ form_end(form) }}
-        </div>
-    </div>
 {% endblock %}

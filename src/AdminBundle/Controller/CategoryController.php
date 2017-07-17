@@ -97,7 +97,7 @@ class CategoryController extends Controller
         }
 
         return $this->render('admin/category/edit.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 
