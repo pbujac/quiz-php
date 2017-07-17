@@ -26,7 +26,7 @@ class UniqueUserValidator extends ConstraintValidator
     {
         $repository = $this->em->getRepository(User::class);
         $user = $repository->findOneBy([
-            'username' => $value
+            'username' => $value,
         ]);
 
         if ($user) {

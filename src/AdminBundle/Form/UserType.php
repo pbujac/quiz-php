@@ -36,9 +36,7 @@ class UserType extends AbstractType
                     'required' => true,
                     'constraints' => [
                         new NotBlank(),
-                        new Length(['min' => 4])
-
-
+                        new Length(['min' => 4]),
                     ]
                 ]
             )
@@ -64,7 +62,7 @@ class UserType extends AbstractType
                         User::ROLE_USER => User::ROLE_USER,],
                     'multiple' => true,
                     'constraints' => [
-                        new Count(['max' => 1])
+                        new Count(['max' => 1]),
                     ],
                 ]
             );
@@ -79,5 +77,5 @@ class UserType extends AbstractType
             'data_class' => User::class,
         ]);
     }
-
 }
+

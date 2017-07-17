@@ -11,8 +11,5 @@ class UniqueUser extends Constraint
 {
     /** @param string $message */
     public $message = 'This Username already exist!';
-
 }
-
-
 

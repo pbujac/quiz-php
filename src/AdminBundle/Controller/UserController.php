@@ -4,15 +4,37 @@ namespace AdminBundle\Controller;
 
 use AdminBundle\Form\UserType;
 use AppBundle\Entity\User;
+use AdminBundle\Manager\PaginatorManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-
 
 class UserController extends Controller
 {
+    /**
+     * @param int $page = 1
+     *
+     * @return RedirectResponse|Response
+     *
+     * @Route("/user/list/{page}",name="admin.user.list")
+     */
+    public function userListAction(int $page = 1)
+    {
+        $users = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->getAllUsersByPage($page);
+
+        $maxPages = ceil($users->count() / PaginatorManager::PAGE_LIMIT);
+
+        return $this->render('admin/user/list.html.twig', [
+            'users' => $users->getQuery()->getResult(),
+            'maxPages' => $maxPages,
+            'currentPage' => $page,
+        ]);
+    }
+
     /**
      * @param Request $request
      *
@@ -43,7 +65,7 @@ class UserController extends Controller
             );
 
 
-            return $this->redirectToRoute('admin.user.create');
+            return $this->redirectToRoute('admin.user.list');
         }
 
         return $this->render('admin/user/create.html.twig', [
@@ -52,5 +74,5 @@ class UserController extends Controller
 
     }
 
-}
 
+}
