@@ -42,6 +42,11 @@
                 <td>
                     {% if user.active %} Active {% else %} Inactive {% endif %}
                 </td>
+                <td >
+                    <a href="{{ path('admin.user.enable', {'user': user.id }) }}">
+                        Change state
+                    </a>
+                </td>
             </tr>
         {% endfor %}
         </tbody>

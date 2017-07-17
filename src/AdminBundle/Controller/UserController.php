@@ -37,6 +37,25 @@ class UserController extends Controller
     }
 
     /**
+     * @param User $user
+     *
+     * @return RedirectResponse|Response
+     *
+     * @Route("/user/{user}/enable",name="admin.user.enable")
+     */
+    public function enableAction(User $user)
+    {
+        $user->setActive(!$user->isActive());
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+
+        return $this->redirectToRoute('admin.user.list');
+
+    }
+
+    /**
      * @param Request $request
      * @param UserPasswordEncoder $passwordEncoder
      *
