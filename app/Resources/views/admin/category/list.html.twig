@@ -8,30 +8,20 @@
 
         {{ parent() }}
 
-        <div class="panel panel-default panel-table">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h1 class="panel-title">Categories</h1>
-                    </div>
-                    <div class="col-md-6 text-right">
-                        <a href="{{ path('admin.category.create') }}"
-                           class="btn btn-sm btn-primary btn-create">
-                            Create New
-                        </a>
-                    </div>
-                </div>
-            </div>
+        {% embed ":admin/table:table.html.twig" %}
 
-            <table class="table text-center">
-                <thead>
-                <tr>
-                    <th class="text-center">Title</th>
-                    <th class="text-center">Actions</th>
-                </tr>
-                </thead>
+            {% block title_table %}Categories{% endblock %}
 
-                <tbody>
+            {% block create_new_path %}
+                {{ path('admin.category.create') }}
+            {% endblock %}
+
+            {% block head_table %}
+                <th class="text-center">Title</th>
+                <th class="text-center">Actions</th>
+            {% endblock %}
+
+            {% block body_table %}
                 {% for category in categories %}
                     <tr>
                         <td>
@@ -43,7 +33,7 @@
                                 <i class="glyphicon glyphicon-pencil"></i>
                                 Edit
                             </a>
-                            {% if category.quizzes is empty %}
+                            {% if not category.hasQuizzes %}
                                 <form class="inline-form"
                                       action="{{ path('admin.category.delete' , {'category': category.id}) }}">
                                     <button class=" btn btn-sm btn-danger btn-edit"
@@ -65,13 +55,15 @@
                         </td>
                     </tr>
                 {% endfor %}
-                </tbody>
+            {% endblock %}
 
-            </table>
+            {% block pagination %}
+                {{ include('admin/table/pagination.html.twig', { 'path': 'admin.category.list'  }) }}
+            {% endblock %}
 
-            {{ include('admin/table/pagination.html.twig', { 'path': 'admin.category.list' }) }}
-        </div>
+        {% endembed %}
 
-        {% include 'admin/modal/confirm-modal.html.twig' %}
+        {% include('admin/modal/confirm-modal.html.twig') %}
     </div>
 {% endblock %}
+

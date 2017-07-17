@@ -1,11 +1,8 @@
-{% extends 'admin/base.html.twig' %}
-
-{% form_theme form 'bootstrap_3_layout.html.twig' %}
+{% extends 'admin/category/form.html.twig' %}
 
 {% block title %}Edit Category{% endblock %}
 
-{% block content %}
-
-    {{ include('admin/category/form.html.twig', { 'title': 'Edit Category' }) }}
-
+{% block form_title %}
+    {{ block('title') }}
 {% endblock %}
+
