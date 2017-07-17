@@ -37,9 +37,9 @@ class UserController extends Controller
     /**
      * @param User $user
      *
+     * @return RedirectResponse|Response
+     *
      * @Route("/user/{user}/enable",name="admin.user.enable")
-     *
-     *
      */
     public function enableAction(User $user)
     {
