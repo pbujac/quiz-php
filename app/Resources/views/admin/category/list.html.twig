@@ -3,16 +3,66 @@
 {% block title %}Categories{% endblock %}
 
 {% block content %}
+
     <div class="col-md-10">
 
-        {% for message in app.flashes('notice') %}
-            <div class="alert alert-success">
-                {{ message }}
-            </div>
-        {% endfor %}
+        {{ parent() }}
 
-        {% include 'admin/category/table.html.twig' %}
+        {% embed ":admin/table:table.html.twig" %}
 
-        {% include 'admin/category/confirm-modal.html.twig' %}
+            {% block title_table %}Categories{% endblock %}
+
+            {% block create_new_path %}
+                {{ path('admin.category.create') }}
+            {% endblock %}
+
+            {% block head_table %}
+                <th class="text-center">Title</th>
+                <th class="text-center">Actions</th>
+            {% endblock %}
+
+            {% block body_table %}
+                {% for category in categories %}
+                    <tr>
+                        <td>
+                            {{ category.title }}
+                        </td>
+                        <td>
+                            <a href="{{ path('admin.category.edit', {'category_id': category.id}) }}"
+                               class="btn btn-sm btn-success btn-edit">
+                                <i class="glyphicon glyphicon-pencil"></i>
+                                Edit
+                            </a>
+                            {% if not category.hasQuizzes %}
+                                <form class="inline-form"
+                                      action="{{ path('admin.category.delete' , {'category_id': category.id}) }}">
+                                    <button class=" btn btn-sm btn-danger btn-edit"
+                                            type="button"
+                                            data-toggle="modal"
+                                            data-target="#confirmDelete"
+                                            data-title="Delete Category"
+                                            data-message="Are you sure you want to delete this category ?">
+                                        <i class="glyphicon glyphicon-trash"></i>
+                                        Delete
+                                    </button>
+                                </form>
+                            {% else %}
+                                <button class="disabled btn btn-sm btn-danger btn-edit">
+                                    <i class="glyphicon glyphicon-trash"></i>
+                                    Delete
+                                </button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+
+            {% block pagination %}
+                {{ include('admin/table/pagination.html.twig', { 'path': 'admin.category.list'  }) }}
+            {% endblock %}
+
+        {% endembed %}
+
+        {% include('admin/modal/confirm-modal.html.twig') %}
     </div>
 {% endblock %}

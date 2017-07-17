@@ -4,13 +4,17 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
+ * User
+ *
  * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\UserRepository")
+ * @ORM\HasLifecycleCallbacks()
+ *
  */
-class User implements AdvancedUserInterface
+class User implements UserInterface
 {
     const ROLE_ADMIN = "ROLE_ADMIN";
     const ROLE_MANAGER = "ROLE_MANAGER";
@@ -105,7 +109,7 @@ class User implements AdvancedUserInterface
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -113,7 +117,7 @@ class User implements AdvancedUserInterface
     /**
      * @return string
      */
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
         return $this->username;
     }
@@ -129,7 +133,7 @@ class User implements AdvancedUserInterface
     /**
      * @return string
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -145,7 +149,7 @@ class User implements AdvancedUserInterface
     /**
      * @return bool
      */
-    public function isActive(): bool
+    public function isActive(): ?bool
     {
         return $this->active;
     }
@@ -161,7 +165,7 @@ class User implements AdvancedUserInterface
     /**
      * @return string
      */
-    public function getFirstName(): string
+    public function getFirstName(): ?string
     {
         return $this->firstName;
     }
@@ -177,7 +181,7 @@ class User implements AdvancedUserInterface
     /**
      * @return string
      */
-    public function getLastName(): string
+    public function getLastName(): ?string
     {
         return $this->lastName;
     }
@@ -193,7 +197,7 @@ class User implements AdvancedUserInterface
     /**
      * @return \DateTime
      */
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): ?\DateTime
     {
         return $this->createdAt;
     }
@@ -204,6 +208,13 @@ class User implements AdvancedUserInterface
     public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
+    }
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAtValue()
+    {
+        $this->createdAt = new \DateTime();
     }
 
     /**
@@ -230,7 +241,7 @@ class User implements AdvancedUserInterface
     /**
      * @return string[]
      */
-    public function getRoles(): array
+    public function getRoles(): ?array
     {
         return $this->roles;
     }
@@ -340,9 +351,8 @@ class User implements AdvancedUserInterface
     /**
      * @return bool
      */
-    public function isEnabled(): bool
+    public function isEnabled(): ?bool
     {
         return $this->isActive();
     }
 }
-
