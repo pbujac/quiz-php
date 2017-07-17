@@ -6,6 +6,7 @@ use AdminBundle\Form\QuizType;
 use AppBundle\Entity\Answer;
 use AppBundle\Entity\Question;
 use AppBundle\Entity\Quiz;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +23,7 @@ class QuizController extends Controller
      */
     public function quizAction(Request $request)
     {
-        $form = $this->createForm(QuizType::class);
+        $form = $this->createForm(QuizType::class, new Quiz());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -30,6 +31,14 @@ class QuizController extends Controller
             $quiz->setAuthor($this->getUser());
 
             $em = $this->getDoctrine()->getManager();
+            foreach ($quiz->getQuestions() as $question) {
+                $question->setQuiz($quiz);
+                $em->persist($question);
+                foreach ($question->getAnswers() as $answer) {
+                    $answer->setQuestion($question);
+                    $em->persist($answer);
+                }
+            }
             $em->persist($quiz);
             $em->flush();
 

@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Table(name="quizzes")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\QuizRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Quiz
 {
@@ -58,7 +59,7 @@ class Quiz
     /**
      * @var ArrayCollection|Question[]
      *
-     * @ORM\OneToMany(targetEntity="Question", mappedBy="quiz")
+     * @ORM\OneToMany(targetEntity="Question", mappedBy="quiz" , cascade={"persist"})
      */
     private $questions;
 
@@ -125,11 +126,11 @@ class Quiz
     }
 
     /**
-     * @param \DateTime $createdAt
+     * @ORM\PrePersist
      */
-    public function setCreatedAt(\DateTime $createdAt)
+    public function setCreatedAt()
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = new \DateTime();
     }
 
     /**
