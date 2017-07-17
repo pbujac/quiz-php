@@ -39,7 +39,6 @@ class QuizController extends Controller
         ]);
     }
 
-
     /**
      * @param Quiz $quiz
      *
