@@ -2,62 +2,26 @@
 
 {% form_theme form _self 'bootstrap_3_layout.html.twig' %}
 
-{% macro answerCollectionItem(form) %}
-    {{ form_row(form.text) }}
-    {{ form_row(form.correct) }}
-    <button type="submit" class="btn btn-sm btn-danger remove-btn remove-answer">
-        <span class="glyphicon glyphicon-remove"></span> Delete answer
-    </button>
-{% endmacro %}
-
 {% block content %}
-    <div class="center-panel col-md-6 col-md-offset-2">
-
-        <div class="panel-heading">
-            <h1 class="panel-title">
-                {% block form_title %}{% endblock %}
-            </h1>
-        </div>
-
-        <div class="panel-body">
-
-            {{ form_start(form) }}
-
-            {{ form_row(form.text) }}
-
-            <p class="small-title">Answers:</p>
-
-            <ul id="answer-fields-list"
-                data-prototype="{{ _self.answerCollectionItem(form.answers.vars.prototype)|e }}">
-
-                {% for answer in form.answers %}
-                    <li class="answer-row">
-                        {{ _self.answerCollectionItem(answer) }}
-                    </li>
-                {% endfor %}
-
-            </ul>
-
-            <div class="row">
-                <div class="col-md-4">
-                    <button id="add-answer-form" type="button" class="btn btn-sm btn-default add-answer-btn">
-                        <span class="glyphicon glyphicon-plus"></span> Add Answer
-                    </button>
-                </div>
-                <div class="col-md-4">
-                    <a class="btn btn-sm btn-danger add-answer-btn"
-                       href="{{ path('admin.quiz.edit', {'quiz_id': form.vars.value.quiz.id }) }}">
-                        <span class="glyphicon glyphicon-ok"></span> Cancel
-                    </a>
-                </div>
-                <div class="col-md-4">
-                    <button type="submit" class="btn btn-sm btn-success add-answer-btn">
-                        <span class="glyphicon glyphicon-ok"></span> Create question
-                    </button>
-                </div>
+    <div class="col-md-10">
+        {{ parent() }}
+        <div class="center-panel">
+            <div class="panel-heading">
+                <h1 class="panel-title">
+                    {% block form_title %}{% endblock %}
+                </h1>
             </div>
 
-            {{ form_end(form) }}
+            <div class="panel-body">
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+
+                {% block edit_form %}{% endblock %}
+
+                <input type="submit" value="{{ block('form_title') }}" class="btn btn-success pull-right submit"/>
+
+                {{ form_end(form) }}
+            </div>
         </div>
     </div>
 {% endblock %}

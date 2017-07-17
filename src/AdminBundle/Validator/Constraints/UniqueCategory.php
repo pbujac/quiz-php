@@ -9,8 +9,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class UniqueCategory extends Constraint
 {
-    /** @param string $message */
+    /** @var string $message */
     public $message = 'Category already exist!';
-
 }
 

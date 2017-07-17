@@ -29,12 +29,6 @@ class AnswerType extends AbstractType
             ])
             ->add('correct', CheckboxType::class, [
                 'required' => false,
-            ])
-            ->add('delete', ButtonType::class, [
-                'label' => 'Delete Answer',
-                'attr' => [
-                    'class' => 'btn btn-sm btn-danger remove-btn remove-answer'
-                ]
             ]);
     }
 

@@ -1,43 +1,31 @@
-<div class="panel panel-default panel-table">
-    <div class="panel-heading">
-        <div class="row">
-            <div class="col-md-6">
-                <h1 class="panel-title">Questions</h1>
-            </div>
-            <div class="col-md-6 text-right">
-                <a class="btn btn-sm btn-primary btn-create"
-                   href="{{ path('admin.question.create', {'quiz' : form.vars.value.id}) }}"
-                >
-                    Create New Question
-                </a>
-            </div>
-        </div>
-    </div>
+{% embed ":admin/table:table.html.twig" %}
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Question</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
+    {% block title_table %}Questions{% endblock %}
 
-        <tbody>
+    {% block create_new_path %}
+        {{ path('admin.question.create', {'quiz_id' : form.vars.value.id}) }}
+    {% endblock %}
+
+    {% block head_table %}
+        <th class="text-center">Title</th>
+        <th class="text-center">Actions</th>
+    {% endblock %}
+
+    {% block body_table %}
         {% for question in form.vars.value.questions %}
             <tr>
                 <td>
                     {{ question.text }}
                 </td>
                 <td>
-                    <a href="{{ path('admin.question.edit', {'question' : question.id}) }}"
+                    <a href="{{ path('admin.question.edit', {'question_id' : question.id}) }}"
                        class="btn btn-sm btn-success btn-edit">
                         <i class="glyphicon glyphicon-pencil"></i>
                         Edit
                     </a>
-                </td>
-                <td>
+
                     <form class="inline-form"
-                          action="{{ path('admin.question.delete', {'question' : question.id}) }}">
+                          action="{{ path('admin.question.delete', {'question_id' : question.id}) }}">
                         <button class=" btn btn-sm btn-danger btn-edit"
                                 type="button"
                                 data-toggle="modal"
@@ -48,15 +36,9 @@
                             Delete
                         </button>
                     </form>
-                    {#<a href="{{ path('admin.question.delete', {'question' : question.id}) }}"#}
-                    {#class="btn btn-sm btn-success btn-danger">#}
-                    {#<i class="glyphicon glyphicon-pencil"></i>#}
-                    {#Delete#}
-                    {#</a>#}
                 </td>
             </tr>
         {% endfor %}
-        </tbody>
+    {% endblock %}
 
-    </table>
-</div>
+{% endembed %}

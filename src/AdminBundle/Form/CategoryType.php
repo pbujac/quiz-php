@@ -27,8 +27,7 @@ class CategoryType extends AbstractType
                         new NotBlank(),
                         new UniqueCategory(),
                     ]
-                ]
-            );
+                ]);
     }
 
     /**

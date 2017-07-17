@@ -63,7 +63,6 @@ class CategoryController extends Controller
 
             return $this->redirectToRoute('admin.category.list');
         }
-
         return $this->render('admin/category/create.html.twig', [
             'form' => $form->createView()
         ]);
@@ -98,7 +97,6 @@ class CategoryController extends Controller
 
             return $this->redirectToRoute('admin.category.list');
         }
-
         return $this->render('admin/category/edit.html.twig', [
             'form' => $form->createView(),
         ]);
@@ -124,7 +122,6 @@ class CategoryController extends Controller
             'notice',
             'Category has been successfully removed!'
         );
-
         return $this->redirectToRoute('admin.category.list');
     }
 }

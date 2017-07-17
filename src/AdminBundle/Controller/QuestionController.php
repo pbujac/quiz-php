@@ -3,9 +3,11 @@
 namespace AdminBundle\Controller;
 
 use AdminBundle\Form\QuestionType;
+use AppBundle\Entity\Answer;
 use AppBundle\Entity\Question;
 use AppBundle\Entity\Quiz;
 use Doctrine\Common\Collections\ArrayCollection;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,13 +22,16 @@ class QuestionController extends Controller
      *
      * @return RedirectResponse|Response
      *
-     * @Route("/question/{quiz}/create", name="admin.question.create")
+     * @Route("/question/{quiz_id}/create", name="admin.question.create")
+     *
+     * @ParamConverter("quiz", options={"id" = "quiz_id"})
      */
     public function createAction(Quiz $quiz, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
         $question = new Question();
+        $question->addAnswer(new Answer());
         $question->setQuiz($quiz);
 
         $form = $this->createForm(QuestionType::class, $question);
@@ -42,12 +47,17 @@ class QuestionController extends Controller
             $em->persist($question);
             $em->flush();
 
+            $this->addFlash(
+                'notice',
+                'Question has been successfully added!'
+            );
+
             return $this->redirectToRoute('admin.quiz.edit', [
-                "quiz" => $quiz->getId(),
+                "quiz_id" => $quiz->getId(),
             ]);
         }
         return $this->render('admin/question/create.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 
@@ -57,7 +67,9 @@ class QuestionController extends Controller
      *
      * @return RedirectResponse|Response
      *
-     * @Route("/question/{question}/edit", name="admin.question.edit")
+     * @Route("/question/{question_id}/edit", name="admin.question.edit")
+     *
+     * @ParamConverter("question", options={"id" = "question_id"})
      */
     public function editAction(Question $question, Request $request)
     {
@@ -77,7 +89,6 @@ class QuestionController extends Controller
                     $em->persist($answer);
                 }
             }
-
             foreach ($originalAnswers as $answer) {
 
                 if (!$question->getAnswers()->contains($answer)) {
@@ -87,12 +98,17 @@ class QuestionController extends Controller
             $em->persist($question);
             $em->flush();
 
+            $this->addFlash(
+                'notice',
+                'Question has been successfully modified!'
+            );
+
             return $this->redirectToRoute('admin.quiz.edit', [
-                "quiz" => $question->getQuiz()->getId(),
+                "quiz_id" => $question->getQuiz()->getId(),
             ]);
         }
         return $this->render('admin/question/edit.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 
@@ -101,7 +117,9 @@ class QuestionController extends Controller
      *
      * @return RedirectResponse|Response
      *
-     * @Route("/question/{question}/delete", name="admin.question.delete")
+     * @Route("/question/{question_id}/delete", name="admin.question.delete")
+     *
+     * @ParamConverter("question", options={"id" = "question_id"})
      */
     public function deleteAction(Question $question)
     {
@@ -110,8 +128,13 @@ class QuestionController extends Controller
         $em->remove($question);
         $em->flush();
 
+        $this->addFlash(
+            'notice',
+            'Question has been successfully removed!'
+        );
+
         return $this->redirectToRoute('admin.quiz.edit', [
-            "quiz" => $question->getQuiz()->getId(),
+            "quiz_id" => $question->getQuiz()->getId(),
         ]);
     }
 }

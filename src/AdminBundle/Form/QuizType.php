@@ -9,7 +9,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class QuizType extends AbstractType
 {
@@ -25,13 +24,14 @@ class QuizType extends AbstractType
                 'class' => Category::class,
                 'choice_label' => 'title'
             ])
-            ->add('description');
-//            ->add('questions', CollectionType::class, [
-//                'entry_type' => QuestionType::class,
-//                'by_reference' => false,
-//                'prototype' => true,
-//                'allow_add' => true,
-//            ]);
+            ->add('description')
+            ->add('questions', CollectionType::class, [
+                'entry_type' => QuestionType::class,
+                'by_reference' => false,
+                'prototype' => true,
+                'allow_add' => true,
+                'allow_delete' => true,
+            ]);
     }
 
     /**
