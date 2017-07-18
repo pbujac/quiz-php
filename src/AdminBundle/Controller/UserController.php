@@ -5,6 +5,7 @@ namespace AdminBundle\Controller;
 use AdminBundle\Form\UserType;
 use AppBundle\Entity\User;
 use AdminBundle\Manager\PaginatorManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -37,18 +38,20 @@ class UserController extends Controller
     }
 
     /**
-     * @param User $user_id
+     * @param User $user
      *
      * @return  RedirectResponse|Response
      *
      * @Route("/user/{user_id}/enable",name="admin.user.enable")
+     *
+     * @ParamConverter("user", options={"id" = "user_id"})
      */
-    public function enableAction(User $user_id)
+    public function enableAction(User $user)
     {
-        $user_id->setActive(!$user_id->isActive());
+        $user->setActive(!$user->isActive());
 
         $em = $this->getDoctrine()->getManager();
-        $em->persist($user_id);
+        $em->persist($user);
         $em->flush();
 
         return $this->redirectToRoute('admin.user.list');
