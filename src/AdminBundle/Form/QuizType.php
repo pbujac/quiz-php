@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Count;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class QuizType extends AbstractType
@@ -21,10 +22,11 @@ class QuizType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', TextType::class,[
+            ->add('title', TextType::class, [
                 'required' => true,
                 'constraints' => [
                     new NotBlank(),
+                    new Length(['max' => 255]),
                     new UniqueQuiz(),
                 ]
             ])
@@ -35,10 +37,11 @@ class QuizType extends AbstractType
                 },
                 'choice_label' => 'title',
             ])
-            ->add('description', TextareaType::class,[
+            ->add('description', TextareaType::class, [
                 'required' => true,
                 'constraints' => [
-                new NotBlank(),
+                    new NotBlank(),
+                    new Length(['max' => 5000]),
                 ]
             ])
             ->add('questions', CollectionType::class, [

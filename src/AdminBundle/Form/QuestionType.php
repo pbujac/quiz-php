@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Count;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class QuestionType extends AbstractType
@@ -20,6 +21,7 @@ class QuestionType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new NotBlank(),
+                    new Length(['max' => 5000]),
                 ]
             ])
             ->add('answers', CollectionType::class, [

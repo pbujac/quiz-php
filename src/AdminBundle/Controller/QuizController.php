@@ -19,7 +19,7 @@ class QuizController extends Controller
      * @param Request $request
      * @return RedirectResponse|Response
      *
-     * @Route("/quiz/create", name="quiz.create")
+     * @Route("/quiz/create", name="admin.quiz.create")
      */
     public function quizAction(Request $request)
     {
