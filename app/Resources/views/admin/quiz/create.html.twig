@@ -53,5 +53,6 @@
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
     <script type="text/javascript" src="{{ asset('assets/js/click_button.js') }}"></script>
 {% endblock %}
