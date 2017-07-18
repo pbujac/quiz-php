@@ -20,4 +20,5 @@
 /web/bundles/
 /web/assets/vendor
 /node_modules/
-/web/css/compiled/
+/web/css/
+/web/js/
