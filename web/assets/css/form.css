@@ -19,7 +19,19 @@
 
 /*TABLE*/
 
-.table .btn-delete, .btn-edit {
+.btn-edit {
     width: 100px;
-    margin-right: 10px;
+}
+
+.btn + .btn {
+    margin-left: 10px;
+}
+
+.inline-form {
+    display: inline;
+    margin-left: 5px;
+}
+
+.glyphicon {
+    margin-right: 5px;
 }
