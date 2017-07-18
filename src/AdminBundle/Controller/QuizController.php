@@ -44,7 +44,7 @@ class QuizController extends Controller
      *
      * @return RedirectResponse|Response
      *
-     * @Route("/quiz/delete/{quiz_id}", name="admin.quiz.delete")
+     * @Route("/quiz/{quiz_id}/delete", name="admin.quiz.delete")
      *
      * @ParamConverter("quiz", options={"id" = "quiz_id"})
      */

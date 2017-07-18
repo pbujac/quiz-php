@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 
 class UserController extends Controller
@@ -96,16 +97,18 @@ class UserController extends Controller
     }
 
     /**
-     * @param User $user_id
+     * @param User $user
      * @param Request $request
      *
      * @return RedirectResponse|Response
      *
-     * @Route("/user/edit/{user_id}", name="admin.user.edit")
+     * @Route("/user/{user_id}/edit", name="admin.user.edit")
+     *
+     * @ParamConverter("user", options={"id" = "user_id"})
      */
-    public function editAction(User $user_id,Request $request)
+    public function editAction(User $user,Request $request)
     {
-        $form = $this->createForm(UserType::class,$user_id);
+        $form = $this->createForm(UserType::class,$user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
