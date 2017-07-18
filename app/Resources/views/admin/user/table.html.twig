@@ -46,11 +46,16 @@
                     <a href="{{ path('admin.user.enable', {'user_id': user.id }) }}">
                         Change state
                     </a>
+
+                    <a href="{{ path('admin.user.edit', {'user_id': user.id}) }}" class="btn btn-sm btn-success btn-edit">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                        Edit
+                    </a>
+
                 </td>
             </tr>
         {% endfor %}
         </tbody>
-
     </table>
 
     <div class="panel-footer">
