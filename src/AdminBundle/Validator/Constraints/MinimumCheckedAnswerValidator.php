@@ -13,15 +13,14 @@ class MinimumCheckedAnswerValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        dump($value);
-//        $intArray = [];
-//        foreach ($value->getSnapshot() as $answer) {
-//            $intArray[] = $answer->isCorrect();
-//        }
-//
-//        if (!in_array(true, $intArray)) {
-//            $this->context->buildViolation($constraint->message)
-//                ->addViolation();
-//        }
+        $intArray = [];
+        foreach ($value->getSnapshot() as $answer) {
+            $intArray[] = $answer->isCorrect();
+        }
+
+        if (!in_array(true, $intArray)) {
+            $this->context->buildViolation($constraint->message)
+                ->addViolation();
+        }
     }
 }
