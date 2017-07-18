@@ -12,7 +12,9 @@
     {% endblock %}
 
     {% block body_table %}
+
         {% for question in form.vars.value.questions %}
+
             <tr>
                 <td>
                     {{ question.text }}
@@ -23,10 +25,10 @@
                         <i class="glyphicon glyphicon-pencil"></i>
                         Edit
                     </a>
-
+                    <form class="inline-form"></form>
                     <form class="inline-form"
                           action="{{ path('admin.question.delete', {'question_id' : question.id}) }}">
-                        <button class=" btn btn-sm btn-danger btn-edit"
+                        <button class="btn btn-sm btn-danger btn-edit"
                                 type="button"
                                 data-toggle="modal"
                                 data-target="#confirmDelete"

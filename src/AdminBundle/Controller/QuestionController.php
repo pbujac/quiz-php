@@ -89,6 +89,7 @@ class QuestionController extends Controller
                     $em->persist($answer);
                 }
             }
+
             foreach ($originalAnswers as $answer) {
 
                 if (!$question->getAnswers()->contains($answer)) {
@@ -123,12 +124,11 @@ class QuestionController extends Controller
      */
     public function deleteAction(Question $question)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $count = $em->getRepository(Question::class)->countQuestionsByQuizId($question->getQuiz()->getId());
-        if ($count == 0) {
-
+        if (!$question) {
+            throw $this->createNotFoundException('No question found');
         }
+
+        $em = $this->getDoctrine()->getManager();
         $em->remove($question);
         $em->flush();
 

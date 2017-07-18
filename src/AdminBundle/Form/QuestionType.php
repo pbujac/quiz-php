@@ -28,7 +28,7 @@ class QuestionType extends AbstractType
                 'constraints' => [
                     new Count([
                         'min' => 1,
-                        'minMessage'=>'You must specify at least one answer'
+                        'minMessage' => 'You must specify at least one answer'
                     ]),
                 ],
                 'attr' => [

@@ -2,7 +2,7 @@
 
 namespace AdminBundle\Controller;
 
-use AdminBundle\Form\QuizType;
+use AdminBundle\Form\EditQuizType;
 use AppBundle\Entity\Quiz;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -25,9 +25,8 @@ class QuizController extends Controller
      */
     public function editAction(Quiz $quiz, Request $request)
     {
-        $form = $this->createForm(QuizType::class, $quiz);
+        $form = $this->createForm(EditQuizType::class, $quiz);
 
-        $form->remove('questions');
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
