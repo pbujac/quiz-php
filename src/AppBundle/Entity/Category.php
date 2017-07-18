@@ -92,5 +92,13 @@ class Category
     {
         return $this->quizzes;
     }
+
+    /**
+     * @return bool
+     */
+    public function hasQuizzes()
+    {
+        return !$this->quizzes->isEmpty();
+    }
 }
 

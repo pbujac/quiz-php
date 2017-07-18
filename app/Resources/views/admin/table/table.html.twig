@@ -1,0 +1,31 @@
+<div class="panel panel-default panel-table">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-md-6">
+                <h1 class="panel-title">
+                    {% block title_table %}{% endblock %}
+                </h1>
+            </div>
+            <div class="col-md-6 text-right">
+                <a href="{% block create_new_path %}{% endblock %}"
+                   class="btn btn-sm btn-primary btn-create">
+                    Create New
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <table class="table text-center">
+        <thead>
+        <tr>
+            {% block head_table %}{% endblock %}
+        </tr>
+        </thead>
+        <tbody>
+        {% block body_table %}{% endblock %}
+        </tbody>
+    </table>
+
+    {% block pagination %}{% endblock %}
+</div>
+

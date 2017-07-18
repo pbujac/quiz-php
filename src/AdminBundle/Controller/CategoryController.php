@@ -5,6 +5,7 @@ namespace AdminBundle\Controller;
 use AdminBundle\Manager\PaginatorManager;
 use AppBundle\Entity\Category;
 use AdminBundle\Form\CategoryType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,11 +56,75 @@ class CategoryController extends Controller
             $em->persist($category);
             $em->flush();
 
+            $this->addFlash(
+                'notice',
+                $category->getTitle() . ' category has been successfully added!'
+            );
+
             return $this->redirectToRoute('admin.category.list');
         }
 
         return $this->render('admin/category/create.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @param Category $category
+     * @param Request $request
+     *
+     * @return RedirectResponse|Response
+     *
+     * @Route("/category/{category_id}/edit", name="admin.category.edit")
+     *
+     * @ParamConverter("category", options={"id" = "category_id"})
+     */
+    public function editAction(Category $category, Request $request)
+    {
+        $form = $this->createForm(CategoryType::class, $category);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($category);
+            $em->flush();
+
+            $this->addFlash(
+                'notice',
+                'Category has been successfully modified!'
+            );
+
+            return $this->redirectToRoute('admin.category.list');
+        }
+
+        return $this->render('admin/category/edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @param Category $category
+     *
+     * @return RedirectResponse|Response
+     *
+     * @Route("/category/{category_id}/delete", name="admin.category.delete")
+     *
+     * @ParamConverter("category", options={"id" = "category_id"})
+     */
+    public function deleteAction(Category $category)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $em->remove($category);
+        $em->flush();
+
+        $this->addFlash(
+            'notice',
+            'Category has been successfully removed!'
+        );
+
+        return $this->redirectToRoute('admin.category.list');
     }
 }
