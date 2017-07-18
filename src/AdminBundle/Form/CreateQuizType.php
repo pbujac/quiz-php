@@ -25,7 +25,7 @@ class CreateQuizType extends BaseQuizType
             'constraints' => [
                 new Count([
                     'min' => 1,
-                    'minMessage' => 'You must specify at least one question'
+                    'minMessage' => 'You must specify at least one question',
                 ]),
             ]
         ]);

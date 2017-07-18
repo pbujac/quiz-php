@@ -24,7 +24,7 @@ class QuizType extends AbstractType
             ->add('title', TextType::class)
             ->add('category', EntityType::class, [
                 'class' => Category::class,
-                'choice_label' => 'title'
+                'choice_label' => 'title',
             ])
             ->add('description', TextareaType::class)
             ->add('questions', CollectionType::class, [
@@ -32,7 +32,7 @@ class QuizType extends AbstractType
                 'by_reference' => false,
                 'prototype' => true,
                 'allow_add' => true,
-                'allow_delete' => true
+                'allow_delete' => true,
             ]);
     }
 

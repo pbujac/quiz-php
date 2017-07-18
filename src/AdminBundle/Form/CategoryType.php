@@ -28,7 +28,7 @@ class CategoryType extends AbstractType
                         'min' => 2,
                         'max' => 45,
                         'minMessage' => 'Your category must be at least {{ limit }} characters long',
-                        'maxMessage' => 'Your category must be at least {{ limit }} characters long'
+                        'maxMessage' => 'Your category must be at least {{ limit }} characters long',
                     ]),
                     new UniqueCategory(),
                 ]
