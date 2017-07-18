@@ -137,7 +137,7 @@ class Result
     /**
      * @param int|null $score
      */
-    public function setScore(?int $score)
+    public function setScore(int $score)
     {
         $this->score = $score;
     }

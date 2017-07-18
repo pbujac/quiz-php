@@ -125,6 +125,10 @@ class QuestionController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
+        $count = $em->getRepository(Question::class)->countQuestionsByQuizId($question->getQuiz()->getId());
+        if ($count == 0) {
+
+        }
         $em->remove($question);
         $em->flush();
 

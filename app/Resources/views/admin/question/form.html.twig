@@ -2,10 +2,10 @@
 
 {% form_theme form _self 'bootstrap_3_layout.html.twig' %}
 
-{% macro answerCollectionItem(form) %}
+{% macro answerCollectionItem(answer) %}
 
-    {{ form_row(form.text) }}
-    {{ form_row(form.correct) }}
+    {{ form_row(answer.text) }}
+    {{ form_row(answer.correct) }}
     <button type="submit" class="btn btn-sm btn-danger remove-btn remove-answer">
         <span class="glyphicon glyphicon-remove"></span> Delete answer
     </button>
@@ -24,8 +24,11 @@
         <div class="panel-body">
 
             {{ form_start(form) }}
+            {{ form_errors(form) }}
+
 
             {{ form_row(form.text) }}
+
             <p class="small-title">Answers:</p>
 
             <ul id="answer-fields-list"
@@ -38,7 +41,7 @@
                 {% endfor %}
 
             </ul>
-
+            {{ form_widget(form.answers) }}
             <div class="row">
                 <div class="col-md-4">
                     <button id="add-answer-form" type="button" class="btn btn-sm btn-default add-answer-btn">
