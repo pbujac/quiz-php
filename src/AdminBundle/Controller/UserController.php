@@ -21,7 +21,7 @@ class UserController extends Controller
      *
      * @Route("/user/list/{page}",name="admin.user.list")
      */
-    public function userListAction(int $page = 1)
+    public function listAction(int $page = 1)
     {
         $users = $this->getDoctrine()
             ->getRepository(User::class)
@@ -91,8 +91,8 @@ class UserController extends Controller
             return $this->redirectToRoute('admin.user.list');
         }
 
-        return $this->render('admin/user/create.html.twig', [
-            'form' => $form->createView()
+        return $this->render('admin/user/create.html.twig',[
+            'form' => $form->createView(),
         ]);
     }
 
@@ -134,8 +134,8 @@ class UserController extends Controller
         }
 
         return $this->render(
-            'admin/user/edit.html.twig',
-            ['form' => $form->createView()
+            'admin/user/edit.html.twig',[
+                'form' => $form->createView(),
             ]);
     }
 }

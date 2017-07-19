@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class QuizController extends Controller
 {
@@ -26,7 +27,7 @@ class QuizController extends Controller
 
         $quizzes = $this->getDoctrine()
             ->getRepository(Quiz::class)
-            ->getQuizByFilter($filter ,$page);
+            ->getByFilter($filter ,$page);
 
         $maxPages = ceil($quizzes->count() / PaginatorManager::PAGE_LIMIT);
 
@@ -35,5 +36,29 @@ class QuizController extends Controller
             'maxPages' => $maxPages,
             'currentPage' => $page,
         ]);
+    }
+
+    /**
+     * @param Quiz $quiz
+     *
+     * @return RedirectResponse|Response
+     *
+     * @Route("/quiz/{quiz_id}/delete", name="admin.quiz.delete")
+     *
+     * @ParamConverter("quiz", options={"id" = "quiz_id"})
+     */
+    public function deleteAction(Quiz $quiz)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $em->remove($quiz);
+        $em->flush();
+
+        $this->addFlash(
+            'notice',
+            'Quiz has been successfully removed!'
+        );
+
+        return $this->redirectToRoute('admin.quiz.list');
     }
 }
