@@ -44,7 +44,6 @@ class UserController extends Controller
      * @Route("/user/{user_id}/enable",name="admin.user.enable")
      *
      * @ParamConverter("user", options={"id" = "user_id"})
-     *
      */
     public function enableAction(User $user)
     {
