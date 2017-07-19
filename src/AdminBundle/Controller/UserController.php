@@ -38,7 +38,6 @@ class UserController extends Controller
 
     /**
      * @param User $user
-     *
      * @return RedirectResponse|Response
      *
      * @Route("/user/{user_id}/enable",name="admin.user.enable")
