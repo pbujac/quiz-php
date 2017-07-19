@@ -49,8 +49,6 @@
         {% endblock %}
 
         {% block pagination %}
-            {% set parameters = {'page':  maxPages }|merge(app.request.query.all) %}
-            <a href="{{ path('admin.quiz.list', parameters ) }}">»</a>
             {{ include('admin/table/pagination.html.twig', { 'path': 'admin.quiz.list' }) }}
         {% endblock %}
 
