@@ -4,23 +4,27 @@
         </div>
         <div class="col col-xs-8">
             <ul class="pagination hidden-xs pull-right">
+
                 {% if maxPages >= 1 %}
                     <ul class="pagination pagination-sm">
 
                         <li {{ currentPage == 1 ? 'class="disabled"' }}>
-                            <a href="{{ path(path) }}">«</a>
+                            {% set parameters = app.request.query.all %}
+                            <a href="{{ path(path, parameters) }}">«</a>
                         </li>
 
                         {% for pageNumber in 1..maxPages %}
                             <li {{ currentPage == pageNumber ? 'class="active"' }}>
-                                <a href="{{ path(path, {'page': pageNumber }) }}">
+                                {% set parameters = {'page':  pageNumber }|merge(app.request.query.all) %}
+                                <a href="{{ path(path, parameters) }}">
                                     {{ pageNumber }}
                                 </a>
                             </li>
                         {% endfor %}
 
                         <li {{ currentPage == maxPages ? 'class="disabled"' }}>
-                            <a href="{{ path(path, {'page':  maxPages }) }}">»</a>
+                            {% set parameters = {'page':  maxPages }|merge(app.request.query.all) %}
+                            <a href="{{ path(path, parameters) }}">»</a>
                         </li>
                     </ul>
                 {% endif %}

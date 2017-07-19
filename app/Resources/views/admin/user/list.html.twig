@@ -3,10 +3,62 @@
 {% block title %}Users{% endblock %}
 
 {% block content %}
+
     <div class="col-md-10">
 
         {{ parent() }}
 
-        {% include 'admin/user/table.html.twig' %}
+        {% embed ':admin/table:table.html.twig' %}
+
+         {% block title_table %}Users{% endblock %}
+
+        {% block create_new_path %}
+            {{ path('admin.user.create') }}
+        {% endblock %}
+
+        {% block head_table %}
+            <th class="text-center">Username</th>
+            <th class="text-center">Name and Surname</th>
+            <th class="text-center">Role</th>
+            <th class="text-center">Status</th>
+        {% endblock %}
+
+        {% block body_table %}
+        {% for user in users %}
+            <tr>
+                <td>
+                    {{ user.username }}
+                </td>
+                <td>
+                    {{ user.firstname }} {{ user.lastname }}
+                </td>
+                <td>
+                    {{ user.roles|join(', ') }}
+                </td>
+                <td>
+                    {% if user.active %} Active {% else %} Inactive {% endif %}
+                </td>
+                <td >
+                    <a href="{{ path('admin.user.enable', {'user_id': user.id }) }}" class="btn btn-sm btn-warning">
+                        Change state
+                    </a>
+                    <a href="{{ path('admin.user.edit', {'user_id': user.id}) }}" class="btn btn-sm btn-success btn-edit">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                        Edit
+                    </a>
+
+                </td>
+            </tr>
+        {% endfor %}
+        {% endblock %}
+
+        {% block pagination %}
+
+            {{ include('admin/table/pagination.html.twig', { 'path': 'admin.user.list'  }) }}
+        {% endblock %}
+
+        {% endembed %}
+
     </div>
 {% endblock %}
+
