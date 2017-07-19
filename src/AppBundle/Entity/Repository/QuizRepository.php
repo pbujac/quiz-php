@@ -14,7 +14,7 @@ class QuizRepository extends EntityRepository
      *
      * @return Paginator
      */
-    public function getByFilter( $page,$filter = '')
+    public function getQuizByFilter(?string $filter = null, int $page = 1)
     {
         $paginator = new PaginatorManager();
 
@@ -25,7 +25,7 @@ class QuizRepository extends EntityRepository
 
         if ($filter) {
             $qb->where('q.title LIKE :filter')
-                ->orWhere('q.category  = :filter')
+                ->orWhere('c.title  LIKE :filter')
                 ->setParameter('filter', $filter);
         }
 

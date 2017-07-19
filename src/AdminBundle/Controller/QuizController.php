@@ -4,10 +4,8 @@ namespace AdminBundle\Controller;
 
 use AdminBundle\Manager\PaginatorManager;
 use AppBundle\Entity\Quiz;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +15,7 @@ class QuizController extends Controller
 {
     /**
      * @param int $page = 1
+     * @param Request $request
      *
      * @return RedirectResponse|Response
      *
