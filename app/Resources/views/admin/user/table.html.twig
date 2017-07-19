@@ -43,9 +43,15 @@
                     {% if user.active %} Active {% else %} Inactive {% endif %}
                 </td>
                 <td >
-                    <a href="{{ path('admin.user.enable', {'user': user.id }) }}">
+                    <a href="{{ path('admin.user.enable', {'user_id': user.id }) }}">
                         Change state
                     </a>
+
+                    <a href="{{ path('admin.user.edit', {'user_id': user.id}) }}" class="btn btn-sm btn-success btn-edit">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                        Edit
+                    </a>
+
                 </td>
             </tr>
         {% endfor %}
@@ -54,8 +60,8 @@
 
     <div class="panel-footer">
         <div class="row">
-            <div class="col col-xs-4">Page {{ currentPage }} of {{ maxPages }}</div>
-
+            <div class="col col-xs-4">Page {{ currentPage }} of {{ maxPages }}
+            </div>
             <div class="col col-xs-8">
                 <ul class="pagination hidden-xs pull-right">
                     {% if maxPages >= 1 %}
