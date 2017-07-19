@@ -22,7 +22,7 @@ class QuizController extends Controller
      *
      * @Route("/quiz/list/{page}",name="admin.quiz.list")
      */
-    public function quizListAction(Request $request, int $page = 1)
+    public function listAction(Request $request, int $page = 1)
     {
         $filter = $request->get('filter');
 
