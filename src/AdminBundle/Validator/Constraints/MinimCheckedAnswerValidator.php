@@ -5,20 +5,20 @@ namespace AdminBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class MinimumCheckedAnswerValidator extends ConstraintValidator
+class MinimCheckedAnswerValidator extends ConstraintValidator
 {
     /**
-     * @param $value
+     * @param $answers[]
      * @param Constraint $constraint
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($answers, Constraint $constraint)
     {
-        $intArray = [];
-        foreach ($value->getSnapshot() as $answer) {
-            $intArray[] = $answer->isCorrect();
+        $answersTemp = [];
+        foreach ($answers as $answer) {
+            $answersTemp[] = $answer->isCorrect();
         }
 
-        if (!in_array(true, $intArray)) {
+        if (!in_array(true, $answersTemp)) {
             $this->context->buildViolation($constraint->message)
                 ->addViolation();
         }

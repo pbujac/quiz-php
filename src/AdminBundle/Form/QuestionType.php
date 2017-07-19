@@ -2,7 +2,7 @@
 
 namespace AdminBundle\Form;
 
-use AdminBundle\Validator\Constraints\MinimumCheckedAnswer;
+use AdminBundle\Validator\Constraints\MinimCheckedAnswer;
 use AppBundle\Entity\Question;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -35,7 +35,7 @@ class QuestionType extends AbstractType
                 ],
                 'constraints' => [
                     new Count(['min' => 2]),
-//                    new MinimumCheckedAnswer(),
+//                    new MinimCheckedAnswer(),
                 ],
             ]);
     }
