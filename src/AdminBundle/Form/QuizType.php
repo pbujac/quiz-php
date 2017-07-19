@@ -51,6 +51,7 @@ class QuizType extends AbstractType
                 'attr' => [
                     'class' => 'quiz-questions'
                 ],
+                'label' => 'test',
                 'constraints' => [
                     new Count(['min' => 1]),
                 ],

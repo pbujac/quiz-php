@@ -16,6 +16,10 @@
     </button>
 {% endblock %}
 
+{% block _quiz_questions_entry_widget %}
+    {{ form_widget(form, {attr: {'data-name': form.vars.name}}) }}
+{% endblock %}
+
 {% block _quiz_questions_entry_answers_widget %}
     {{ form_widget(form) }}
 
@@ -54,5 +58,5 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('assets/js/click_button.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/quiz_create.js') }}"></script>
 {% endblock %}
