@@ -19,7 +19,7 @@
             {% endblock %}
 
             {% block create_new_path %}
-                {#{{ path('admin.quiz.create') }}#}
+                {{ path('admin.quiz.create') }}
             {% endblock %}
 
             {% block head_table %}
@@ -46,7 +46,8 @@
                             {{ quiz.author.firstName }} {{ quiz.author.lastName }}
                         </td>
                         <td>
-                            <a href="{{ path('admin.quiz.edit', {'quiz_id' : quiz.id}) }}" class="btn btn-sm btn-success btn-edit">
+                            <a href="{{ path('admin.quiz.edit', {'quiz_id' : quiz.id}) }}"
+                               class="btn btn-sm btn-success btn-edit">
                                 <i class="glyphicon glyphicon-edit"></i>
                                 Edit
                             </a>

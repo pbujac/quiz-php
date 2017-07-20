@@ -18,10 +18,11 @@ class CreateQuizType extends BaseQuizType
 
         $builder->add('questions', CollectionType::class, [
             'entry_type' => QuestionType::class,
-            'by_reference' => false,
             'prototype' => true,
             'allow_add' => true,
-            'allow_delete' => true,
+            'attr' => [
+                'class' => 'quiz-questions',
+            ],
             'constraints' => [
                 new Count([
                     'min' => 1,

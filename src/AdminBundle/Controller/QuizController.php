@@ -2,6 +2,7 @@
 
 namespace AdminBundle\Controller;
 
+use AdminBundle\Form\CreateQuizType;
 use AdminBundle\Form\EditQuizType;
 use AdminBundle\Manager\PaginatorManager;
 use AppBundle\Entity\Quiz;
@@ -37,6 +38,43 @@ class QuizController extends Controller
             'maxPages' => $maxPages,
             'currentPage' => $page,
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse|Response
+     *
+     * @Route("/quiz/create", name="admin.quiz.create")
+     */
+    public function createAction(Request $request)
+    {
+        $form = $this->createForm(CreateQuizType::class, new Quiz());
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $quiz = $form->getData();
+            $quiz->setAuthor($this->getUser());
+
+            $em = $this->getDoctrine()->getManager();
+            foreach ($quiz->getQuestions() as $question) {
+                $question->setQuiz($quiz);
+                $em->persist($question);
+
+                foreach ($question->getAnswers() as $answer) {
+                    $answer->setQuestion($question);
+                    $em->persist($answer);
+                }
+            }
+            $em->persist($quiz);
+            $em->flush();
+
+            return $this->redirectToRoute('admin.dashboard');
+        }
+
+        return $this->render(
+            "admin/quiz/create.html.twig",
+            array('form' => $form->createView())
+        );
     }
 
     /**

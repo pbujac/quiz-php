@@ -57,7 +57,7 @@ class Answer
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -65,7 +65,7 @@ class Answer
     /**
      * @return Question
      */
-    public function getQuestion(): Question
+    public function getQuestion(): ?Question
     {
         return $this->question;
     }
