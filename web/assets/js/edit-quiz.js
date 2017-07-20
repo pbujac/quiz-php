@@ -2,10 +2,10 @@ $(function () {
     var $collectionHolder = $('#answer-fields-list');
 
     removeAnswerButton($collectionHolder);
-    bindAddAnswerButton($collectionHolder);
+    bindEditAnswerButton($collectionHolder);
 });
 
-function bindAddAnswerButton($collectionHolder) {
+function bindEditAnswerButton($collectionHolder) {
     $('#add-answer-form').off('click').on('click', function () {
 
         $collectionHolder.data('index', $collectionHolder.find(':input').length);

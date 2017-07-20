@@ -34,9 +34,6 @@ class BaseQuizType extends AbstractType
             ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('c');
-                },
                 'choice_label' => 'title',
             ])
             ->add('description', TextareaType::class, [

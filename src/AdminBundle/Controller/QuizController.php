@@ -29,7 +29,7 @@ class QuizController extends Controller
 
         $quizzes = $this->getDoctrine()
             ->getRepository(Quiz::class)
-            ->getQuizByFilter($filter ,$page);
+            ->getQuizByFilter($filter, $page);
 
         $maxPages = ceil($quizzes->count() / PaginatorManager::PAGE_LIMIT);
 
@@ -73,7 +73,7 @@ class QuizController extends Controller
 
         return $this->render(
             "admin/quiz/create.html.twig",
-            array('form' => $form->createView())
+            ['form' => $form->createView()]
         );
     }
 
