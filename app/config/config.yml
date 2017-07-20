@@ -88,3 +88,7 @@ fos_rest:
     format_listener: true
     view:
         view_response_listener: 'force'
+    body_converter:
+            enabled: true
+            validate: true
+            validation_errors_argument: validationErrors
