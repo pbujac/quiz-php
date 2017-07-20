@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Table(name="quizzes")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\QuizRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Quiz
 {
@@ -85,9 +86,9 @@ class Quiz
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -101,9 +102,9 @@ class Quiz
     }
 
     /**
-     * @return Category
+     * @return Category|null
      */
-    public function getCategory(): Category
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
@@ -125,11 +126,11 @@ class Quiz
     }
 
     /**
-     * @param \DateTime $createdAt
+     * @ORM\PrePersist
      */
-    public function setCreatedAt(\DateTime $createdAt)
+    public function setCreatedAt()
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = new \DateTime();
     }
 
     /**
@@ -149,9 +150,9 @@ class Quiz
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
