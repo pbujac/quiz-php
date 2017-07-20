@@ -12,7 +12,7 @@
 
         {% block title_table %}
             <form method="get" action="{{ path('admin.quiz.list') }}">
-                Search Quiz by coincidence with :
+                Search Quiz :
                 <input type="text" name="filter" value=""/>
                 <input class="btn btn-sm btn-default btn-create" value="Search" type="submit"/>
             </form>
@@ -43,6 +43,12 @@
             </td>
             <td>
                 {{ quiz.author.firstName}} {{ quiz.author.lastName}}
+            </td>
+            <td >
+                <a href="{{ path('admin.quiz.delete', {'quiz_id': quiz.id }) }}" class="btn btn-sm btn-danger">
+                    <i class="glyphicon glyphicon-trash"></i>
+                    Quiz delete
+                </a>
             </td>
         </tr>
             {% endfor %}
