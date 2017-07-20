@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class UserController extends Controller
 {
@@ -21,7 +21,7 @@ class UserController extends Controller
      *
      * @Route("/user/list/{page}",name="admin.user.list")
      */
-    public function userListAction(int $page = 1)
+    public function listAction(int $page = 1)
     {
         $users = $this->getDoctrine()
             ->getRepository(User::class)
@@ -41,7 +41,9 @@ class UserController extends Controller
      *
      * @return RedirectResponse|Response
      *
-     * @Route("/user/{user}/enable",name="admin.user.enable")
+     * @Route("/user/{user_id}/enable",name="admin.user.enable")
+     *
+     * @ParamConverter("user", options={"id" = "user_id"})
      */
     public function enableAction(User $user)
     {
@@ -89,8 +91,52 @@ class UserController extends Controller
             return $this->redirectToRoute('admin.user.list');
         }
 
-        return $this->render('admin/user/create.html.twig', [
-            'form' => $form->createView()
+        return $this->render('admin/user/create.html.twig',[
+            'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @param User $user
+     * @param Request $request
+     *
+     * @return RedirectResponse|Response
+     *
+     * @Route("/user/{user_id}/edit", name="admin.user.edit")
+     *
+     * @ParamConverter("user", options={"id" = "user_id"})
+     */
+    public function editAction(User $user,Request $request)
+    {
+        $form = $this->createForm(UserType::class,$user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $form->getData();
+
+            $password = $this->get('security.password_encoder')->encodePassword(
+                $user,
+                $user->getPassword()
+            );
+            $user->setPassword($password);
+            $user->setCreatedAtValue();
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            $this->addFlash(
+                'notice',
+                $user->getUsername() . ' user was modified!'
+            );
+
+            return $this->redirectToRoute('admin.user.list');
+        }
+
+        return $this->render(
+            'admin/user/edit.html.twig',[
+                'form' => $form->createView(),
+            ]);
+    }
 }
+

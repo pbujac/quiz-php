@@ -1,0 +1,58 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Quizzes{% endblock %}
+
+{% block content %}
+
+    <div class="col-md-10">
+
+        {{ parent() }}
+
+        {% embed ':admin/table:table.html.twig' %}
+
+        {% block title_table %}
+            <form method="get" action="{{ path('admin.quiz.list') }}">
+                Search Quiz by coincidence with :
+                <input type="text" name="filter" value=""/>
+                <input class="btn btn-sm btn-default btn-create" value="Search" type="submit"/>
+            </form>
+        {% endblock %}
+
+        {% block create_new_path %}
+            {{ path('admin.quiz.create') }}
+        {% endblock %}
+
+        {% block head_table %}
+            <th class="text-center">Title</th>
+            <th class="text-center">Category</th>
+            <th class="text-center">Created At</th>
+            <th class="text-center">Author</th>
+        {% endblock %}
+
+        {% block body_table %}
+            {% for quiz in quizzes %}
+        <tr>
+            <td>
+                {{ quiz.title }}
+            </td>
+            <td>
+                {{ quiz.category.title }}
+            </td>
+            <td>
+                {{ quiz.createdAt|date }}
+            </td>
+            <td>
+                {{ quiz.author.firstName}} {{ quiz.author.lastName}}
+            </td>
+        </tr>
+            {% endfor %}
+        {% endblock %}
+
+        {% block pagination %}
+            {{ include('admin/table/pagination.html.twig', { 'path': 'admin.quiz.list' }) }}
+        {% endblock %}
+
+        {% endembed %}
+
+    </div>
+{% endblock %}

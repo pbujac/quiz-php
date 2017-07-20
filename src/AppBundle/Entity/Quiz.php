@@ -59,14 +59,14 @@ class Quiz
     /**
      * @var ArrayCollection|Question[]
      *
-     * @ORM\OneToMany(targetEntity="Question", mappedBy="quiz" , cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Question", mappedBy="quiz", cascade={"persist", "remove"})
      */
     private $questions;
 
     /**
      * @var ArrayCollection|Result[]
      *
-     * @ORM\OneToMany(targetEntity="Result", mappedBy="quiz")
+     * @ORM\OneToMany(targetEntity="Result", mappedBy="quiz",  cascade={"persist", "remove"})
      */
     private $results;
 

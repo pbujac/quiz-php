@@ -60,7 +60,7 @@ class Result
     /**
      * @var ArrayCollection|ResultAnswer[]
      *
-     * @ORM\OneToMany(targetEntity="ResultAnswer", mappedBy="result")
+     * @ORM\OneToMany(targetEntity="ResultAnswer", mappedBy="result", cascade={"persist", "remove"})
      */
     private $resultAnswers;
 
@@ -135,9 +135,9 @@ class Result
     }
 
     /**
-     * @param int|null $score
+     * @param int $score
      */
-    public function setScore(?int $score)
+    public function setScore(int $score)
     {
         $this->score = $score;
     }

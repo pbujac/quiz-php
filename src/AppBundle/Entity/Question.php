@@ -38,14 +38,14 @@ class Question
     /**
      * @var ArrayCollection|Answer[]
      *
-     * @ORM\OneToMany(targetEntity="Answer", mappedBy="question", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Answer", mappedBy="question",  cascade={"persist", "remove"})
      */
     private $answers;
 
     /**
      * @var ArrayCollection|ResultAnswer[]
      *
-     * @ORM\OneToMany(targetEntity="ResultAnswer", mappedBy="question")
+     * @ORM\OneToMany(targetEntity="ResultAnswer", mappedBy="question", cascade={"persist", "remove"})
      */
     private $resultAnswers;
 
