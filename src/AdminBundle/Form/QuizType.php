@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class BaseQuizType extends AbstractType
+class QuizType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -48,7 +48,10 @@ class BaseQuizType extends AbstractType
                     'class' => 'quiz-questions'
                 ],
                 'constraints' => [
-                    new Count(['min' => 1]),
+                    new Count([
+                        'min' => 1,
+                        'minMessage' => 'You must specify at least one question',
+                    ]),
                 ],
             ]);
     }

@@ -64,7 +64,7 @@ class CategoryController extends Controller
             return $this->redirectToRoute('admin.category.list');
         }
         return $this->render('admin/category/create.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 
@@ -114,7 +114,6 @@ class CategoryController extends Controller
     public function deleteAction(Category $category)
     {
         $em = $this->getDoctrine()->getManager();
-
         $em->remove($category);
         $em->flush();
 

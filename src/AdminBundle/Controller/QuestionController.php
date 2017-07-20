@@ -28,16 +28,17 @@ class QuestionController extends Controller
      */
     public function createAction(Quiz $quiz, Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-
         $question = new Question();
         $question->addAnswer(new Answer());
         $question->setQuiz($quiz);
 
         $form = $this->createForm(QuestionType::class, $question);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $em = $this->getDoctrine()->getManager();
 
             foreach ($question->getAnswers() as $answer) {
                 $answer->setQuestion($question);
@@ -51,7 +52,6 @@ class QuestionController extends Controller
                 'notice',
                 'Question has been successfully added!'
             );
-
             return $this->redirectToRoute('admin.quiz.edit', [
                 "quiz_id" => $quiz->getId(),
             ]);
@@ -124,10 +124,6 @@ class QuestionController extends Controller
      */
     public function deleteAction(Question $question)
     {
-        if (!$question) {
-            throw $this->createNotFoundException('No question found');
-        }
-
         $em = $this->getDoctrine()->getManager();
         $em->remove($question);
         $em->flush();
@@ -136,7 +132,6 @@ class QuestionController extends Controller
             'notice',
             'Question has been successfully removed!'
         );
-
         return $this->redirectToRoute('admin.quiz.edit', [
             "quiz_id" => $question->getQuiz()->getId(),
         ]);

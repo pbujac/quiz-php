@@ -9,10 +9,12 @@ use AppBundle\Entity\User;
 
 class UniqueUserValidator extends ConstraintValidator
 {
-    /** @param EntityManagerInterface $em */
+    /** @var EntityManagerInterface $em */
     private $em;
 
-    /** @param EntityManagerInterface $em */
+    /**
+     * @param EntityManagerInterface $em
+     */
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;

@@ -91,7 +91,7 @@ class UserController extends Controller
             return $this->redirectToRoute('admin.user.list');
         }
 
-        return $this->render('admin/user/create.html.twig',[
+        return $this->render('admin/user/create.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -106,14 +106,15 @@ class UserController extends Controller
      *
      * @ParamConverter("user", options={"id" = "user_id"})
      */
-    public function editAction(User $user,Request $request)
+    public function editAction(User $user, Request $request)
     {
-        $form = $this->createForm(UserType::class,$user);
+        $form = $this->createForm(UserType::class, $user);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $form->getData();
 
+            $user = $form->getData();
             $password = $this->get('security.password_encoder')->encodePassword(
                 $user,
                 $user->getPassword()
@@ -129,14 +130,11 @@ class UserController extends Controller
                 'notice',
                 $user->getUsername() . ' user was modified!'
             );
-
             return $this->redirectToRoute('admin.user.list');
         }
-
-        return $this->render(
-            'admin/user/edit.html.twig',[
-                'form' => $form->createView(),
-            ]);
+        return $this->render('admin/user/edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }
 

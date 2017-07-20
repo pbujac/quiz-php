@@ -4,7 +4,7 @@ namespace AdminBundle\Form;
 
 use Symfony\Component\Form\FormBuilderInterface;
 
-class EditQuizType extends BaseQuizType
+class EditQuizType extends QuizType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -13,6 +13,8 @@ class EditQuizType extends BaseQuizType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
+
+        $builder->remove('questions');
     }
 
 }

@@ -2,6 +2,36 @@
 
 {% form_theme form _self 'bootstrap_3_layout.html.twig' %}
 
+{% block _quiz_questions_widget %}
+    {{ form_widget(form) }}
+
+    <button type="button" class="btn btn-sm btn-primary add-question-button">
+        <span class="glyphicon glyphicon-plus"></span> Add Question
+    </button>
+{% endblock %}
+
+{% block _quiz_questions_entry_label %}
+    <label>Question #{{ form.vars.name }}</label>
+{% endblock %}
+
+{% block _quiz_questions_entry_widget %}
+    {{ form_widget(form, {attr: {'data-name': form.vars.name}}) }}
+{% endblock %}
+
+{% block _quiz_questions_entry_answers_widget %}
+
+    {{ form_widget(form) }}
+
+    <button type="button" class="btn btn-sm btn-warning add-answer-button">
+        <span class="glyphicon glyphicon-plus"></span>
+        Add Answer
+    </button>
+{% endblock %}
+
+{% block _quiz_questions_entry_answers_entry_label %}
+    <label>Answer #{{ form.vars.name }}</label>
+{% endblock %}
+
 {% block content %}
     <div class="col-md-10">
         {{ parent() }}

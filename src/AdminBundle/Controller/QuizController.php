@@ -2,8 +2,8 @@
 
 namespace AdminBundle\Controller;
 
-use AdminBundle\Form\CreateQuizType;
 use AdminBundle\Form\EditQuizType;
+use AdminBundle\Form\QuizType;
 use AdminBundle\Manager\PaginatorManager;
 use AppBundle\Entity\Quiz;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -48,14 +48,16 @@ class QuizController extends Controller
      */
     public function createAction(Request $request)
     {
-        $form = $this->createForm(CreateQuizType::class, new Quiz());
+        $form = $this->createForm(QuizType::class, new Quiz());
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $quiz = $form->getData();
             $quiz->setAuthor($this->getUser());
-
             $em = $this->getDoctrine()->getManager();
+
             foreach ($quiz->getQuestions() as $question) {
                 $question->setQuiz($quiz);
                 $em->persist($question);
@@ -68,12 +70,11 @@ class QuizController extends Controller
             $em->persist($quiz);
             $em->flush();
 
-            return $this->redirectToRoute('admin.dashboard');
+            return $this->redirectToRoute('admin.quiz.list');
         }
-
-        return $this->render(
-            "admin/quiz/create.html.twig",
-            ['form' => $form->createView()]
+        return $this->render("admin/quiz/create.html.twig", [
+                'form' => $form->createView(),
+            ]
         );
     }
 
@@ -96,7 +97,6 @@ class QuizController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
 
             $em = $this->getDoctrine()->getManager();
-
             $em->persist($quiz);
             $em->flush();
 
@@ -104,7 +104,6 @@ class QuizController extends Controller
                 'notice',
                 'Quiz has been successfully modified!'
             );
-
             return $this->redirectToRoute('admin.quiz.edit', [
                 'quiz_id' => $quiz->getId(),
             ]);
@@ -134,7 +133,6 @@ class QuizController extends Controller
             'notice',
             'Quiz has been successfully removed!'
         );
-
         return $this->redirectToRoute('admin.quiz.list');
     }
 }
