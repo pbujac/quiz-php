@@ -5,7 +5,6 @@ namespace AdminBundle\Form;
 use AdminBundle\Validator\Constraints\UniqueQuiz;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Quiz;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -17,7 +16,7 @@ use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class QuizType extends AbstractType
+class BaseQuizType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
