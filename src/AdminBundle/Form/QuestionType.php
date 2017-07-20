@@ -35,7 +35,6 @@ class QuestionType extends AbstractType
                 ],
                 'constraints' => [
                     new Count(['min' => 2]),
-//                    new MinimCheckedAnswer(),
                 ],
             ]);
     }

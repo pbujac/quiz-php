@@ -7,11 +7,11 @@ function bindAddQuestionButton() {
     $('.add-question-button').off('click').on('click', function () {
         var $collectionHolder = $(this).siblings('.quiz-questions').first();
         var prototype = $collectionHolder.data('prototype');
-        // var answerIndex = $collectionHolder.find(' > .form-group').length + 1;
+        var questionIndex = $collectionHolder.find(' > .form-group').length + 1;
 
         var answerPrototype = $(prototype).find('.question-answers').data('prototype');
-        // prototype = prototype.replace(/__name__label__/g, 'Question #' + answerIndex);
-        // prototype = prototype.replace(/__name__/g, answerIndex);
+        prototype = prototype.replace(/__name__label__/g, 'Question #' + questionIndex);
+        prototype = prototype.replace(/__name__/g, questionIndex);
         var $prototype = $(prototype);
         $prototype.find('.question-answers').data('prototype', answerPrototype);
 
@@ -29,8 +29,7 @@ function bindAddAnswerButton() {
 
         prototype = prototype.replace(/__name___answers___name__/g, questionIndex + '_answers_' + answerIndex);
         prototype = prototype.replace(/\[__name__]\[answers]\[__name__]/g, '[' + questionIndex + '][answers][' + answerIndex + ']');
-        // prototype = prototype.replace(/__name__label__/g, 'Answer #' + answerIndex);
-        // prototype = prototype.replace(/__name__/g, questionIndex);
+        prototype = prototype.replace(/__name__/g, answerIndex);
 
         $collectionHolder.append(prototype);
     });
