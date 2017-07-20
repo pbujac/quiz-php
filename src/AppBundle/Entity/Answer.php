@@ -57,7 +57,7 @@ class Answer
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -65,7 +65,7 @@ class Answer
     /**
      * @return Question
      */
-    public function getQuestion(): Question
+    public function getQuestion(): ?Question
     {
         return $this->question;
     }
@@ -81,7 +81,7 @@ class Answer
     /**
      * @return string
      */
-    public function getText(): string
+    public function getText(): ?string
     {
         return $this->text;
     }
@@ -97,7 +97,7 @@ class Answer
     /**
      * @return bool
      */
-    public function isCorrect(): bool
+    public function isCorrect(): ?bool
     {
         return $this->correct;
     }

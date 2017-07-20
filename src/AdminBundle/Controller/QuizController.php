@@ -2,6 +2,7 @@
 
 namespace AdminBundle\Controller;
 
+use AdminBundle\Form\QuizType;
 use AdminBundle\Manager\PaginatorManager;
 use AppBundle\Entity\Quiz;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -27,7 +28,7 @@ class QuizController extends Controller
 
         $quizzes = $this->getDoctrine()
             ->getRepository(Quiz::class)
-            ->getByFilter($filter ,$page);
+            ->getQuizByFilter($filter ,$page);
 
         $maxPages = ceil($quizzes->count() / PaginatorManager::PAGE_LIMIT);
 
@@ -36,6 +37,42 @@ class QuizController extends Controller
             'maxPages' => $maxPages,
             'currentPage' => $page,
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse|Response
+     *
+     * @Route("/quiz/create", name="admin.quiz.create")
+     */
+    public function createAction(Request $request)
+    {
+        $form = $this->createForm(QuizType::class, new Quiz());
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $quiz = $form->getData();
+            $quiz->setAuthor($this->getUser());
+
+            $em = $this->getDoctrine()->getManager();
+            foreach ($quiz->getQuestions() as $question) {
+                $question->setQuiz($quiz);
+                $em->persist($question);
+                foreach ($question->getAnswers() as $answer) {
+                    $answer->setQuestion($question);
+                    $em->persist($answer);
+                }
+            }
+            $em->persist($quiz);
+            $em->flush();
+
+            return $this->redirectToRoute('admin.dashboard');
+        }
+
+        return $this->render(
+            "admin/quiz/create.html.twig",
+            array('form' => $form->createView())
+        );
     }
 
     /**
