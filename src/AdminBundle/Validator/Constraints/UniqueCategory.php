@@ -11,6 +11,5 @@ class UniqueCategory extends Constraint
 {
     /** @param string $message */
     public $message = 'Category already exist!';
-
 }
 

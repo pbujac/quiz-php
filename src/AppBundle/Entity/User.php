@@ -4,7 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
  * User
@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\HasLifecycleCallbacks()
  *
  */
-class User implements UserInterface
+class User implements AdvancedUserInterface
 {
     const ROLE_ADMIN = "ROLE_ADMIN";
     const ROLE_MANAGER = "ROLE_MANAGER";
