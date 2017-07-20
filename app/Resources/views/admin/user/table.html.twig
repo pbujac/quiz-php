@@ -18,9 +18,9 @@
         <tr>
             <th>Username</th>
             <th>Name and Surname</th>
-            <th>Password</th>
             <th>Role</th>
             <th>Status</th>
+            <th colspan="2" class="text-center">Actions</th>
         </tr>
         </thead>
 
@@ -34,20 +34,21 @@
                     {{ user.firstname }} {{ user.lastname }}
                 </td>
                 <td>
-                    {{ user.password }}
-                </td>
-                <td>
                     {{ user.roles|join(', ') }}
                 </td>
                 <td>
                     {% if user.active %} Active {% else %} Inactive {% endif %}
                 </td>
-                <td >
-                    <a href="{{ path('admin.user.enable', {'user_id': user.id }) }}">
+                <td>
+                    <a class="btn btn-sm btn-primary btn-edit"
+                       href="{{ path('admin.user.enable', {'user_id': user.id }) }}">
                         Change state
                     </a>
+                </td>
+                <td>
 
-                    <a href="{{ path('admin.user.edit', {'user_id': user.id}) }}" class="btn btn-sm btn-success btn-edit">
+                    <a href="{{ path('admin.user.edit', {'user_id': user.id}) }}"
+                       class="btn btn-sm btn-success btn-edit">
                         <i class="glyphicon glyphicon-pencil"></i>
                         Edit
                     </a>
