@@ -45,7 +45,7 @@ class Answer
     /**
      * @var ArrayCollection|ResultAnswer[]
      *
-     * @ORM\OneToMany(targetEntity="ResultAnswer", mappedBy="answer", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="ResultAnswer", mappedBy="answer", cascade={"persist", "remove"})
      */
     private $resultAnswers;
 
@@ -76,7 +76,6 @@ class Answer
     public function setQuestion(Question $question)
     {
         $this->question = $question;
-        $question->addAnswer($this);
     }
 
     /**

@@ -40,7 +40,9 @@ class UserType extends AbstractType
                     ]
                 ]
             )
-            ->add('active', CheckboxType::class)
+            ->add('active', CheckboxType::class,[
+                'required' => false,
+            ])
             ->add('firstName', TextType::class, [
                     'required' => true,
                     'constraints' => [
