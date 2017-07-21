@@ -1,0 +1,25 @@
+{% extends 'user/base.html.twig' %}
+
+{% block title %}Registration{% endblock %}
+
+{% block content %}
+
+    <div class="col-md-10">
+
+
+        {% block body %}
+
+            <form method="post" action="{{ path('user.register') }}" target="_blank">
+                Username: <input type="text" name="username"><br>
+                Password: <input type="text" name="pasword"><br>
+                First name: <input type="text" name="firstName"><br>
+                Last name: <input type="text" name="lastName"><br>
+                <input type="submit" value="Submit">
+            </form>
+
+        {% endblock %}
+
+        {% endembed %}
+
+    </div>
+{% endblock %}

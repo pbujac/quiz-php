@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title %}Welcome!{% endblock %}</title>
+
+    {% block stylesheets %}
+        {% stylesheets
+        'assets/vendor/bootstrap/dist/css/bootstrap.min.css'
+        'assets/css/base.css'
+        'assets/css/login.css'
+        'assets/css/form.css'
+        'assets/css/dashboard.css'
+        'assets/css/modal.css'
+        'assets/css/footer.css'
+        'assets/css/main.css'
+        filter='cssrewrite' output='css/compiled/app.css' %}
+
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+
+        {% endstylesheets %}
+
+    {% endblock %}
+
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+</head>
+<body>
+
+{% block header %}{% endblock %}
+
+<div class="container-fluid main-container">
+    <div class="row">
+        {% block sidebar %}{% endblock %}
+
+        {% block content %}{% endblock %}
+
+        {% block footer %}{% endblock %}
+    </div>
+</div>
+
+{% block javascripts %}
+
+    {% javascripts
+    'assets/vendor/jquery/dist/jquery.js'
+    'assets/vendor/bootstrap/dist/js/bootstrap.js'
+    'assets/js/main.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+{% endblock %}
+
+</body>
+</html>
