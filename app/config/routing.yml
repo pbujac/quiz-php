@@ -11,3 +11,7 @@ root:
     defaults:
         _controller: AdminBundle:Security:login
         permanent: true
+api:
+   resource: "@ApiBundle/Controller/"
+   type:      annotation
+   prefix:    /api

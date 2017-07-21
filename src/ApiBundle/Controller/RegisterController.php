@@ -2,34 +2,33 @@
 
 namespace ApiBundle\Controller ;
 
-use AdminBundle\Form\UserType;
-use AppBundle\Entity\User;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use ApiBundle\DTO\RegisterDTO;
-use Symfony\Component\HttpKernel\Tests\Controller;
 
-class RegisterController extends Controller
+class RegisterController extends FOSRestController
 {
     /**
      * @param Request $request
      *
      * @return RedirectResponse|Response
      *
-     * @Rest\Route("/api/register", name="user.register")
+     * @Rest\Route("/api/register", name="api.user.register")
      */
     public function registrationAction(Request $request)
     {
-        $form = $this->createForm(UserType::class, new User())
-            ->setUsername('username','text')
-            ->setPassword('password','text')
-            ->setFirstName('firstName','text')
-            ->setLastName('lastName','text')
-            ->getForm();
-        ;
-        $view=$this->view($form,200)
+        $user= new RegisterDTO();
+        $user->setUsername('username');
+        $user->setPassword('password');
+        $user->setFirstName('firstName');
+        $user->setLastName('lastName');
+
+       dump($user);
+
+        $view=$this->view($user,200)
             ->setTemplate("ApiBundle:Resources:views:user:register:register.html.twig")
             ->setTemplateVar('registration');
 

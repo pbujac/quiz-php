@@ -32,6 +32,10 @@ class RegisterDTO
      */
     public $lastName;
 
+    public function __construct() {
+
+    }
+
     /**
      * @param string $username
      */
