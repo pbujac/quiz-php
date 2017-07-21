@@ -14,6 +14,6 @@ class AdminController extends Controller
      */
     public function adminAction()
     {
-        return $this->render('AdminBundle:admin:admin.html.twig');
+        return $this->render('admin/dashboard.html.twig');
     }
 }
