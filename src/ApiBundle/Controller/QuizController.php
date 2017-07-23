@@ -2,12 +2,23 @@
 
 namespace ApiBundle\Controller;
 
+use AppBundle\Entity\Quiz;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class QuizController extends Controller
 {
-    public function indexAction($name)
+    /**
+     * @Rest\Get("/quiz", name="quizById")
+     */
+    public function getQuizAction()
     {
-        return $this->render('', array('name' => $name));
+        $quizzes[] = $this->getDoctrine()->getRepository(Quiz::class)->findAll();
+        if(is_null($quizzes)){
+            throw $this->createNotFoundException();
+        }
+
+        $this->render(':api:file.html.twig');
+//        return $quizzes;
     }
 }
