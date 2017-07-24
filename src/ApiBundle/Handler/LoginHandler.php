@@ -4,17 +4,18 @@ namespace ApiBundle\Handler;
 
 use ApiBundle\DTO\LoginDTO;
 use AppBundle\Entity\User;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 
 class LoginHandler
 {
-    /** @var EntityManagerInterface $em */
+    /** @var EntityManager $em */
     private $em;
 
     /**
-     * @param EntityManagerInterface $em
+     * @param EntityManager $em
      */
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManager $em)
     {
         $this->em = $em;
     }
@@ -24,14 +25,11 @@ class LoginHandler
      */
     public function postLoginHandler(LoginDTO $loginDTO)
     {
-//        $this->validator->validate(LoginDTO::class);
+//        $this->validator->validate($loginDTO);
 
 //        $this->encoder->encodePassword($loginDTO->getUser(), $loginDTO->getPassword());
 //
-        $user = $this->em->getRepository(User::class)->findOneBy([
-            'username' => $loginDTO->getUsername(),
-            'password' => $loginDTO->getUser()->getPassword(),
-        ]);
+//        $this->em->getRepository(User::class);
 //
 //        if (!$user) {
 //            // generate token

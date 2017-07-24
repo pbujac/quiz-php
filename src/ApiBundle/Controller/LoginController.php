@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @Rest\Route("/login")
  */
-class SecurityController extends FOSRestController
+class LoginController extends FOSRestController
 {
     /**
      * @Rest\Post()

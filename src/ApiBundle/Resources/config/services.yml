@@ -6,3 +6,6 @@ services:
 
     ApiBundle\Handler\LoginHandler:
         public: true
+#        arguments:
+#            - '@doctrine.orm.entity_manager'
+

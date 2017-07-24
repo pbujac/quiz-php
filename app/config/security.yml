@@ -16,6 +16,12 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        api:
+            pattern: ^/api/
+            stateless: true
+            guard:
+                authenticators:
+                    - ApiBundle\Security\TokenAuthenticator
         main:
             pattern:  ^/
             form_login:
@@ -23,7 +29,10 @@ security:
                 check_path: /admin/login
                 default_target_path: /admin
             logout: true
-            anonymous: true
+            anonymous: ~
+            context: primary_auth
+
+
 
     access_control:
         - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
