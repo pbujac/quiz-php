@@ -18,13 +18,12 @@ class SecurityController extends FOSRestController
      * @Rest\Post()
      *
      * @param LoginDTO $loginDTO
-     * @param LoginHandler $loginHandler
      *
      * @return View
      */
-    public function postAction(LoginDTO $loginDTO, LoginHandler $loginHandler)
+    public function postAction(LoginDTO $loginDTO)
     {
-        $loginHandler->loginHandler($loginDTO);
+        $this->get(LoginHandler::class)->loginHandler($loginDTO);
 
         return View::create($loginDTO, Response::HTTP_OK);
     }

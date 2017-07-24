@@ -2,9 +2,8 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
-        public: false
-
-    ApiBundle\Handler\LoginHandler:
         public: true
-        arguments:
-            - '@doctrine.orm.entity_manager'
+
+    ApiBundle\:
+        resource: '../../*'
+
