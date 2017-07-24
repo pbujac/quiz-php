@@ -336,7 +336,7 @@ class User implements AdvancedUserInterface
     /**
      * @return ArrayCollection|AccessToken[]
      */
-    public function getAccessToken()
+    public function getAccessTokens()
     {
         return $this->accessTokens;
     }

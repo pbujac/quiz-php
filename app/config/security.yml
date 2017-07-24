@@ -16,6 +16,10 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
+        login_api:
+            pattern:  ^/api/login$
+            anonymous:  ~
         api:
             pattern: ^/api/
             stateless: true
@@ -31,8 +35,6 @@ security:
             logout: true
             anonymous: ~
             context: primary_auth
-
-
 
     access_control:
         - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }

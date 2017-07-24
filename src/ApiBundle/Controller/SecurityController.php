@@ -10,11 +10,9 @@ use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class SecurityController
- *
  * @Rest\Route("/login")
  */
-class LoginController extends FOSRestController
+class SecurityController extends FOSRestController
 {
     /**
      * @Rest\Post()
@@ -24,9 +22,9 @@ class LoginController extends FOSRestController
      *
      * @return View
      */
-    public function postLoginAction(LoginDTO $loginDTO, LoginHandler $loginHandler)
+    public function postAction(LoginDTO $loginDTO, LoginHandler $loginHandler)
     {
-        $loginHandler->postLoginHandler($loginDTO);
+        $loginHandler->loginHandler($loginDTO);
 
         return View::create($loginDTO, Response::HTTP_OK);
     }

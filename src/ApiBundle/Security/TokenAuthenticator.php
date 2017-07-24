@@ -15,8 +15,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 class TokenAuthenticator extends AbstractGuardAuthenticator
 {
+    /**@var EntityManager */
     private $em;
 
+    /**
+     * TokenAuthenticator constructor.
+     * @param EntityManager $em
+     */
     public function __construct(EntityManager $em)
     {
         $this->em = $em;
@@ -43,7 +48,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function getCredentials(Request $request)
     {
-        return ['token' => $request->headers->get('X-API-TOKEN')];
+        return ['token' => $request->headers->get('API-TOKEN')];
     }
 
     /**
@@ -56,18 +61,16 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-
         $accessToken = $this->em->getRepository(AccessToken::class)
             ->findOneBy([
                 'accessToken' => $credentials['token']
             ]);
 
-        if (!$accessToken) {
+        if (!$accessToken || $accessToken->getExpireAt() > new \DateTime()) {
             return null;
-        } else {
-            $user = $accessToken->getUser();
         }
-        return $userProvider->loadUserByUsername($user->getUsername());
+
+        return $userProvider->loadUserByUsername($accessToken->getUser()->getUsername());
     }
 
     /**
