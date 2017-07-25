@@ -2,7 +2,7 @@
 
 namespace AdminBundle\Form;
 
-use AdminBundle\Validator\Constraints\MinimCheckedAnswer;
+use AdminBundle\Validator\Constraints\NotEmptyAnswer;
 use AppBundle\Entity\Question;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -18,7 +18,7 @@ class QuestionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('text', TextType::class,[
+            ->add('text', TextType::class, [
                 'required' => true,
                 'constraints' => [
                     new NotBlank(),
@@ -27,14 +27,18 @@ class QuestionType extends AbstractType
             ])
             ->add('answers', CollectionType::class, [
                 'entry_type' => AnswerType::class,
-                'required' => true,
                 'prototype' => true,
                 'allow_add' => true,
+                'allow_delete' => true,
                 'attr' => [
-                    'class' => 'question-answers'
+                    'class' => 'quiz-question question-answers',
                 ],
                 'constraints' => [
-                    new Count(['min' => 2]),
+                    new Count([
+                        'min' => 2,
+                        'minMessage' => 'You must specify at least two answers',
+                    ]),
+                    new NotEmptyAnswer(),
                 ],
             ]);
     }
