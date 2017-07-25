@@ -6,4 +6,9 @@ services:
 
     ApiBundle\:
         resource: '../../*'
+    ApiBundle\Handler\LoginHandler:
+        $secretKey: '%secret%'
 
+    ApiBundle\EventListener\ExceptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }

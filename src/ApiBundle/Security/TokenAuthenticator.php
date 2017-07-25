@@ -6,6 +6,7 @@ use AppBundle\Entity\AccessToken;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -19,7 +20,6 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
     private $em;
 
     /**
-     * TokenAuthenticator constructor.
      * @param EntityManager $em
      */
     public function __construct(EntityManager $em)
@@ -35,10 +35,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function start(Request $request, AuthenticationException $authException = null)
     {
-        return new JsonResponse(
-            ['message' => 'Authentication required'],
-            401
-        );
+        throw new BadRequestHttpException();
     }
 
     /**
@@ -48,7 +45,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function getCredentials(Request $request)
     {
-        return ['token' => $request->headers->get('API-TOKEN')];
+        return ['token' => $request->headers->get('authentication')];
     }
 
     /**
@@ -61,13 +58,14 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
+
         $accessToken = $this->em->getRepository(AccessToken::class)
             ->findOneBy([
                 'accessToken' => $credentials['token']
             ]);
 
-        if (!$accessToken || $accessToken->getExpireAt() > new \DateTime()) {
-            return null;
+        if (!$accessToken || $accessToken->getExpireAt() < new \DateTime()) {
+            throw new BadRequestHttpException();
         }
 
         return $userProvider->loadUserByUsername($accessToken->getUser()->getUsername());
@@ -94,10 +92,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        return new JsonResponse(
-            ['message' => $exception->getMessageKey()],
-            403
-        );
+        throw new BadRequestHttpException();
     }
 
     /**

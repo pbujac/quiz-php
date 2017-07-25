@@ -53,17 +53,4 @@ class LoginDTO
     {
         $this->password = $password;
     }
-
-    /**
-     * @return User
-     */
-    public function getUser()
-    {
-        $user = new User();
-        $user->setUsername($this->username);
-        $user->setPassword($this->password);
-        $user->setActive(true);
-
-        return $user;
-    }
 }

@@ -14,3 +14,7 @@ services:
         resource: '../../src/AdminBundle/Controller'
         public: true
         tags: ['controller.service_arguments']
+
+    ApiBundle\Controller\:
+        resource: '../../src/ApiBundle/Controller'
+        public: true
