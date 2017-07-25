@@ -2,7 +2,6 @@
 
 namespace ApiBundle\DTO ;
 
-use AppBundle\Entity\User;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation\Type;
 
@@ -67,21 +66,6 @@ class RegistrationDTO
     public function setLastName(string $lastName)
     {
         $this->lastName = $lastName;
-    }
-
-    /**
-     * @return User
-     */
-    public function addUser() {
-
-        $user = new User();
-        $user->setUsername($this->username);
-        $user->setPassword($this->password);
-        $user->setFirstName($this->firstName);
-        $user->setLastName($this->lastName);
-        $user->setActive(true);
-
-        return $user;
     }
 
 }

@@ -81,3 +81,10 @@ twig:
 assetic:
     filters:
         cssrewrite: ~
+
+fos_rest:
+    body_converter:
+        enabled: true
+
+sensio_framework_extra:
+    request: { converters: true }
