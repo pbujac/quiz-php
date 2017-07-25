@@ -35,3 +35,24 @@
 .glyphicon {
     margin-right: 5px;
 }
+
+.checkbox {
+    display: inline-block;
+}
+
+.remove-btn {
+    margin-left: 20px;
+}
+
+.add-answer-btn {
+    padding: 10px;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.answer-row .form-group {
+    display: inline-block;
+}
+.answer-row .form-group:first-child {
+    display: block;
+}
