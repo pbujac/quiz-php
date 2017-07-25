@@ -33,7 +33,6 @@ security:
                 default_target_path: /admin
             logout: true
             anonymous: ~
-            context: primary_auth
 
     access_control:
         - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
