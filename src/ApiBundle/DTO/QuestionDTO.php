@@ -26,7 +26,7 @@ class QuestionDTO
      *
      * @Type("ArrayCollection<ApiBundle\DTO\AnswerDTO>")
      */
-    private $questions;
+    private $answers;
 
     /**
      * @return int

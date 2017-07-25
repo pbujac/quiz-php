@@ -73,7 +73,7 @@ class QuizDTO
     {
         $this->description = $description;
     }
-
+//
 //    /**
 //     * @return QuestionDTO[]|ArrayCollection
 //     */
