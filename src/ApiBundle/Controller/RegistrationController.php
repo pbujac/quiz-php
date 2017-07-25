@@ -31,9 +31,8 @@ class RegistrationController extends FOSRestController
     {
 //
 //        $registrationHandler->handleRegistration($registrationDTO);
-
-        return  new Response(
-        )
+//
+        return View::create($registrationDTO,Response::HTTP_OK);
     }
 
 }
