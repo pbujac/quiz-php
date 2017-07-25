@@ -23,21 +23,12 @@ class RegistrationController extends FOSRestController
      *
      * @ParamConverter(
      *     "registrationDTO",
-     *     class="ApiBundle/DTO/RegistrationDTO",
      *     converter="fos_rest.request_body")
      *
      * @return View
      */
     public function registerAction(RegistrationDTO $registrationDTO , RegistrationHandler $registrationHandler)
     {
-//
-//      $registrationDTO->setUsername('hero');
-//      $registrationDTO->setPassword('23');
-//      $registrationDTO->setFirstName('arc');
-//      $registrationDTO->setLastName('post');
-
-
-
 
         $registrationHandler->handleRegistration($registrationDTO);
 

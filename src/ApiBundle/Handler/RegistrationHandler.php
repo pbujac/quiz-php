@@ -3,6 +3,7 @@
 namespace ApiBundle\Handler ;
 
 use ApiBundle\DTO\RegistrationDTO ;
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
 class RegistrationHandler
@@ -23,14 +24,17 @@ class RegistrationHandler
      */
     public function handleRegistration (RegistrationDTO $registrationDTO)
     {
-        $user= new RegistrationDTO ;
-        $user->setUsername('1');
-        $user->setPassword('2');
-        $user->setFirstName('3');
-        $user->setLastName('4');
+        $user= new User();
 
-        $this->em->persist($user);
-        $this->em->flush();
+        $user->setUsername($registrationDTO->getUsername());
+        $user->setPassword($registrationDTO->getPassword());
+        $user->setFirstName($registrationDTO->getFirstName());
+        $user->setLastName($registrationDTO->getLastName());
+        $user->setActive(true);
+
+        $em=$this->em ;
+        $em->persist($user);
+        $em->flush();
 
     }
 }
