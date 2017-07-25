@@ -85,7 +85,11 @@ assetic:
 fos_rest:
     param_fetcher_listener: true
     body_listener: true
-    format_listener: true
+    format_listener:
+        enabled: true
+        rules:
+            - { path: '^/api', priorities: ['json'], fallback_format: json }
+            - { path: '^/', stop: true }
     view:
         view_response_listener: 'force'
         formats:
@@ -98,3 +102,5 @@ fos_rest:
         default_engine: twig
     routing_loader:
         default_format: json
+    body_converter:
+        enabled: true
