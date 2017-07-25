@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class UniqueUser extends Constraint
 {
-    /** @param string $message */
+    /** @var string $message */
     public $message = 'This Username already exist!';
 }
 
