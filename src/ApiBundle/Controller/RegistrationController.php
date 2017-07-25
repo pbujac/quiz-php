@@ -12,7 +12,7 @@ use ApiBundle\DTO\RegistrationDTO ;
 /**
  * Class RegistrationController
  *
- * @Rest\Route("/register",name="api.register")
+ * @Rest\Route("/api/register",name="api.register")
  */
 class RegistrationController extends FOSRestController
 {
