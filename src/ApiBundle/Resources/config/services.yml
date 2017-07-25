@@ -6,6 +6,7 @@ services:
 
     ApiBundle\:
         resource: '../../*'
+
     ApiBundle\Handler\LoginHandler:
         $secretKey: '%secret%'
 

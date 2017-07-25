@@ -64,9 +64,12 @@ class LoginHandler
             throw new BadRequestHttpException();
         }
         $token = new AccessToken();
-        $token->setExpireAt((new \DateTime())->modify('+1 month'));
-        $token->setAccessToken(JWT::encode($loginDTO, $this->secretKey));
         $token->setUser($user);
+        $token->setExpireAt((new \DateTime())->modify('+1 month'));
+        $token->setAccessToken(JWT::encode(
+            [random_int(1, 10) . $loginDTO->getUsername()],
+            $this->secretKey)
+        );
 
         $this->em->persist($token);
         $this->em->flush();
