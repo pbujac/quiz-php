@@ -14,7 +14,7 @@ class RegistrationDTO
      *      min = 4,
      *      max = 15)
      * @Type("string")
-     * @ORM\Column(name="username", type="string", length=255, unique=true)
+     * @ORM\Column(name="username", length=255, unique=true)
      * @var string
      */
     public $username;
