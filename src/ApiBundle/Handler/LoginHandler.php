@@ -36,8 +36,7 @@ class LoginHandler
         ValidatorInterface $validator,
         UserPasswordEncoderInterface $encoder,
         string $secretKey
-    )
-    {
+    ) {
         $this->em = $em;
         $this->validator = $validator;
         $this->encoder = $encoder;
@@ -60,20 +59,52 @@ class LoginHandler
             'username' => $loginDTO->getUsername()
         ]);
 
-        if (!$user || !$this->encoder->isPasswordValid($user, $loginDTO->getPassword())) {
-            throw new BadRequestHttpException();
-        }
-        $token = new AccessToken();
-        $token->setUser($user);
-        $token->setExpireAt((new \DateTime())->modify('+1 month'));
-        $token->setAccessToken(JWT::encode(
-            [random_int(1, 10) . $loginDTO->getUsername()],
-            $this->secretKey)
-        );
+        $this->validateCredentials($loginDTO, $user);
+        $token = $this->generateToken($loginDTO, $user);
 
         $this->em->persist($token);
         $this->em->flush();
 
         return $token;
     }
+
+
+    /**
+     * @param LoginDTO $loginDTO
+     * @param $user
+     */
+    public function validateCredentials(LoginDTO $loginDTO, $user): void
+    {
+        if (!$user || !$this->encoder->isPasswordValid(
+                $user,
+                $loginDTO->getPassword()
+            )
+        ) {
+            throw new BadRequestHttpException();
+        }
+    }
+
+    /**
+     * @param LoginDTO $loginDTO
+     * @param $user
+     *
+     * @return AccessToken
+     */
+    public function generateToken(LoginDTO $loginDTO, $user): AccessToken
+    {
+        $expireTokenDate = new \DateTime();
+        $expireTokenDate->modify('+1 month');
+        $newToken = JWT::encode(
+            [random_int(1, 10) . $loginDTO->getUsername()],
+            $this->secretKey
+        );
+
+        $token = new AccessToken();
+        $token->setUser($user);
+        $token->setExpireAt($expireTokenDate);
+        $token->setAccessToken($newToken);
+
+        return $token;
+    }
+
 }

@@ -17,10 +17,10 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         login_api:
-            pattern:  ^/api/login
-            anonymous:  ~
+            pattern:  ^/api/v1/login
+            anonymous: true
         api:
-            pattern: ^/api/
+            pattern: ^/api/v1
             stateless: true
             guard:
                 authenticators:

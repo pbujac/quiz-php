@@ -30,7 +30,7 @@ class AccessToken
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="accessTokens")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
 
