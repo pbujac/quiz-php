@@ -9,7 +9,15 @@ use Doctrine\ORM\EntityManagerInterface;
 class RegistrationHandler
 {
     /** @var EntityManagerInterface $em */
-    private $em ;
+    private $em;
+
+    /**
+     * @param EntityManagerInterface $em
+     */
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em=$em;
+    }
 
     /**
      * @param RegistrationDTO $registrationDTO
@@ -18,14 +26,13 @@ class RegistrationHandler
     {
         $user= new User();
 
-        $user->setUsername($registrationDTO->getUsername());
-        $user->setPassword($registrationDTO->getPassword());
-        $user->setFirstName($registrationDTO->getFirstName());
-        $user->setLastName($registrationDTO->getLastName());
+        $user->setUsername($registrationDTO->username);
+        $user->setPassword($registrationDTO->password);
+        $user->setFirstName($registrationDTO->firstName);
+        $user->setLastName($registrationDTO->lastName);
         $user->setActive(true);
 
-        $em=$this->em ;
-        $em->persist($user);
-        $em->flush();
+        $this->em->persist($user);
+        $this->em->flush();
     }
 }
