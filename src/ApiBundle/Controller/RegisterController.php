@@ -36,14 +36,4 @@ class RegisterController extends FOSRestController
 
     }
 
-    /**
-     * @return RedirectResponse|Response
-     */
-    public function redirectAction()
-    {
-        $view=$this->routeRedirectView('user.page',301);
-
-        return $this->handleView($view);
-    }
-
 }
