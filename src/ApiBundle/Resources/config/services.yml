@@ -4,6 +4,9 @@ services:
         autoconfigure: true
         public: true
 
+    ApiBundle\:
+        resource: '../../*'
+
     ApiBundle\Handler\LoginHandler:
         $secretKey: '%secret%'
 

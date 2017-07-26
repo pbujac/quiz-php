@@ -14,9 +14,6 @@ services:
     AdminBundle\:
         resource: '../../src/AdminBundle/*'
 
-    ApiBundle\:
-        resource: '../../src/AdminBundle/*'
-
     AdminBundle\Controller\:
         resource: '../../src/AdminBundle/Controller'
         public: true
