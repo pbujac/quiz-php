@@ -4,8 +4,8 @@ namespace ApiBundle\Handler;
 
 use ApiBundle\DTO\QuizDTO;
 use ApiBundle\Transformer\QuizTransformer;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class QuizHandler
@@ -30,11 +30,31 @@ class QuizHandler
     /**
      * @param QuizDTO $quizDTO
      */
-    public function quizHandler(QuizDTO $quizDTO)
+    public function insertQuiz(QuizDTO $quizDTO)
     {
 //        $questionHandler = new QuizHandler();
+//        $this->validateQuizDTO($quizDTO);
+        $transformedQuiz = new QuizTransformer($this->em);
+        $transformedQuiz->transformQuizDTO($quizDTO);
+//        $quiz->transformQuizDTO($quizDTO)->setCategory($this->);
 
-        $quizTransformer = new QuizTransformer();
-        $quizTransformer->transformQuizDTO($quizDTO);
+//        $this->em->persist($quiz);
+//        $this->em->flush();
+    }
+
+    /**
+     * @param QuizDTO $quizDTO
+     */
+    public function validateQuizDTO(QuizDTO $quizDTO): void
+    {
+        $errors = $this->validator->validate($quizDTO);
+
+        if (count($errors) > 0) {
+            $errorMessage = "";
+            foreach ($errors as $violation) {
+                $errorMessage .= $violation->getPropertyPath() . '-' . $violation->getMessage();
+            }
+            throw new BadRequestHttpException($errorMessage);
+        }
     }
 }

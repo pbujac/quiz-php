@@ -15,7 +15,6 @@ class CategoryDTO
     public $id;
 
     /**
-     * @Assert\NotBlank
      * @Type("string")
      * @var string
      */

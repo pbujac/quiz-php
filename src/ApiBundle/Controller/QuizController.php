@@ -21,10 +21,10 @@ class QuizController extends FOSRestController
      *
      * @return View
      */
-    public function createAction(QuizHandler $quizHandler, QuizDTO $quizDTO,QuestionDTO $questionDTO,AnswerDTO $answerDTO)
+    public function createAction(QuizHandler $quizHandler, QuizDTO $quizDTO)
     {
 //        die(dump($quizDTO));
-        $quizHandler->quizHandler($quizDTO);
+        $quizHandler->insertQuiz($quizDTO);
         return View::create($quizDTO, Response::HTTP_CREATED);
     }
 }

@@ -20,16 +20,22 @@ class QuizDTO
     private $title;
 
     /**
-     * @var CategoryDTO
-     * @Type("ApiBundle\DTO\CategoryDTO")
+     * @var int
+     * @Type("int")
      */
-    private $category;
+    private $category_id;
 
     /**
      * @var string
      * @Type("string")
      */
     private $description;
+
+    /**
+     * @var int
+     * @Type("int")
+     */
+    private $author_id;
 
     /**
      *
@@ -64,19 +70,11 @@ class QuizDTO
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getCategory(): string
+    public function getCategoryId(): int
     {
-        return $this->category;
-    }
-
-    /**
-     * @param string $category
-     */
-    public function setCategory(string $category)
-    {
-        $this->category = $category;
+        return $this->category_id;
     }
 
     /**
@@ -101,6 +99,14 @@ class QuizDTO
     public function getQuestions()
     {
         return $this->questions;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAuthorId()
+    {
+        return $this->author_id;
     }
 
 //    /**
