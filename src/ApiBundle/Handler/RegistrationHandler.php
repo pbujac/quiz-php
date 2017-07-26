@@ -12,14 +12,6 @@ class RegistrationHandler
     private $em ;
 
     /**
-     * @param EntityManagerInterface $em
-     */
-    public function __construct(EntityManagerInterface $em)
-    {
-        $this->em = $em;
-    }
-
-    /**
      * @param RegistrationDTO $registrationDTO
      */
     public function handleRegistration (RegistrationDTO $registrationDTO)
@@ -35,6 +27,5 @@ class RegistrationHandler
         $em=$this->em ;
         $em->persist($user);
         $em->flush();
-
     }
 }
