@@ -19,7 +19,6 @@ class RegisterUserController extends FOSRestController
      * @Rest\Post()
      *
      * @param RegistrationDTO $registrationDTO
-     * @param RegistrationHandler $registrationHandler
      *
      * @ParamConverter(
      *     "registrationDTO",
@@ -27,9 +26,9 @@ class RegisterUserController extends FOSRestController
      *
      * @return View
      */
-    public function indexAction(RegistrationDTO $registrationDTO , RegistrationHandler $registrationHandler)
+    public function indexAction(RegistrationDTO $registrationDTO)
     {
-        $registrationHandler->handleRegistration($registrationDTO);
+        $this->get(RegistrationHandler::class)->handleRegistration($registrationDTO);
 
         return View::create($registrationDTO,Response::HTTP_ACCEPTED);
     }

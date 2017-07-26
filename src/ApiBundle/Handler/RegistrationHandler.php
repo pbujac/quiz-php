@@ -1,8 +1,8 @@
 <?php
 
-namespace ApiBundle\Handler ;
+namespace ApiBundle\Handler;
 
-use ApiBundle\DTO\RegistrationDTO ;
+use ApiBundle\DTO\RegistrationDTO;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -16,13 +16,13 @@ class RegistrationHandler
      */
     public function __construct(EntityManagerInterface $em)
     {
-        $this->em=$em;
+        $this->em = $em;
     }
 
     /**
      * @param RegistrationDTO $registrationDTO
      */
-    public function handleRegistration (RegistrationDTO $registrationDTO)
+    public function handleRegistration(RegistrationDTO $registrationDTO)
     {
         $user= new User();
 
@@ -31,6 +31,7 @@ class RegistrationHandler
         $user->setFirstName($registrationDTO->firstName);
         $user->setLastName($registrationDTO->lastName);
         $user->setActive(true);
+        $user->addRole('ROLE_USER');
 
         $this->em->persist($user);
         $this->em->flush();

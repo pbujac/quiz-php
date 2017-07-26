@@ -4,9 +4,5 @@ services:
         autoconfigure: true
         public: true
 
-#    ApiBundle\:
-#        resource: '../../*'
-
-    ApiBundle\Handler\RegistrationHandler:
-        public: true
-
+    ApiBundle\:
+        resource: '../../*'
