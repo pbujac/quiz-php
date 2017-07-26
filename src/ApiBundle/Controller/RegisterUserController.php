@@ -29,7 +29,7 @@ class RegisterUserController extends FOSRestController
      */
     public function indexAction(RegistrationDTO $registrationDTO , RegistrationHandler $registrationHandler)
     {
-        $registrationHandler->handleRegistration($registrationDTO);
+//        $registrationHandler->handleRegistration($registrationDTO);
 
         return View::create($registrationDTO,Response::HTTP_ACCEPTED);
     }
