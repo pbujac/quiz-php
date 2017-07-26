@@ -8,6 +8,8 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -69,21 +71,26 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        $accessToken = $this->em->getRepository(AccessToken::class)
-            ->findOneBy([
-                'accessToken' => $credentials['token']
-            ]);
-
-        if (!$accessToken && !$credentials['username']) {
-            throw new BadRequestHttpException("Credentials are invalid"); // 401
-        }
-
-        if (!$accessToken && $credentials['username']) {
+        if (!$credentials['token']) {
             $user = $this->em->getRepository(User::class)->findOneBy([
                 'username' => $credentials['username']
             ]);
-        }
 
+            if (!$user) {
+                throw new BadRequestHttpException("Credentials are invalid");
+            }
+            $username = $user->getUsername();
+        } else {
+            $accessToken = $this->em->getRepository(AccessToken::class)
+                ->findOneBy([
+                    'accessToken' => $credentials['token']
+                ]);
+
+            if (!$accessToken) {
+                throw new BadRequestHttpException("Credentials are invalid");
+            }
+            $username = $accessToken->getUser()->getUsername();
+        }
         return $userProvider->loadUserByUsername($username);
     }
 

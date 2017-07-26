@@ -5,11 +5,17 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
-        public: true
+        public: false
 
     AppBundle\:
         resource: '../../src/AppBundle/*'
         exclude: '../../src/AppBundle/{Entity,Repository}'
+
+    AdminBundle\:
+        resource: '../../src/AdminBundle/*'
+
+    ApiBundle\:
+        resource: '../../src/AdminBundle/*'
 
     AdminBundle\Controller\:
         resource: '../../src/AdminBundle/Controller'
