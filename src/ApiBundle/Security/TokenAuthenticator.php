@@ -5,11 +5,8 @@ namespace ApiBundle\Security;
 use AppBundle\Entity\AccessToken;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -105,7 +102,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
     public function checkCredentials($credentials, UserInterface $user)
     {
         if (
-            !$user &&
+            !$user ||
             !$this->encoder->isPasswordValid($user, $credentials['password'])
         ) {
             throw new BadRequestHttpException("Credentials are invalid");
