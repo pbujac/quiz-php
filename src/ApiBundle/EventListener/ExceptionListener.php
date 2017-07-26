@@ -15,7 +15,7 @@ class ExceptionListener
         if ($exception instanceof BadRequestHttpException) {
             $response = new JsonResponse([
                 'code' => $exception->getStatusCode(),
-                'message' => 'Credentials are invalid'
+                'message' => $exception->getMessage()
             ]);
 
             $response->setStatusCode($exception->getStatusCode());

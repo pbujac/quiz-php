@@ -16,9 +16,6 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        login_api:
-            pattern:  ^/api/v1/login
-            anonymous: true
         api:
             pattern: ^/api/v1
             stateless: true

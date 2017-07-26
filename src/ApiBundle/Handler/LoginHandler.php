@@ -20,26 +20,20 @@ class LoginHandler
     private $validator;
 
     /** @var string $secretKey */
-    private $encoder;
-
-    /** @var string $secretKey */
     private $secretKey;
 
     /**
      * @param EntityManagerInterface $em
      * @param ValidatorInterface $validator
-     * @param UserPasswordEncoderInterface $encoder
      * @param string $secretKey
      */
     public function __construct(
         EntityManagerInterface $em,
         ValidatorInterface $validator,
-        UserPasswordEncoderInterface $encoder,
         string $secretKey
     ) {
         $this->em = $em;
         $this->validator = $validator;
-        $this->encoder = $encoder;
         $this->secretKey = $secretKey;
     }
 
@@ -48,18 +42,13 @@ class LoginHandler
      *
      * @return AccessToken
      */
-    public function loginHandler(LoginDTO $loginDTO)
+    public function login(LoginDTO $loginDTO)
     {
-        $errors = $this->validator->validate($loginDTO);
+        $this->validateLoginDTO($loginDTO);
 
-        if (count($errors) > 0) {
-            throw new BadRequestHttpException();
-        }
         $user = $this->em->getRepository(User::class)->findOneBy([
-            'username' => $loginDTO->getUsername()
+            'username' => $loginDTO->username
         ]);
-
-        $this->validateCredentials($loginDTO, $user);
         $token = $this->generateToken($loginDTO, $user);
 
         $this->em->persist($token);
@@ -68,34 +57,34 @@ class LoginHandler
         return $token;
     }
 
-
     /**
      * @param LoginDTO $loginDTO
-     * @param $user
      */
-    public function validateCredentials(LoginDTO $loginDTO, $user): void
+    public function validateLoginDTO(LoginDTO $loginDTO): void
     {
-        if (!$user || !$this->encoder->isPasswordValid(
-                $user,
-                $loginDTO->getPassword()
-            )
-        ) {
-            throw new BadRequestHttpException();
+        $errors = $this->validator->validate($loginDTO);
+
+        if (count($errors) > 0) {
+            $errorMessage = "";
+            foreach ($errors as $violation) {
+                $errorMessage .= $violation->getPropertyPath() . '-' . $violation->getMessage();
+            }
+            throw new BadRequestHttpException($errorMessage);
         }
     }
 
     /**
      * @param LoginDTO $loginDTO
-     * @param $user
+     * @param User $user
      *
      * @return AccessToken
      */
-    public function generateToken(LoginDTO $loginDTO, $user): AccessToken
+    public function generateToken(LoginDTO $loginDTO, User $user): AccessToken
     {
         $expireTokenDate = new \DateTime();
         $expireTokenDate->modify('+1 month');
         $newToken = JWT::encode(
-            [random_int(1, 10) . $loginDTO->getUsername()],
+            [random_int(1, 10) . $loginDTO->username],
             $this->secretKey
         );
 
@@ -106,5 +95,4 @@ class LoginHandler
 
         return $token;
     }
-
 }

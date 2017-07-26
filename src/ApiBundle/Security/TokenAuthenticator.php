@@ -3,11 +3,13 @@
 namespace ApiBundle\Security;
 
 use AppBundle\Entity\AccessToken;
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -19,12 +21,17 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
     /**@var EntityManager */
     private $em;
 
+    /** @var UserPasswordEncoderInterface $encoder */
+    private $encoder;
+
     /**
      * @param EntityManager $em
+     * @param UserPasswordEncoderInterface $encoder
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManager $em, UserPasswordEncoderInterface $encoder)
     {
         $this->em = $em;
+        $this->encoder = $encoder;
     }
 
     /**
@@ -35,7 +42,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function start(Request $request, AuthenticationException $authException = null)
     {
-        throw new BadRequestHttpException();
+        throw new BadRequestHttpException("Credentials are invalid");
     }
 
     /**
@@ -45,7 +52,11 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function getCredentials(Request $request)
     {
-        return ['token' => $request->headers->get('authentication')];
+        return [
+            'token' => $request->headers->get('authentication'),
+            'username' => $request->get('username'),
+            'password' => $request->get('password')
+        ];
     }
 
     /**
@@ -58,17 +69,22 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-
         $accessToken = $this->em->getRepository(AccessToken::class)
             ->findOneBy([
                 'accessToken' => $credentials['token']
             ]);
 
-        if (!$accessToken || $accessToken->getExpireAt() < new \DateTime()) {
-            throw new BadRequestHttpException();
+        if (!$accessToken && !$credentials['username']) {
+            throw new BadRequestHttpException("Credentials are invalid"); // 401
         }
 
-        return $userProvider->loadUserByUsername($accessToken->getUser()->getUsername());
+        if (!$accessToken && $credentials['username']) {
+            $user = $this->em->getRepository(User::class)->findOneBy([
+                'username' => $credentials['username']
+            ]);
+        }
+
+        return $userProvider->loadUserByUsername($username);
     }
 
     /**
@@ -81,6 +97,12 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function checkCredentials($credentials, UserInterface $user)
     {
+        if (
+            !$user &&
+            !$this->encoder->isPasswordValid($user, $credentials['password'])
+        ) {
+            throw new BadRequestHttpException("Credentials are invalid");
+        }
         return true;
     }
 
@@ -92,7 +114,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        throw new BadRequestHttpException();
+        throw new BadRequestHttpException("Credentials are invalid");
     }
 
     /**
