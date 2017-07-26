@@ -1,18 +1,11 @@
-#services:
-#    _defaults:
-#        autowire: true
-#        autoconfigure: true
-#        public: true
-#
-#    ApiBundle\:
-#        resource: '../../*'
-#
-#    ApiBundle\Handler\LoginHandler:
-#        $secretKey: '%secret%'
-#
-#    ApiBundle\Handler\RegistrationHandler:
-#
-#
-#    ApiBundle\EventListener\ExceptionListener:
-#        tags:
-#            - { name: kernel.event_listener, event: kernel.exception }
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: true
+
+    ApiBundle\:
+        resource: '../../*'
+
+    ApiBundle\Handler\RegistrationHandler:
+        public: true
