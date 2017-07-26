@@ -32,7 +32,7 @@ security:
                 check_path: /admin/login
                 default_target_path: /admin
             logout: true
-            anonymous: ~
+            anonymous: true
 
     access_control:
         - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
