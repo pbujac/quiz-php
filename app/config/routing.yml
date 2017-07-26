@@ -8,8 +8,6 @@ admin:
     type:     annotation
     prefix:   /admin
 
-
-
 logout:
     path: /logout
 

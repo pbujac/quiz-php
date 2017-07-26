@@ -11,9 +11,9 @@ use Symfony\Component\HttpFoundation\Response;
 use ApiBundle\DTO\RegistrationDTO ;
 
 /**
- * @Rest\Route("/register",name="api.register")
+ * @Rest\Route("/register/user",name="api.register.user")
  */
-class RegistrationController extends FOSRestController
+class RegisterUserController extends FOSRestController
 {
     /**
      * @Rest\Post()
@@ -27,9 +27,9 @@ class RegistrationController extends FOSRestController
      *
      * @return View
      */
-    public function registerAction(RegistrationDTO $registrationDTO , RegistrationHandler $registrationHandler)
+    public function indexAction(RegistrationDTO $registrationDTO , RegistrationHandler $registrationHandler)
     {
-//        $registrationHandler->handleRegistration($registrationDTO);
+        $registrationHandler->handleRegistration($registrationDTO);
 
         return View::create($registrationDTO,Response::HTTP_ACCEPTED);
     }

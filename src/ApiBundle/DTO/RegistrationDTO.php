@@ -2,6 +2,7 @@
 
 namespace ApiBundle\DTO ;
 
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation\Type;
 
@@ -9,13 +10,20 @@ class RegistrationDTO
 {
     /**
      * @Assert\NotBlank
+     * @Assert\Length(
+     *      min = 4,
+     *      max = 15)
      * @Type("string")
+     * @ORM\Column(name="username", type="string", length=255, unique=true)
      * @var string
      */
     public $username;
 
     /**
      * @Assert\NotBlank
+     * @Assert\Length(
+     *      min = 6,
+     *      max = 15)
      * @Type("string")
      * @var string
      */
@@ -23,6 +31,9 @@ class RegistrationDTO
 
     /**
      * @Assert\NotBlank
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 15)
      * @Type("string")
      * @var string
      */
@@ -30,6 +41,9 @@ class RegistrationDTO
 
     /**
      * @Assert\NotBlank
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 15)
      * @Type("string")
      * @var string
      */
