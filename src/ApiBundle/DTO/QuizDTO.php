@@ -2,7 +2,6 @@
 
 namespace ApiBundle\DTO;
 
-use AppBundle\Entity\Quiz;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\Type;
 
@@ -19,6 +18,12 @@ class QuizDTO
      * @Type("string")
      */
     private $title;
+
+    /**
+     * @var CategoryDTO
+     * @Type("ApiBundle\DTO\CategoryDTO")
+     */
+    private $category;
 
     /**
      * @var string
@@ -59,6 +64,22 @@ class QuizDTO
     }
 
     /**
+     * @return string
+     */
+    public function getCategory(): string
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param string $category
+     */
+    public function setCategory(string $category)
+    {
+        $this->category = $category;
+    }
+
+    /**
      * @return string|null
      */
     public function getDescription(): ?string
@@ -73,32 +94,25 @@ class QuizDTO
     {
         $this->description = $description;
     }
-//
-//    /**
-//     * @return QuestionDTO[]|ArrayCollection
-//     */
-//    public function getQuestions()
-//    {
-//        return $this->questions;
-//    }
-//
-//    /**
-//     * @param QuestionDTO[]|ArrayCollection $questions
-//     */
-//    public function setQuestions($questions)
-//    {
-//        $this->questions = $questions;
-//    }
 
     /**
-     * @return Quiz
+     * @return QuestionDTO[]|ArrayCollection
      */
-    public function addQuiz()
+    public function getQuestions()
     {
-        $quiz = new Quiz();
-        $quiz->setTitle($this->getTitle());
-        $quiz->setDescription($this->getDescription());
-
-        return $quiz;
+        return $this->questions;
     }
+
+//    /**
+//     * @param QuestionDTO $questionDTO
+//     *
+//     * @return QuizDTO
+//     */
+//    public function addQuestionDTO(QuestionDTO $questionDTO)
+//    {
+//        if (!$this->questions->contains($questionDTO)) {
+//            $this->questions->add($questionDTO);
+//        }
+//        return $this;
+//    }
 }

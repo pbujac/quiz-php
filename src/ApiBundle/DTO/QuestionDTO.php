@@ -2,7 +2,6 @@
 
 namespace ApiBundle\DTO;
 
-use AppBundle\Entity\Question;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\Type;
 
@@ -53,13 +52,23 @@ class QuestionDTO
     }
 
     /**
-     * @return Question
+     * @return AnswerDTO[]|ArrayCollection
      */
-    public function addQuestion()
+    public function getAnswers()
     {
-        $question = new Question();
-        $question->setText($this->getText());
+        return $this->answers;
+    }
 
-        return $question;
+    /**
+     * @param AnswerDTO $answerDTO
+     *
+     * @return QuestionDTO
+     */
+    public function addAnswerDTO(AnswerDTO $answerDTO)
+    {
+        if (!$this->answers->contains($answerDTO)) {
+            $this->answers->add($answerDTO);
+        }
+        return $this;
     }
 }
