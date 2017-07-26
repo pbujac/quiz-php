@@ -5,7 +5,6 @@ namespace AdminBundle\Form;
 use AdminBundle\Validator\Constraints\UniqueQuiz;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Quiz;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -32,9 +31,6 @@ class QuizType extends AbstractType
             ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('c');
-                },
                 'choice_label' => 'title',
             ])
             ->add('description', TextareaType::class, [
@@ -52,7 +48,10 @@ class QuizType extends AbstractType
                     'class' => 'quiz-questions'
                 ],
                 'constraints' => [
-                    new Count(['min' => 1]),
+                    new Count([
+                        'min' => 1,
+                        'minMessage' => 'You must specify at least one question',
+                    ]),
                 ],
             ]);
     }
