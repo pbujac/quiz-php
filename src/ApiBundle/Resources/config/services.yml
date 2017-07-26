@@ -9,3 +9,4 @@ services:
 
     ApiBundle\Handler\RegistrationHandler:
         public: true
+
