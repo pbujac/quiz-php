@@ -29,9 +29,9 @@ class RegistrationController extends FOSRestController
      */
     public function registerAction(RegistrationDTO $registrationDTO , RegistrationHandler $registrationHandler)
     {
-        $registrationHandler->handleRegistration($registrationDTO);
+//        $registrationHandler->handleRegistration($registrationDTO);
 
-        return View::create($registrationDTO,Response::HTTP_OK);
+        return View::create($registrationDTO,Response::HTTP_ACCEPTED);
     }
 
 }
