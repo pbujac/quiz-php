@@ -2,6 +2,7 @@
 
 namespace ApiBundle\DTO ;
 
+use AdminBundle\Validator\Constraints\UniqueUser;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation\Type;
 
@@ -12,6 +13,7 @@ class RegistrationDTO
      *
      * @Assert\NotBlank
      * @Assert\Length(min = 4, max = 15)
+     * @UniqueUser()
      *
      * @var string
      */
