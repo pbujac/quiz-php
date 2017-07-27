@@ -12,7 +12,6 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
  * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\UserRepository")
  * @ORM\HasLifecycleCallbacks()
- *
  */
 class User implements AdvancedUserInterface
 {
@@ -100,10 +99,18 @@ class User implements AdvancedUserInterface
      */
     private $results;
 
+    /**
+     * @var ArrayCollection|AccessToken[]
+     *
+     * @ORM\OneToMany(targetEntity="AccessToken", mappedBy="user")
+     */
+    private $accessTokens;
+
     public function __construct()
     {
         $this->quizzes = new ArrayCollection();
         $this->results = new ArrayCollection();
+        $this->accessTokens = new ArrayCollection();
     }
 
     /**
@@ -209,6 +216,7 @@ class User implements AdvancedUserInterface
     {
         $this->createdAt = $createdAt;
     }
+
     /**
      * @ORM\PrePersist
      */
@@ -302,6 +310,35 @@ class User implements AdvancedUserInterface
     public function getResults()
     {
         return $this->results;
+    }
+
+    /**
+     * @param AccessToken $AccessToken
+     *
+     * @return User
+     */
+    public function addAccessToken(AccessToken $AccessToken)
+    {
+        if (!$this->accessTokens->contains($AccessToken)) {
+            $this->accessTokens->add($AccessToken);
+        }
+        return $this;
+    }
+
+    /**
+     * @param AccessToken $AccessToken
+     */
+    public function removeAccessToken(AccessToken $AccessToken)
+    {
+        $this->accessTokens->removeElement($AccessToken);
+    }
+
+    /**
+     * @return ArrayCollection|AccessToken[]
+     */
+    public function getAccessTokens()
+    {
+        return $this->accessTokens;
     }
 
     /**
