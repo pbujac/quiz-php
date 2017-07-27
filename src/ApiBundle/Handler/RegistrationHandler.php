@@ -3,7 +3,7 @@
 namespace ApiBundle\Handler;
 
 use ApiBundle\DTO\RegistrationDTO;
-use ApiBundle\Transformer\RegistrationTransformer;
+use ApiBundle\Transformer\UserTransformer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -18,15 +18,15 @@ class RegistrationHandler
 
     /**
      * @param EntityManagerInterface $em
-     * @param RegistrationTransformer $registrationTransformer
+     * @param UserTransformer $userTransformer
      * @param ValidatorInterface $validator
      */
     public function __construct(EntityManagerInterface $em,
-                                RegistrationTransformer $registrationTransformer,
+                                UserTransformer $userTransformer,
                                 ValidatorInterface $validator
     ){
         $this->em = $em;
-        $this->transformRegistration=$registrationTransformer;
+        $this->transformUser=$userTransformer;
         $this->validator = $validator;
     }
 
@@ -38,7 +38,7 @@ class RegistrationHandler
         $this->validateRegistrationDTO($registrationDTO);
 
         $this->em->persist(
-            $this->transformRegistration->transformRegistrationDTO($registrationDTO)
+            $this->transformUser->transformRegistrationDTO($registrationDTO)
             );
         $this->em->flush();
     }

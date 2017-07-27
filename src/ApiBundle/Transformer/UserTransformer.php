@@ -5,7 +5,7 @@ namespace ApiBundle\Transformer;
 use ApiBundle\DTO\RegistrationDTO;
 use AppBundle\Entity\User;
 
-class RegistrationTransformer
+class UserTransformer
 {
     public function transformRegistrationDTO(RegistrationDTO $registrationDTO)
     {
