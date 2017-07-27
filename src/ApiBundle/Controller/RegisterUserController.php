@@ -30,7 +30,7 @@ class RegisterUserController extends FOSRestController
     {
         $this->get(RegistrationHandler::class)->handleRegistration($registrationDTO);
 
-        return View::create($registrationDTO,Response::HTTP_ACCEPTED);
+        return View::create($registrationDTO,Response::HTTP_CREATED);
     }
 
 }
