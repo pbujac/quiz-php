@@ -2,8 +2,6 @@
 
 namespace ApiBundle\Controller;
 
-use ApiBundle\DTO\AnswerDTO;
-use ApiBundle\DTO\QuestionDTO;
 use ApiBundle\DTO\QuizDTO;
 use ApiBundle\Handler\QuizHandler;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -16,15 +14,14 @@ class QuizController extends FOSRestController
     /**
      * @Rest\Post("/quizzes", name="quizzes")
      *
-     * @param QuizHandler $quizHandler
      * @param QuizDTO $quizDTO
      *
      * @return View
      */
-    public function createAction(QuizHandler $quizHandler, QuizDTO $quizDTO)
+    public function createAction(QuizDTO $quizDTO)
     {
-//        die(dump($quizDTO));
-        $quizHandler->insertQuiz($quizDTO);
+        $this->get(QuizHandler::class)->insertQuiz($quizDTO);
+
         return View::create($quizDTO, Response::HTTP_CREATED);
     }
 }

@@ -8,12 +8,6 @@ use JMS\Serializer\Annotation\Type;
 class QuizDTO
 {
     /**
-     * @var int
-     * @Type("int")
-     */
-    private $id;
-
-    /**
      * @var string
      * @Type("string")
      */
@@ -44,14 +38,6 @@ class QuizDTO
      * @Type("ArrayCollection<ApiBundle\DTO\QuestionDTO>")
     */
     private $questions;
-
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
 
     /**
      * @return string|null

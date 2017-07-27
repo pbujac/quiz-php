@@ -16,15 +16,20 @@ class QuizHandler
     /** @var ValidatorInterface */
     private $validator;
 
+    /** @var QuizTransformer */
+    private $transformQuiz;
+
     /**
      * QuizHandler constructor.
      * @param EntityManagerInterface $em
      * @param ValidatorInterface $validator
+     * @param QuizTransformer $transformQuiz
      */
-    public function __construct(EntityManagerInterface $em, ValidatorInterface $validator)
+    public function __construct(EntityManagerInterface $em, ValidatorInterface $validator, QuizTransformer $transformQuiz)
     {
         $this->em = $em;
         $this->validator = $validator;
+        $this->transformQuiz = $transformQuiz;
     }
 
     /**
@@ -34,12 +39,11 @@ class QuizHandler
     {
 //        $questionHandler = new QuizHandler();
 //        $this->validateQuizDTO($quizDTO);
-        $transformedQuiz = new QuizTransformer($this->em);
-        $transformedQuiz->transformQuizDTO($quizDTO);
-//        $quiz->transformQuizDTO($quizDTO)->setCategory($this->);
 
-//        $this->em->persist($quiz);
-//        $this->em->flush();
+
+
+        $this->em->persist($this->transformQuiz->transformQuizDTO($quizDTO));
+        $this->em->flush();
     }
 
     /**

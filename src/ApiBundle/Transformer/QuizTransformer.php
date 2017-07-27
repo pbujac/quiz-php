@@ -14,13 +14,18 @@ class QuizTransformer
     /** @var EntityManagerInterface $em */
     private $em;
 
+    /** @var QuestionTransformer */
+    private $transformQuestion;
+
     /**
      * QuizTransformer constructor.
      * @param EntityManagerInterface $em
+     * @param QuestionTransformer $transformQuestion
      */
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, QuestionTransformer $transformQuestion)
     {
         $this->em = $em;
+        $this->transformQuestion = $transformQuestion;
     }
 
     /**
@@ -37,9 +42,8 @@ class QuizTransformer
         $quiz->setCreatedAt();
         $quiz->setAuthor($this->em->getRepository(User::class)->findOneBy(["id" => $quizDTO->getAuthorId()]));
 
-        $question = new QuestionTransformer();
         foreach ($quizDTO->getQuestions() as $questionDTO) {
-            $quiz->addQuestion($question->transformQuestionDTO($questionDTO));
+            $quiz->addQuestion($this->transformQuestion->transformQuestionDTO($questionDTO,$quiz));
         }
 
         return $quiz;
