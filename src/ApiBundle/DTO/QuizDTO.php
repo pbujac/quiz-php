@@ -2,14 +2,18 @@
 
 namespace ApiBundle\DTO;
 
+use AdminBundle\Validator\Constraints\UniqueQuiz;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\Type;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class QuizDTO
 {
     /**
      * @var string
      * @Type("string")
+     * @Assert\NotBlank
+     * @Assert\Length(max=255)
      */
     private $title;
 
@@ -22,6 +26,8 @@ class QuizDTO
     /**
      * @var string
      * @Type("string")
+     * @Assert\NotBlank
+     * @Assert\Length(max=5000)
      */
     private $description;
 
@@ -32,11 +38,9 @@ class QuizDTO
     private $author_id;
 
     /**
-     *
      * @var ArrayCollection|QuestionDTO[]
-     *
      * @Type("ArrayCollection<ApiBundle\DTO\QuestionDTO>")
-    */
+     */
     private $questions;
 
     /**
@@ -94,17 +98,4 @@ class QuizDTO
     {
         return $this->author_id;
     }
-
-//    /**
-//     * @param QuestionDTO $questionDTO
-//     *
-//     * @return QuizDTO
-//     */
-//    public function addQuestionDTO(QuestionDTO $questionDTO)
-//    {
-//        if (!$this->questions->contains($questionDTO)) {
-//            $this->questions->add($questionDTO);
-//        }
-//        return $this;
-//    }
 }
