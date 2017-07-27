@@ -49,10 +49,10 @@ class RegistrationHandler
 
         if (count($errors)>0)
         {
-            $errorMesage="";
+            $mesage="";
             foreach ($errors as $violation)
             {
-                $errorMesage = $violation->getPropertyPath().'-'.$violation->getMessage();
+                $mesage = $violation->getPropertyPath().'-'.$violation->getMessage();
             }
             throw new BadRequestHttpException();
         }

@@ -11,9 +11,9 @@ class RegistrationDTO
     /**
      * @Type("string")
      *
-     * @Assert\NotBlank
-     * @Assert\Length(min = 4, max = 15)
-     * @UniqueUser()
+     * @Assert\NotBlank(message="Username isn't specified.")
+     * @Assert\Length(min = 4, max = 15, minMessage="Username too short.", maxMessage="Username too long")
+     * @UniqueUser(message="Username taken already.")
      *
      * @var string
      */
@@ -22,8 +22,8 @@ class RegistrationDTO
     /**
      * @Type("string")
      *
-     * @Assert\NotBlank
-     * @Assert\Length(min = 6, max = 15)
+     * @Assert\NotBlank(message="Password isn't specified.")
+     * @Assert\Length(min = 6, max = 24, minMessage="Password too short.", maxMessage="Password too long")
      *
      * @var string
      */
@@ -32,8 +32,8 @@ class RegistrationDTO
     /**
      * @Type("string")
      *
-     * @Assert\NotBlank
-     * @Assert\Length(min = 3, max = 15)
+     * @Assert\NotBlank(message="First name  isn't specified.")
+     * @Assert\Length(min = 3, max = 15, minMessage="First name too short.", maxMessage="First name too long")
      *
      * @var string
      */
@@ -42,8 +42,8 @@ class RegistrationDTO
     /**
      * @Type("string")
      *
-     * @Assert\NotBlank
-     * @Assert\Length(min = 3, max = 15)
+     * @Assert\NotBlank(message="Last name isn't specified.")
+     * @Assert\Length(min = 3, max = 15, minMessage="Last name too short.", maxMessage="Last name too long")
      *
      * @var string
      */
