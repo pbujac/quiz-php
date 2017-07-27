@@ -26,8 +26,8 @@ class SecurityController extends FOSRestController
         $token = $this->get(LoginHandler::class)->login($loginDTO);
 
         $tokenResponse = [
-//            'token' => $token->getAccessToken(),
-//            'token_exp' => $token->getExpireAt()->getTimestamp(),
+            'token' => $token->getAccessToken(),
+            'token_exp' => $token->getExpireAt()->getTimestamp(),
         ];
         return View::create($tokenResponse, Response::HTTP_OK);
     }

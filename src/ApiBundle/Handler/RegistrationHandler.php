@@ -3,7 +3,7 @@
 namespace ApiBundle\Handler;
 
 use ApiBundle\DTO\RegistrationDTO;
-use AppBundle\Entity\User;
+use ApiBundle\Transformer\RegistrationTransformer;
 use Doctrine\ORM\EntityManagerInterface;
 
 class RegistrationHandler
@@ -13,10 +13,12 @@ class RegistrationHandler
 
     /**
      * @param EntityManagerInterface $em
+     * @param RegistrationTransformer $registrationTransformer
      */
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, RegistrationTransformer $registrationTransformer)
     {
         $this->em = $em;
+        $this->transformRegistration=$registrationTransformer;
     }
 
     /**
@@ -24,16 +26,10 @@ class RegistrationHandler
      */
     public function handleRegistration(RegistrationDTO $registrationDTO)
     {
-        $user= new User();
-
-        $user->setUsername($registrationDTO->username);
-        $user->setPassword($registrationDTO->password);
-        $user->setFirstName($registrationDTO->firstName);
-        $user->setLastName($registrationDTO->lastName);
-        $user->setActive(true);
-        $user->addRole('ROLE_USER');
-
-        $this->em->persist($user);
+        $this->em->persist(
+            $this->transformRegistration->transformRegistrationDTO($registrationDTO)
+            );
         $this->em->flush();
     }
+
 }
