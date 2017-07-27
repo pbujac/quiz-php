@@ -13,9 +13,9 @@ class ExceptionListener
         $exception = $event->getException();
 
         if ($exception instanceof BadRequestHttpException) {
+
             $response = new JsonResponse([
-                'code' => $exception->getStatusCode(),
-                'message' => $exception->getMessage()
+                'message' => $exception->getMessage(),
             ]);
 
             $response->setStatusCode($exception->getStatusCode());

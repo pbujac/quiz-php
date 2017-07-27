@@ -7,6 +7,7 @@ use AppBundle\Entity\AccessToken;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Firebase\JWT\JWT;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class LoginHandler
 {
@@ -35,9 +36,7 @@ class LoginHandler
      */
     public function login(LoginDTO $loginDTO)
     {
-        $user = $this->em->getRepository(User::class)->findOneBy([
-            'username' => $loginDTO->username
-        ]);
+        $user = $this->getUserByUsername($loginDTO);
         $token = $this->generateToken($loginDTO, $user);
 
         $this->em->persist($token);
@@ -67,5 +66,22 @@ class LoginHandler
         $token->setAccessToken($newToken);
 
         return $token;
+    }
+
+    /**
+     * @param LoginDTO $loginDTO
+     * @return User|null|object
+     */
+    public function getUserByUsername(LoginDTO $loginDTO)
+    {
+        $user = $this->em->getRepository(User::class)->findOneBy([
+            'username' => $loginDTO->username
+        ]);
+
+        if (!$user) {
+            throw new BadRequestHttpException("Credentials are invalid");
+        }
+
+        return $user;
     }
 }
