@@ -26,14 +26,15 @@ class QuestionTransformer
      *
      * @return Question
      */
-    public function transformQuestionDTO(QuestionDTO $questionDTO,Quiz $quiz){
+    public function transformQuestionDTO(QuestionDTO $questionDTO, Quiz $quiz)
+    {
         $question = new Question();
-        $question->setText($questionDTO->getText());
+        $question->setText($questionDTO->text);
         $question->setQuiz($quiz);
 
-        foreach ($questionDTO->getAnswers() as $answerDTO)
-        {
-            $question->addAnswer($this->transformAnswer->transformAnswerDTO($answerDTO,$question));
+        foreach ($questionDTO->answers as $answerDTO) {
+            $question->addAnswer(
+                $this->transformAnswer->transformAnswerDTO($answerDTO, $question));
         }
 
         return $question;

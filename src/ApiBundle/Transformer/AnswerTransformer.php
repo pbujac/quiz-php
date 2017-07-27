@@ -10,14 +10,15 @@ class AnswerTransformer
 {
     /**
      * @param AnswerDTO $answerDTO
-     * @param Question  $question
+     * @param Question $question
      *
      * @return Answer
      */
-    public function transformAnswerDTO(AnswerDTO $answerDTO,Question  $question){
+    public function transformAnswerDTO(AnswerDTO $answerDTO, Question $question)
+    {
         $answer = new Answer();
-        $answer->setText($answerDTO->getText());
-        $answer->setCorrect($answerDTO->getText());
+        $answer->setText($answerDTO->text);
+        $answer->setCorrect($answerDTO->correct);
         $answer->setQuestion($question);
 
         return $answer;

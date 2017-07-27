@@ -36,14 +36,23 @@ class QuizTransformer
     public function transformQuizDTO(QuizDTO $quizDTO)
     {
         $quiz = new Quiz();
-        $quiz->setTitle($quizDTO->getTitle());
-        $quiz->setCategory($this->em->getRepository(Category::class)->findOneBy(["id" => $quizDTO->getCategoryId()]));
-        $quiz->setDescription($quizDTO->getDescription());
+        $quiz->setTitle($quizDTO->title);
+        $quiz->setDescription($quizDTO->description);
         $quiz->setCreatedAt();
-        $quiz->setAuthor($this->em->getRepository(User::class)->findOneBy(["id" => $quizDTO->getAuthorId()]));
 
-        foreach ($quizDTO->getQuestions() as $questionDTO) {
-            $quiz->addQuestion($this->transformQuestion->transformQuestionDTO($questionDTO,$quiz));
+        $quiz->setCategory(
+            $this->em->getRepository(Category::class)->findOneBy([
+                "id" => $quizDTO->category_id
+            ]));
+
+        $quiz->setAuthor(
+            $this->em->getRepository(User::class)->findOneBy([
+                "id" => $quizDTO->author_id
+            ]));
+
+        foreach ($quizDTO->questions as $questionDTO) {
+            $quiz->addQuestion(
+                $this->transformQuestion->transformQuestionDTO($questionDTO, $quiz));
         }
 
         return $quiz;

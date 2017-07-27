@@ -41,10 +41,10 @@ class QuizHandler
     {
         $this->validateQuizDTO($quizDTO);
 
-        foreach ($quizDTO->getQuestions() as $questionDTO) {
+        foreach ($quizDTO->questions as $questionDTO) {
             $this->validateQuestionDTO($questionDTO);
 
-            foreach ($questionDTO->getAnswers() as $answerDTO) {
+            foreach ($questionDTO->answers as $answerDTO) {
                 $this->validateAnswerDTO($answerDTO);
             }
         }
