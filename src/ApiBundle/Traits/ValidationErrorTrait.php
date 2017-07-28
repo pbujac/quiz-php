@@ -38,6 +38,7 @@ trait ValidationErrorTrait
         $errorMessage = array_merge($headerError, [
             'details' => $detailsError,
         ]);
+
         return $errorMessage;
     }
 
