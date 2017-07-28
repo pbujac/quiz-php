@@ -52,7 +52,7 @@ class RegistrationHandler
             $mesage="";
             foreach ($errors as $violation)
             {
-                $mesage = $mesage . $violation->getPropertyPath().'-'.$violation->getMessage();
+                $mesage = $mesage .' - '. $violation->getPropertyPath().'-'.$violation->getMessage();
             }
             throw new BadRequestHttpException($mesage);
         }
