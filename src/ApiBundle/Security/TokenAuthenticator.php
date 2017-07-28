@@ -7,6 +7,7 @@ use AppBundle\Entity\AccessToken;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Firebase\JWT\JWT;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -107,7 +108,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
     public function checkCredentials($credentials, UserInterface $user)
     {
         if (
-            !$user &&
+            !$credentials['token'] &&
             !$this->encoder->isPasswordValid($user, $credentials['password'])
         ) {
             throw new BadRequestHttpException("Credentials are invalid");
@@ -173,17 +174,17 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function getUserByToken(array $credentials, UserProviderInterface $userProvider): UserInterface
     {
-        $credentials['token'];
-        $jwt = JWT::decode(
-            $credentials['token'],
-            $this->secretKey
-        );
-        echo($jwt);
-//
-//          ;
-//
-//        return $userProvider->loadUserByUsername($username);
-        return null;
+        try {
+            $jwt = JWT::decode(
+                $credentials['token'],
+                $this->secretKey,
+                ['HS256']
+            );
+        } catch (Exception $e) {
+            throw new BadRequestHttpException("JWT ERROR");
+        }
+
+         return $userProvider->loadUserByUsername($jwt->username);
     }
 
     /**
