@@ -7,19 +7,12 @@ use AppBundle\Entity\User;
 
 class UserTransformer
 {
-    public function transformUserDTO(UserDTO $userDTO)
-    {
-        $user = new User();
-        $user->setUsername($userDTO->username);
-        $user->setPassword($userDTO->password);
-        $user->setFirstName($userDTO->firstName);
-        $user->setLastName($userDTO->lastName);
-        $user->setActive(true);
-        $user->addRole('ROLE_USER');
-
-        return $user;
-    }
-    public function transformUserObj(User $user)
+    /**
+     * @param User $user
+     *
+     * @return UserDTO
+     */
+    public function transformDTO(User $user)
     {
         $userDTO = new UserDTO();
         $userDTO->id = $user->getId();

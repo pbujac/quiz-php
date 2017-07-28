@@ -3,17 +3,18 @@
 namespace ApiBundle\Security;
 
 use ApiBundle\DTO\LoginDTO;
-use AppBundle\Entity\AccessToken;
+use ApiBundle\Traits\ValidationErrorTrait;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Firebase\JWT\JWT;
+use JMS\Serializer\Serializer;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
@@ -22,6 +23,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class TokenAuthenticator extends AbstractGuardAuthenticator
 {
+    use ValidationErrorTrait;
+
     /**@var EntityManager */
     private $em;
 
@@ -60,7 +63,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function start(Request $request, AuthenticationException $authException = null)
     {
-        throw new BadRequestHttpException("Credentials are invalid");
+        throw new UnauthorizedHttpException("Authentication required");
     }
 
     /**
@@ -184,7 +187,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
             throw new BadRequestHttpException("JWT ERROR");
         }
 
-         return $userProvider->loadUserByUsername($jwt->username);
+        return $userProvider->loadUserByUsername($jwt->username);
     }
 
     /**
@@ -199,7 +202,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
             'token'
         ]);
         if (count($errors) > 0) {
-            throw new BadCredentialsException("Credentials are invalid");
+            throw new BadRequestHttpException("Credentials are invalid");
         }
     }
 
@@ -216,7 +219,9 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
             'login'
         ]);
         if (count($errors) > 0) {
-            throw new BadCredentialsException("Credentials are invalid");
+            $errorMessage = $this->getErrorMessage($errors);
+
+            throw new BadRequestHttpException($errorMessage);
         }
     }
 }
