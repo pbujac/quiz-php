@@ -19,7 +19,7 @@ class QuizController extends FOSRestController
      *
      * @return Response
      *
-     * @Rest\Route("/quizzes/delete/{id}", name="admin.quiz.delete")
+     * @Rest\Route("/quizzes/{id}", name="admin.quiz.delete")
      *
      * @ParamConverter("quiz", options={"id" = "quiz_id"})
      */
@@ -27,7 +27,7 @@ class QuizController extends FOSRestController
     {
         $quiz = $this->getDoctrine()
             ->getRepository('AppBundle:Quiz')
-            ->findBy(array('id'=>$id));
+            ->findOneBy(array('id'=>$id));
 
         if (!$quiz) {
             throw $this->createNotFoundException(sprintf(
