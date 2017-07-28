@@ -2,21 +2,31 @@
 
 namespace ApiBundle\Transformer;
 
-use ApiBundle\DTO\RegistrationDTO;
+use ApiBundle\DTO\UserDTO;
 use AppBundle\Entity\User;
 
-class RegistrationTransformer
+class UserTransformer
 {
-    public function transformRegistrationDTO(RegistrationDTO $registrationDTO)
+    public function transformUserDTO(UserDTO $userDTO)
     {
-        $user= new User();
-        $user->setUsername($registrationDTO->username);
-        $user->setPassword($registrationDTO->password);
-        $user->setFirstName($registrationDTO->firstName);
-        $user->setLastName($registrationDTO->lastName);
+        $user = new User();
+        $user->setUsername($userDTO->username);
+        $user->setPassword($userDTO->password);
+        $user->setFirstName($userDTO->firstName);
+        $user->setLastName($userDTO->lastName);
         $user->setActive(true);
         $user->addRole('ROLE_USER');
 
         return $user;
+    }
+    public function transformUserObj(User $user)
+    {
+        $userDTO = new UserDTO();
+        $userDTO->id = $user->getId();
+        $userDTO->username = $user->getUsername();
+        $userDTO->lastName = $user->getLastName();
+        $userDTO->firstName = $user->getFirstName();
+
+        return $userDTO;
     }
 }

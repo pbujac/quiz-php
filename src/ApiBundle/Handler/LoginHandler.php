@@ -55,15 +55,22 @@ class LoginHandler
     {
         $expireTokenDate = new \DateTime();
         $expireTokenDate->modify('+1 month');
-        $newToken = JWT::encode(
-            [random_int(1, 10) . $loginDTO->username],
+
+        $token = [
+            $loginDTO->username,
+            "iat" => (new \DateTime())->getTimestamp(),
+            "nbf" => (new \DateTime())->modify('+1 month')->getTimestamp()
+        ];
+
+        $jwt = JWT::encode(
+            $token,
             $this->secretKey
         );
 
         $token = new AccessToken();
         $token->setUser($user);
         $token->setExpireAt($expireTokenDate);
-        $token->setAccessToken($newToken);
+        $token->setAccessToken($jwt);
 
         return $token;
     }

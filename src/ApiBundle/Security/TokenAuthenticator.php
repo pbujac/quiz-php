@@ -6,6 +6,7 @@ use ApiBundle\DTO\LoginDTO;
 use AppBundle\Entity\AccessToken;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
+use Firebase\JWT\JWT;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -29,19 +30,25 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
     /** @var ValidatorInterface $validator */
     private $validator;
 
+    /** @var string $secretKey */
+    private $secretKey;
+
     /**
      * @param EntityManager $em
      * @param UserPasswordEncoderInterface $encoder
      * @param ValidatorInterface $validator
+     * @param string $secretKey
      */
     public function __construct(
         EntityManager $em,
         UserPasswordEncoderInterface $encoder,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        string $secretKey
     ) {
         $this->em = $em;
         $this->encoder = $encoder;
         $this->validator = $validator;
+        $this->secretKey = $secretKey;
     }
 
     /**
@@ -100,7 +107,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
     public function checkCredentials($credentials, UserInterface $user)
     {
         if (
-            !$user ||
+            !$user &&
             !$this->encoder->isPasswordValid($user, $credentials['password'])
         ) {
             throw new BadRequestHttpException("Credentials are invalid");
@@ -160,23 +167,23 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
     }
 
     /**
-     * @param $credentials
+     * @param array $credentials
      * @param UserProviderInterface $userProvider
      * @return UserInterface
      */
-    public function getUserByToken($credentials, UserProviderInterface $userProvider): UserInterface
+    public function getUserByToken(array $credentials, UserProviderInterface $userProvider): UserInterface
     {
-        $accessToken = $this->em->getRepository(AccessToken::class)
-            ->findOneBy([
-                'accessToken' => $credentials['token']
-            ]);
-
-        if (!$accessToken) {
-            throw new BadRequestHttpException("Credentials are invalid");
-        }
-        $username = $accessToken->getUser()->getUsername();
-
-        return $userProvider->loadUserByUsername($username);
+        $credentials['token'];
+        $jwt = JWT::decode(
+            $credentials['token'],
+            $this->secretKey
+        );
+        echo($jwt);
+//
+//          ;
+//
+//        return $userProvider->loadUserByUsername($username);
+        return null;
     }
 
     /**

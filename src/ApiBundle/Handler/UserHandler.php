@@ -4,11 +4,12 @@ namespace ApiBundle\Handler;
 
 use ApiBundle\DTO\UserDTO;
 use ApiBundle\Transformer\RegistrationTransformer;
+use ApiBundle\Transformer\UserTransformer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class RegistrationHandler
+class UserHandler
 {
     /** @var EntityManagerInterface $em */
     private $em;
@@ -18,41 +19,40 @@ class RegistrationHandler
 
     /**
      * @param EntityManagerInterface $em
-     * @param RegistrationTransformer $registrationTransformer
+     * @param UserTransformer $userTransformer
      * @param ValidatorInterface $validator
      */
-    public function __construct(EntityManagerInterface $em,
-                                RegistrationTransformer $registrationTransformer,
-                                ValidatorInterface $validator
-    ){
+    public function __construct(
+        EntityManagerInterface $em,
+        UserTransformer $userTransformer,
+        ValidatorInterface $validator
+    ) {
         $this->em = $em;
-        $this->transformRegistration=$registrationTransformer;
+        $this->userTransformer = $userTransformer;
         $this->validator = $validator;
     }
 
     /**
-     * @param UserDTO $registrationDTO
+     * @param UserDTO $userDTO
      */
-    public function handleRegistration(UserDTO $registrationDTO)
+    public function handleRegistration(UserDTO $userDTO)
     {
-        $this->validateRegistrationDTO($registrationDTO);
+        $this->validateRegistrationDTO($userDTO);
 
         $this->em->persist(
-            $this->transformRegistration->transformRegistrationDTO($registrationDTO)
-            );
+            $this->userTransformer->transformUserDTO($userDTO)
+        );
         $this->em->flush();
     }
 
-    public function validateRegistrationDTO(UserDTO $registrationDTO)
+    public function validateRegistrationDTO(UserDTO $userDTO)
     {
-        $errors = $this->validator->validate($registrationDTO);
+        $errors = $this->validator->validate($userDTO);
 
-        if (count($errors)>0)
-        {
-            $mesage="";
-            foreach ($errors as $violation)
-            {
-                $mesage = $violation->getPropertyPath().'-'.$violation->getMessage();
+        if (count($errors) > 0) {
+            $mesage = "";
+            foreach ($errors as $violation) {
+                $mesage = $violation->getPropertyPath() . '-' . $violation->getMessage();
             }
             throw new BadRequestHttpException();
         }
