@@ -4,30 +4,31 @@ namespace ApiBundle\Controller;
 
 use ApiBundle\CategoryHandler;
 use ApiBundle\DTO\CategoryDTO;
+use ApiBundle\Transformer\CategoryTransformer;
+use AppBundle\Entity\Category;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\View\View;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
- * Class CategoryController
- *
  * @Rest\Route("/categories")
  */
 class CategoryController extends FOSRestController
 {
-  // /**
-    // * @Rest\Get("")
-     //*
-     //* @return View
-     //*/
-    //public function getAction()
-    //{
-      //  $this->get(CategoryHandler::class)->getList();
+    /**
+     * @Rest\Get("/{category_id}")
+     *
+     * @param Category $category
+     * @ParamConverter("category", options={"id" = "category_id"})
+     *
+     * @return View
+     */
+    public function getByIdAction(Category $category)
+    {
+        $categoryDTO = $this->get(CategoryTransformer::class)->transformCategoryObj($category);
 
-    //    return new View('', Response::HTTP_OK);
-  //  }
-
-
-
+        return View::create($categoryDTO, Response::HTTP_OK);
+    }
 }

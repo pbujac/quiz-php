@@ -6,6 +6,9 @@ use AppBundle\Entity\Category;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation\Type;
 
+/**
+ * @Hateoas\Relation("self", href = "expr('/api/categories/' ~ object.getId())")
+ */
 class CategoryDTO
 {
     /**

@@ -7,12 +7,20 @@ use ApiBundle\DTO\CategoryDTO;
 
 class CategoryTransformer
 {
-    public function CategoryTransformDTO(Category $category)
+    public function transformUserDTO(CategoryDTO $categoryDTO)
+    {
+        $category = new Category();
+        $category->setTitle($categoryDTO->title);
+        return $category;
+    }
+
+    public function transformUserObj(Category $category)
     {
         $categoryDTO = new CategoryDTO();
-        $categoryDTO->setTitle($category->getTitle());
+        $categoryDTO->id = $category->getId();
+        $categoryDTO->title = $category->getTitle();
 
-        return $categoryDTO;
+       return $categoryDTO;
     }
 
 }

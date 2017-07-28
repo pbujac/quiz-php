@@ -1,19 +1,31 @@
 <?php
 
-namespace ApiBundle\DTO ;
+namespace ApiBundle\DTO;
 
 use AdminBundle\Validator\Constraints\UniqueUser;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation\Type;
+use Hateoas\Configuration\Annotation as Hateoas;
 
-class RegistrationDTO
+/**
+ * @Hateoas\Relation("self", href = "expr('/api/users/' ~ object.getId())")
+ */
+class UserDTO
 {
+    /**
+     * @Type("int")
+     *
+     * @Assert\NotBlank()
+     *
+     * @var int
+     */
+    public $id;
+
     /**
      * @Type("string")
      *
-     * @Assert\NotBlank(message="Username isn't specified.")
-     * @Assert\Length(min = 4, max = 15, minMessage="Username too short.", maxMessage="Username too long")
-     * @UniqueUser(message="Username taken already.")
+     * @Assert\NotBlank()
+     * @UniqueUser()
      *
      * @var string
      */
@@ -22,8 +34,7 @@ class RegistrationDTO
     /**
      * @Type("string")
      *
-     * @Assert\NotBlank(message="Password isn't specified.")
-     * @Assert\Length(min = 6, max = 24, minMessage="Password too short.", maxMessage="Password too long")
+     * @Assert\NotBlank()
      *
      * @var string
      */
@@ -32,8 +43,7 @@ class RegistrationDTO
     /**
      * @Type("string")
      *
-     * @Assert\NotBlank(message="First name  isn't specified.")
-     * @Assert\Length(min = 3, max = 15, minMessage="First name too short.", maxMessage="First name too long")
+     * @Assert\NotBlank()
      *
      * @var string
      */
@@ -42,10 +52,26 @@ class RegistrationDTO
     /**
      * @Type("string")
      *
-     * @Assert\NotBlank(message="Last name isn't specified.")
-     * @Assert\Length(min = 3, max = 15, minMessage="Last name too short.", maxMessage="Last name too long")
+     * @Assert\NotBlank()
      *
      * @var string
      */
     public $lastName;
+
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id)
+    {
+        $this->id = $id;
+    }
 }
