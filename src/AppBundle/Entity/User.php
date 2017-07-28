@@ -99,7 +99,6 @@ class User implements AdvancedUserInterface
      */
     private $results;
 
-
     public function __construct()
     {
         $this->quizzes = new ArrayCollection();
