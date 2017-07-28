@@ -7,7 +7,6 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 /**
  * @Rest\Route("/quizzes")
  */
-
 class QuizController
 {
     /**
@@ -19,8 +18,4 @@ class QuizController
 
 
     }
-
-
-
-
 }
