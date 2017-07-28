@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\BrowserKit\Response;
 
 /**
- * @Rest\Route("/api/quizzes/{id}")
+ * @Rest\Route("/quizzes/{id}")
  */
 class QuizController extends FOSRestController
 {
@@ -17,9 +17,11 @@ class QuizController extends FOSRestController
      *
      * @param int $id
      *
-     * @ParamConverter("quiz", options={"id" = "quiz_id"})
-     *
      * @return Response
+     *
+     * @Rest\Route("/quizzes/delete/{id}", name="admin.quiz.delete")
+     *
+     * @ParamConverter("quiz", options={"id" = "quiz_id"})
      */
     public function deleteQuizById($id)
     {
