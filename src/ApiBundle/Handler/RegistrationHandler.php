@@ -54,7 +54,7 @@ class RegistrationHandler
             {
                 $mesage = $violation->getPropertyPath().'-'.$violation->getMessage();
             }
-            throw new BadRequestHttpException();
+            throw new BadRequestHttpException($mesage);
         }
     }
 
