@@ -33,7 +33,7 @@ class RegistrationDTO
      * @Type("string")
      *
      * @Assert\NotBlank(message="First name  isn't specified.")
-     * @Assert\Length(min = 3, max = 15, minMessage="First name too short.", maxMessage="First name too long")
+     * @Assert\Length(min = 2, max = 15, minMessage="First name too short.", maxMessage="First name too long")
      *
      * @var string
      */
@@ -43,7 +43,7 @@ class RegistrationDTO
      * @Type("string")
      *
      * @Assert\NotBlank(message="Last name isn't specified.")
-     * @Assert\Length(min = 3, max = 15, minMessage="Last name too short.", maxMessage="Last name too long")
+     * @Assert\Length(min = 2, max = 15, minMessage="Last name too short.", maxMessage="Last name too long")
      *
      * @var string
      */
