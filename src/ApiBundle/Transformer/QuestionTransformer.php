@@ -38,4 +38,21 @@ class QuestionTransformer
 
         return $question;
     }
+
+    /**
+     * @param Question $question
+     *
+     * @return QuestionDTO
+     */
+    public function transformQuestionObj(Question $question)
+    {
+        $questionDTO = new QuestionDTO();
+        $questionDTO->text = $question->getText();
+
+        foreach ($question->getAnswers() as $answer) {
+            $this->transformAnswer->transformAnswerObj($answer);
+        }
+
+        return $questionDTO;
+    }
 }

@@ -6,6 +6,7 @@ use ApiBundle\DTO\AnswerDTO;
 use ApiBundle\DTO\QuestionDTO;
 use ApiBundle\DTO\QuizDTO;
 use ApiBundle\Transformer\QuizTransformer;
+use AppBundle\Entity\Quiz;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -61,5 +62,14 @@ class QuizHandler
             }
             throw new BadRequestHttpException($errorMessage);
         }
+    }
+
+    /**
+     * @param int $quiz_id
+     */
+    public function getByIdAction(int $quiz_id)
+    {
+        $quiz = $this->em->getRepository(Quiz::class)->findOneBy(["id" => $quiz_id]);
+        $this->transformQuiz->transformQuizObj($quiz);
     }
 }

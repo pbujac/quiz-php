@@ -55,4 +55,22 @@ class QuizTransformer
 
         return $quiz;
     }
+
+    /**
+     * @param Quiz $quiz
+     *
+     * @return QuizDTO
+     */
+    public function transformQuizObj(Quiz $quiz){
+        $quizDTO = new QuizDTO();
+        $quizDTO->title=$quiz->getTitle();
+        $quizDTO->description=$quiz->getDescription();
+        $quizDTO->category_id=$quiz->getCategory()->getId();
+        $quizDTO->author_id=$quiz->getAuthor()->getId();
+
+        foreach ($quiz->getQuestions() as $question){
+            $this->transformQuestion->transformQuestionObj($question);
+        }
+        return $quizDTO;
+    }
 }
