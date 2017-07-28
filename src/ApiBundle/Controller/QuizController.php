@@ -2,38 +2,29 @@
 
 namespace ApiBundle\Controller;
 
+use AppBundle\Entity\Quiz;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\BrowserKit\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Rest\Route("/quizzes/{id}")
+ * @Rest\Route("/quizzes")
  */
 class QuizController extends FOSRestController
 {
     /**
-     * @Rest\Delete()
+     * @Rest\Delete("/{quiz_id}")
      *
-     * @param int $id
+     * @param Quiz $quiz
+     * @ParamConverter("quiz", options={"id" = "quiz_id"})
      *
      * @return Response
-     *
-     * @Rest\Route("/quizzes/{id}", name="admin.quiz.delete")
-     *
-     * @ParamConverter("quiz", options={"id" = "quiz_id"})
      */
-    public function deleteQuizById($id)
+    public function deleteQuizById(Quiz $quiz)
     {
-        $quiz = $this->getDoctrine()
-            ->getRepository('AppBundle:Quiz')
-            ->findOneBy(array('id'=>$id));
-
         if (!$quiz) {
-            throw $this->createNotFoundException(sprintf(
-                'No quiz found with id "%i"',
-                $id
-            ));
+            throw $this->createNotFoundException();
         }
 
         $em = $this->getDoctrine()->getManager();
