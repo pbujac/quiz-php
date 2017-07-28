@@ -21,7 +21,8 @@ class RegistrationHandler
      * @param UserTransformer $userTransformer
      * @param ValidatorInterface $validator
      */
-    public function __construct(EntityManagerInterface $em,
+    public function __construct(
+                                EntityManagerInterface $em,
                                 UserTransformer $userTransformer,
                                 ValidatorInterface $validator
     ){
@@ -36,7 +37,6 @@ class RegistrationHandler
     public function handleRegistration(RegistrationDTO $registrationDTO)
     {
         $this->validateRegistrationDTO($registrationDTO);
-
         $this->em->persist(
             $this->transformUser->transformRegistrationDTO($registrationDTO)
             );
@@ -47,15 +47,12 @@ class RegistrationHandler
     {
         $errors = $this->validator->validate($registrationDTO);
 
-        if (count($errors)>0)
-        {
+        if (count($errors)>0) {
             $mesage="";
-            foreach ($errors as $violation)
-            {
+            foreach ($errors as $violation) {
                 $mesage = $mesage .' - '. $violation->getPropertyPath().'-'.$violation->getMessage();
             }
             throw new BadRequestHttpException($mesage);
         }
     }
-
 }
