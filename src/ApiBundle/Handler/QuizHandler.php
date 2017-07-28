@@ -22,12 +22,15 @@ class QuizHandler
     private $transformQuiz;
 
     /**
-     * QuizHandler constructor.
      * @param EntityManagerInterface $em
      * @param ValidatorInterface $validator
      * @param QuizTransformer $transformQuiz
      */
-    public function __construct(EntityManagerInterface $em, ValidatorInterface $validator, QuizTransformer $transformQuiz)
+    public function __construct(
+        EntityManagerInterface $em,
+        ValidatorInterface $validator,
+        QuizTransformer $transformQuiz
+    )
     {
         $this->em = $em;
         $this->validator = $validator;
@@ -37,18 +40,9 @@ class QuizHandler
     /**
      * @param QuizDTO $quizDTO
      */
-    public function insertQuiz(QuizDTO $quizDTO)
+    public function postAction(QuizDTO $quizDTO)
     {
         $this->validateQuizDTO($quizDTO);
-
-        foreach ($quizDTO->questions as $questionDTO) {
-            $this->validateQuestionDTO($questionDTO);
-
-            foreach ($questionDTO->answers as $answerDTO) {
-                $this->validateAnswerDTO($answerDTO);
-            }
-        }
-
         $this->em->persist($this->transformQuiz->transformQuizDTO($quizDTO));
         $this->em->flush();
     }
@@ -59,38 +53,6 @@ class QuizHandler
     public function validateQuizDTO(QuizDTO $quizDTO): void
     {
         $errors = $this->validator->validate($quizDTO);
-
-        if (count($errors) > 0) {
-            $errorMessage = "";
-            foreach ($errors as $violation) {
-                $errorMessage .= $violation->getPropertyPath() . '-' . $violation->getMessage();
-            }
-            throw new BadRequestHttpException($errorMessage);
-        }
-    }
-
-    /**
-     * @param QuestionDTO $questionDTO
-     */
-    public function validateQuestionDTO(QuestionDTO $questionDTO): void
-    {
-        $errors = $this->validator->validate($questionDTO);
-
-        if (count($errors) > 0) {
-            $errorMessage = "";
-            foreach ($errors as $violation) {
-                $errorMessage .= $violation->getPropertyPath() . '-' . $violation->getMessage();
-            }
-            throw new BadRequestHttpException($errorMessage);
-        }
-    }
-
-    /**
-     * @param AnswerDTO $answerDTO
-     */
-    public function validateAnswerDTO(AnswerDTO $answerDTO): void
-    {
-        $errors = $this->validator->validate($answerDTO);
 
         if (count($errors) > 0) {
             $errorMessage = "";

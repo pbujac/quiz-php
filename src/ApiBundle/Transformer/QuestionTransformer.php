@@ -12,7 +12,6 @@ class QuestionTransformer
     private $transformAnswer;
 
     /**
-     * QuestionTransformer constructor.
      * @param AnswerTransformer $transformAnswer
      */
     public function __construct(AnswerTransformer $transformAnswer)

@@ -12,14 +12,16 @@ class QuestionDTO
      * @var $text
      * @Type("string")
      *
-     * @Assert\NotBlank
-     * @Assert\Length(max=5000)
+     * @Assert\NotBlank(message="text for question isn't specified")
+     * @Assert\Length(max=5000, maxMessage="too long")
      */
     public $text;
 
     /**
      * @var ArrayCollection|AnswerDTO[]
      * @Type("ArrayCollection<ApiBundle\DTO\AnswerDTO>")
+     *
+     * @Assert\Valid
      */
     public $answers;
 }

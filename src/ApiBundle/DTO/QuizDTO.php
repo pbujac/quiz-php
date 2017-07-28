@@ -13,8 +13,9 @@ class QuizDTO
      * @var string
      * @Type("string")
      *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
+     * @Assert\NotBlank(message="title isn't specified")
+     * @Assert\Length(max=255, maxMessage="too long")
+     * @UniqueQuiz(message="the quiz with this title already exist")
      */
     public $title;
 
@@ -28,8 +29,8 @@ class QuizDTO
      * @var string
      * @Type("string")
      *
-     * @Assert\NotBlank
-     * @Assert\Length(max=5000)
+     * @Assert\NotBlank(message="description for quiz isn't specified")
+     * @Assert\Length(max=5000, maxMessage="too long")
      */
     public $description;
 
@@ -42,6 +43,8 @@ class QuizDTO
     /**
      * @var ArrayCollection|QuestionDTO[]
      * @Type("ArrayCollection<ApiBundle\DTO\QuestionDTO>")
+     *
+     * @Assert\Valid
      */
     public $questions;
 }

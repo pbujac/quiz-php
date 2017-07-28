@@ -2,7 +2,6 @@
 
 namespace ApiBundle\Transformer;
 
-
 use ApiBundle\DTO\QuizDTO;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Quiz;
@@ -18,7 +17,6 @@ class QuizTransformer
     private $transformQuestion;
 
     /**
-     * QuizTransformer constructor.
      * @param EntityManagerInterface $em
      * @param QuestionTransformer $transformQuestion
      */
