@@ -1,0 +1,15 @@
+{% extends 'admin/quiz/form.html.twig' %}
+
+{% block title %}Edit quiz{% endblock %}
+
+{% block form_title %}
+    {{ block('title') }}
+{% endblock %}
+
+{% block edit_form %}
+
+    {% include 'admin/question/table.html.twig' %}
+
+    {% include 'admin/modal/confirm-modal.html.twig' %}
+
+{% endblock %}
