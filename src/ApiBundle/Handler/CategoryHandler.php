@@ -3,6 +3,7 @@
 namespace ApiBundle\Handler;
 
 use ApiBundle\DTO\CategoryDTO;
+use AppBundle\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
 use ApiBundle\Transformer\CategoryTransformer;
 
@@ -28,13 +29,13 @@ class CategoryHandler
     }
 
     /**
-     * @param CategoryDTO $categoryDTO
+     * @param Category $category
      */
-    public function listCategory(CategoryDTO $categoryDTO)
+    public function listCategory(Category $category)
     {
-        $this->em->persist(
-            $this->categoryTransformer->transformUserDTO($categoryDTO)
-        );
+        $this->em->getRepository(Category::class)->findAll();
+        $this->categoryTransformer->transformCategoryObj($category);
+
         $this->em->flush();
     }
 

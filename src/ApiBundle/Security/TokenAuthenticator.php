@@ -71,7 +71,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
     public function getCredentials(Request $request)
     {
         return [
-            'token' => $request->headers->get('ex'),
+            'token' => $request->headers->get('authentication'),
             'username' => $request->get('username'),
             'password' => $request->get('password')
         ];
