@@ -2,32 +2,32 @@
 
 namespace ApiBundle\Controller;
 
-use AppBundle\Entity\Repository\CategoryRepository;
+use ApiBundle\CategoryHandler;
 use ApiBundle\DTO\CategoryDTO;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
-use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\Response;
+use FOS\RestBundle\View\View;
 
-
-class CategoryController
+/**
+ * Class CategoryController
+ *
+ * @Rest\Route("/categories")
+ */
+class CategoryController extends FOSRestController
 {
-    /**
-     * Gets a collection of BlogPosts
-     *
-     * @return array
-     *
-     * @ApiDoc(
-     *     output="AppBundle\Entity\BlogPost",
-     *     statusCodes={
-     *         200 = "Returned when successful",
-     *         404 = "Return when not found"
-     *     }
-     * )
-     */
-    public function cgetAction()
-    {
-    }
+  // /**
+    // * @Rest\Get("")
+     //*
+     //* @return View
+     //*/
+    //public function getAction()
+    //{
+      //  $this->get(CategoryHandler::class)->getList();
+
+    //    return new View('', Response::HTTP_OK);
+  //  }
+
 
 
 }

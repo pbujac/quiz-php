@@ -9,7 +9,6 @@ use JMS\Serializer\Annotation\Type;
 class CategoryDTO
 {
     /**
-     * @Assert\Autoincrement
      * @Type("int")
      * @var int
      */
