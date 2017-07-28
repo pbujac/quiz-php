@@ -23,3 +23,7 @@ services:
         resource: '../../src/ApiBundle/Controller'
         public: true
         tags: ['controller.service_arguments']
+
+    ApiBundle\Transformer\:
+        resource: '../../src/ApiBundle/Transformer'
+        public: true
