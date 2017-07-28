@@ -39,9 +39,6 @@ class LoginHandler
         $user = $this->getUserByUsername($loginDTO);
         $token = $this->generateToken($loginDTO, $user);
 
-        $this->em->persist($token);
-        $this->em->flush();
-
         return $token;
     }
 
@@ -57,9 +54,8 @@ class LoginHandler
         $expireTokenDate->modify('+1 month');
 
         $token = [
-            $loginDTO->username,
-            "iat" => (new \DateTime())->getTimestamp(),
-            "nbf" => (new \DateTime())->modify('+1 month')->getTimestamp()
+            "username" => $loginDTO->username,
+            "nbf" => (new \DateTime())->getTimestamp()
         ];
 
         $jwt = JWT::encode(
