@@ -12,13 +12,17 @@ class UserTransformer
      *
      * @return UserDTO
      */
-    public function transformDTO(User $user)
+    public function transformToDTO(User $user)
     {
         $userDTO = new UserDTO();
+
         $userDTO->id = $user->getId();
         $userDTO->username = $user->getUsername();
         $userDTO->lastName = $user->getLastName();
         $userDTO->firstName = $user->getFirstName();
+        $userDTO->active = $user->isActive();
+        $userDTO->roles = $user->getRoles();
+        $userDTO->createdAt = $user->getCreatedAt()->getTimestamp();
 
         return $userDTO;
     }

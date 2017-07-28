@@ -3,11 +3,7 @@
 namespace ApiBundle\Handler;
 
 use ApiBundle\DTO\LoginDTO;
-use AppBundle\Entity\AccessToken;
-use AppBundle\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
 use Firebase\JWT\JWT;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class LoginHandler
 {

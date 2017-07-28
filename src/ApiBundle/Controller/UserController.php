@@ -2,8 +2,6 @@
 
 namespace ApiBundle\Controller;
 
-use ApiBundle\DTO\LoginDTO;
-use ApiBundle\Handler\LoginHandler;
 use ApiBundle\Transformer\UserTransformer;
 use AppBundle\Entity\User;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -27,7 +25,7 @@ class UserController extends FOSRestController
      */
     public function getByIdAction(User $user)
     {
-        $userDTO = $this->get(UserTransformer::class)->transformUserObj($user);
+        $userDTO = $this->get(UserTransformer::class)->transformToDTO($user);
 
         return View::create($userDTO, Response::HTTP_OK);
     }

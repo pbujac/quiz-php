@@ -8,7 +8,6 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 trait ValidationErrorTrait
 {
-
     /**
      * @param ConstraintViolationListInterface $errors
      *
@@ -17,18 +16,45 @@ trait ValidationErrorTrait
     public function getErrorMessage(ConstraintViolationListInterface $errors)
     {
         $serializer = SerializerBuilder::create()->build();
-
-        $errorMessage = [
-            'reason' => 'validationError',
-            'message' => 'error.validation',
-            'description' => 'Validation error:'
-        ];
-
-        foreach ($errors as $error) {
-            $errorMessage = array_merge($errorMessage, $this->setErrorDetails($error));
-        }
+        $errorMessage = $this->generateErrorMessage($errors);
 
         return $serializer->serialize($errorMessage, 'json');
+    }
+
+    /**
+     * @param ConstraintViolationListInterface $errors
+     *
+     * @return array
+     */
+    public function generateErrorMessage(ConstraintViolationListInterface $errors): array
+    {
+        $headerError = [
+            'reason' => 'validationError',
+            'message' => 'error.validation',
+            'description' => 'Validation error'
+        ];
+        $detailsError = $this->getErrorDetails($errors);
+
+        $errorMessage = array_merge($headerError, [
+            'details' => $detailsError,
+        ]);
+        return $errorMessage;
+    }
+
+    /**
+     * @param ConstraintViolationListInterface $errors
+     *
+     * @return array
+     */
+    public function getErrorDetails(ConstraintViolationListInterface $errors): array
+    {
+        $detailsError = [];
+
+        foreach ($errors as $error) {
+            $detailsError = array_merge($detailsError, $this->setErrorDetail($error));
+        }
+
+        return $detailsError;
     }
 
     /**
@@ -36,7 +62,7 @@ trait ValidationErrorTrait
      *
      * @return array
      */
-    public function setErrorDetails(ConstraintViolation $error)
+    public function setErrorDetail(ConstraintViolation $error)
     {
         return $detailsError = [
             $error->getPropertyPath() => [

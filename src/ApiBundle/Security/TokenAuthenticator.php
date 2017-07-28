@@ -7,8 +7,7 @@ use ApiBundle\Traits\ValidationErrorTrait;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Firebase\JWT\JWT;
-use JMS\Serializer\Serializer;
-use Symfony\Component\Config\Definition\Exception\Exception;
+use Firebase\JWT\SignatureInvalidException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
@@ -114,7 +113,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
             !$credentials['token'] &&
             !$this->encoder->isPasswordValid($user, $credentials['password'])
         ) {
-            throw new BadRequestHttpException("Credentials are invalid");
+            throw new UnauthorizedHttpException(null);
         }
 
         return true;
@@ -128,7 +127,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        throw new BadRequestHttpException("Credentials are invalid");
+        throw new UnauthorizedHttpException(null);
     }
 
     /**
@@ -158,16 +157,16 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function getUserByUsername($credentials, UserProviderInterface $userProvider): UserInterface
     {
-        $user = $this->em->getRepository(User::class)->findOneBy([
-            'username' => $credentials['username']
-        ]);
+        $user = $this->em->getRepository(User::class)
+            ->findOneBy([
+                'username' => $credentials['username']
+            ]);
 
         if (!$user) {
-            throw new BadRequestHttpException("Credentials are invalid");
+            throw new UnauthorizedHttpException(null);
         }
-        $username = $user->getUsername();
 
-        return $userProvider->loadUserByUsername($username);
+        return $userProvider->loadUserByUsername($user->getUsername());
     }
 
     /**
@@ -183,8 +182,9 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
                 $this->secretKey,
                 ['HS256']
             );
-        } catch (Exception $e) {
-            throw new BadRequestHttpException("JWT ERROR");
+        } catch (SignatureInvalidException $e) {
+
+            throw new UnauthorizedHttpException(null);
         }
 
         return $userProvider->loadUserByUsername($jwt->username);
@@ -198,11 +198,15 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
         $loginDTO = new LoginDTO();
         $loginDTO->token = $credentials['token'];
 
-        $errors = $this->validator->validate($loginDTO, null, [
-            'token'
-        ]);
+        $errors = $this->validator->validate(
+            $loginDTO,
+            null,
+            ['token']
+        );
         if (count($errors) > 0) {
-            throw new BadRequestHttpException("Credentials are invalid");
+            $errorMessage = $this->getErrorMessage($errors);
+
+            throw new BadRequestHttpException($errorMessage);
         }
     }
 
@@ -215,9 +219,11 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
         $loginDTO->username = $credentials['username'];
         $loginDTO->password = $credentials['password'];
 
-        $errors = $this->validator->validate($loginDTO, null, [
-            'login'
-        ]);
+        $errors = $this->validator->validate(
+            $loginDTO,
+            null,
+            ['login']
+        );
         if (count($errors) > 0) {
             $errorMessage = $this->getErrorMessage($errors);
 
