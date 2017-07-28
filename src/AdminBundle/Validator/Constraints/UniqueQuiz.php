@@ -9,6 +9,6 @@ use Symfony\Component\Validator\Constraint;
  */
 class UniqueQuiz extends Constraint
 {
-    /** @param string $message */
+    /** @var string $message */
     public $message = 'Quiz already exist!';
 }

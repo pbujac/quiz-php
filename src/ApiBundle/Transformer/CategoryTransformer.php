@@ -7,7 +7,7 @@ use ApiBundle\DTO\CategoryDTO;
 
 class CategoryTransformer
 {
-    public function CategoryTransform(Category $category)
+    public function CategoryTransformDTO(Category $category)
     {
         $categoryDTO = new CategoryDTO();
         $categoryDTO->setTitle($category->getTitle());

@@ -79,7 +79,7 @@ class Answer
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getText(): ?string
     {
@@ -95,7 +95,7 @@ class Answer
     }
 
     /**
-     * @return bool
+     * @return bool|null
      */
     public function isCorrect(): ?bool
     {

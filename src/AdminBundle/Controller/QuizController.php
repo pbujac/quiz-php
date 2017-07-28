@@ -2,6 +2,7 @@
 
 namespace AdminBundle\Controller;
 
+use AdminBundle\Form\EditQuizType;
 use AdminBundle\Form\QuizType;
 use AdminBundle\Manager\PaginatorManager;
 use AppBundle\Entity\Quiz;
@@ -28,7 +29,7 @@ class QuizController extends Controller
 
         $quizzes = $this->getDoctrine()
             ->getRepository(Quiz::class)
-            ->getQuizByFilter($filter ,$page);
+            ->getQuizByFilter($filter, $page);
 
         $maxPages = ceil($quizzes->count() / PaginatorManager::PAGE_LIMIT);
 
@@ -48,16 +49,19 @@ class QuizController extends Controller
     public function createAction(Request $request)
     {
         $form = $this->createForm(QuizType::class, new Quiz());
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $quiz = $form->getData();
             $quiz->setAuthor($this->getUser());
-
             $em = $this->getDoctrine()->getManager();
+
             foreach ($quiz->getQuestions() as $question) {
                 $question->setQuiz($quiz);
                 $em->persist($question);
+
                 foreach ($question->getAnswers() as $answer) {
                     $answer->setQuestion($question);
                     $em->persist($answer);
@@ -66,13 +70,47 @@ class QuizController extends Controller
             $em->persist($quiz);
             $em->flush();
 
-            return $this->redirectToRoute('admin.dashboard');
+            return $this->redirectToRoute('admin.quiz.list');
         }
-
-        return $this->render(
-            "admin/quiz/create.html.twig",
-            array('form' => $form->createView())
+        return $this->render("admin/quiz/create.html.twig", [
+                'form' => $form->createView(),
+            ]
         );
+    }
+
+    /**
+     * @param Quiz $quiz
+     * @param Request $request
+     *
+     * @return RedirectResponse|Response
+     *
+     * @Route("/quiz/{quiz_id}/edit", name="admin.quiz.edit")
+     *
+     * @ParamConverter("quiz", options={"id" = "quiz_id"})
+     */
+    public function editAction(Quiz $quiz, Request $request)
+    {
+        $form = $this->createForm(EditQuizType::class, $quiz);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($quiz);
+            $em->flush();
+
+            $this->addFlash(
+                'notice',
+                'Quiz has been successfully modified!'
+            );
+            return $this->redirectToRoute('admin.quiz.edit', [
+                'quiz_id' => $quiz->getId(),
+            ]);
+        }
+        return $this->render('admin/quiz/edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
@@ -95,7 +133,6 @@ class QuizController extends Controller
             'notice',
             'Quiz has been successfully removed!'
         );
-
         return $this->redirectToRoute('admin.quiz.list');
     }
 }
