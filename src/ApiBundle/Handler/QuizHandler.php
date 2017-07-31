@@ -22,17 +22,17 @@ class QuizHandler
     /**
      * @param EntityManagerInterface $em
      * @param ValidatorInterface $validator
-     * @param QuizTransformer $transformQuiz
+     * @param QuizTransformer $quizTransformer
      */
     public function __construct(
         EntityManagerInterface $em,
         ValidatorInterface $validator,
-        QuizTransformer $transformQuiz
+        QuizTransformer $quizTransformer
     )
     {
         $this->em = $em;
         $this->validator = $validator;
-        $this->quizTransformer = $transformQuiz;
+        $this->quizTransformer = $quizTransformer;
     }
 
     /**
@@ -41,7 +41,7 @@ class QuizHandler
     public function handleCreate(QuizDTO $quizDTO)
     {
         $this->validateQuizDTO($quizDTO);
-        $this->em->persist($this->quizTransformer->transformQuizDTO($quizDTO));
+        $this->em->persist($this->quizTransformer->transform($quizDTO));
         $this->em->flush();
     }
 

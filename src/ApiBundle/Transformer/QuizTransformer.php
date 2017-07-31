@@ -31,7 +31,7 @@ class QuizTransformer
      *
      * @return Quiz
      */
-    public function transformQuizDTO(QuizDTO $quizDTO)
+    public function transform(QuizDTO $quizDTO)
     {
         $quiz = new Quiz();
         $quiz->setTitle($quizDTO->title);
