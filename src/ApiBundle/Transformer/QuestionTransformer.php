@@ -44,13 +44,13 @@ class QuestionTransformer
      *
      * @return QuestionDTO
      */
-    public function transformQuestionObj(Question $question)
+    public function reverseTransform(Question $question)
     {
         $questionDTO = new QuestionDTO();
         $questionDTO->text = $question->getText();
 
         foreach ($question->getAnswers() as $answer) {
-            $this->transformAnswer->transformAnswerObj($answer);
+            $this->transformAnswer->reverseTransform($answer);
         }
 
         return $questionDTO;

@@ -29,7 +29,7 @@ class AnswerTransformer
      *
      * @return AnswerDTO
      */
-    public function transformAnswerObj(Answer $answer)
+    public function reverseTransform(Answer $answer)
     {
         $answerDTO = new AnswerDTO();
         $answerDTO->text = $answer->getText();

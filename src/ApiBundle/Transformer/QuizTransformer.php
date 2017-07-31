@@ -31,7 +31,7 @@ class QuizTransformer
      *
      * @return Quiz
      */
-    public function transformQuizDTO(QuizDTO $quizDTO)
+    public function transform(QuizDTO $quizDTO)
     {
         $quiz = new Quiz();
         $quiz->setTitle($quizDTO->title);
@@ -61,15 +61,15 @@ class QuizTransformer
      *
      * @return QuizDTO
      */
-    public function transformQuizObj(Quiz $quiz){
+    public function reverseTransform(Quiz $quiz){
         $quizDTO = new QuizDTO();
         $quizDTO->title=$quiz->getTitle();
         $quizDTO->description=$quiz->getDescription();
-        $quizDTO->category_id=$quiz->getCategory()->getId();
-        $quizDTO->author_id=$quiz->getAuthor()->getId();
+        $quizDTO->categoryId=$quiz->getCategory()->getId();
+        $quizDTO->authorId=$quiz->getAuthor()->getId();
 
         foreach ($quiz->getQuestions() as $question){
-            $this->transformQuestion->transformQuestionObj($question);
+            $this->transformQuestion->reverseTransform($question);
         }
         return $quizDTO;
     }

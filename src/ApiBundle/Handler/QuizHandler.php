@@ -4,7 +4,6 @@ namespace ApiBundle\Handler;
 
 use ApiBundle\DTO\QuizDTO;
 use ApiBundle\Transformer\QuizTransformer;
-use AppBundle\Entity\Quiz;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -23,17 +22,17 @@ class QuizHandler
     /**
      * @param EntityManagerInterface $em
      * @param ValidatorInterface $validator
-     * @param QuizTransformer $transformQuiz
+     * @param QuizTransformer $quizTransformer
      */
     public function __construct(
         EntityManagerInterface $em,
         ValidatorInterface $validator,
-        QuizTransformer $transformQuiz
+        QuizTransformer $quizTransformer
     )
     {
         $this->em = $em;
         $this->validator = $validator;
-        $this->quizTransformer = $transformQuiz;
+        $this->quizTransformer = $quizTransformer;
     }
 
     /**
@@ -42,8 +41,16 @@ class QuizHandler
     public function handleCreate(QuizDTO $quizDTO)
     {
         $this->validateQuizDTO($quizDTO);
-        $this->em->persist($this->quizTransformer->transformQuizDTO($quizDTO));
+        $this->em->persist($this->quizTransformer->transform($quizDTO));
         $this->em->flush();
+    }
+
+    /**
+     * @param int $quizId
+     */
+    public function handlerById(int $quizId)
+    {
+
     }
 
     /**
@@ -60,14 +67,5 @@ class QuizHandler
             }
             throw new BadRequestHttpException($errorMessage);
         }
-    }
-
-    /**
-     * @param int $quiz_id
-     */
-    public function getByIdAction(int $quiz_id)
-    {
-        $quiz = $this->em->getRepository(Quiz::class)->findOneBy(["id" => $quiz_id]);
-        $this->transformQuiz->transformQuizObj($quiz);
     }
 }
