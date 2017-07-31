@@ -12,7 +12,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use AdminBundle\Manager\PaginatorManager;
 
 
-
 class CategoryHandler
 {
     /** @var EntityManagerInterface $em */
@@ -42,34 +41,44 @@ class CategoryHandler
      *
      * @return PaginatedRepresentation
      */
-    public function handlerGetByPage(int $page){
-
-        $categories=$this->em->getRepository(Category::class)
+    public function handlerGetByPage(int $page)
+    {
+        $categories = $this->em->getRepository(Category::class)
             ->findAll();
 
-        $collectionDTO =new ArrayCollection();
+        $collectionDTO = new ArrayCollection();
         foreach ($categories as $category) {
             $categoryDTO = $this->categoryTransformer->reverseTransform($category);
 
-            $collectionDTO[]= $categoryDTO;
+            $collectionDTO[] = $categoryDTO;
         }
 
-        return $this->paginate($collectionDTO,$page);
-    }
+        $categoriesByPage = $this->em->getRepository(Category::class)
+            ->getCategoriesByPage($page);
 
+        $collectionDTOByPage = new ArrayCollection();
+        foreach ($categoriesByPage as $category) {
+            $categoryDTOByPage = $this->categoryTransformer->reverseTransform($category);
+
+            $collectionDTOByPage[] = $categoryDTOByPage;
+        }
+
+        return $this->paginate($collectionDTO, $page,$collectionDTOByPage);
+    }
 
     /**
      * @param ArrayCollection|CategoryDTO[] $collectionDTO
+     * * @param ArrayCollection|CategoryDTO[] $collectionDTOByPage
      * @param int $page
      *
      * @return PaginatedRepresentation
      */
-    private function paginate(ArrayCollection $collectionDTO,int $page)
+    private function paginate(ArrayCollection $collectionDTO, int $page,ArrayCollection $collectionDTOByPage)
     {
         $maxPages = ceil($collectionDTO->count() / PaginatorManager::PAGE_LIMIT);
 
         $collectionRepresentation = new CollectionRepresentation(
-            $collectionDTO,
+            $collectionDTOByPage,
             'categories'
         );
 
