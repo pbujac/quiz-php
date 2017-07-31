@@ -9,8 +9,7 @@ use Hateoas\Configuration\Annotation as Hateoas;
 
 /**
  * @Hateoas\Relation(
- *     "categories",
- *     href = "expr('/api/categories/' ~ object.getId())")
+ *     "categories",href = "expr('/api/categories/' ~ object.getId())")
  */
 class CategoryDTO
 {
@@ -43,7 +42,6 @@ class CategoryDTO
     {
         $this->id = $id;
     }
-
 
     /**
      * @return string
