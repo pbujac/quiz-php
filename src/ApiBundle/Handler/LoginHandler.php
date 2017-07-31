@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Firebase\JWT\JWT;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
+
 class LoginHandler
 {
     /** @var EntityManagerInterface */
