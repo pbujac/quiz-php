@@ -41,7 +41,7 @@ class QuizHandler
     /**
      * @param QuizDTO $quizDTO
      */
-    public function postAction(QuizDTO $quizDTO)
+    public function handleCreate(QuizDTO $quizDTO)
     {
         $this->validateQuizDTO($quizDTO);
         $this->em->persist($this->transformQuiz->transformQuizDTO($quizDTO));

@@ -9,7 +9,7 @@ use JMS\Serializer\Annotation\Type;
 class QuestionDTO
 {
     /**
-     * @var $text
+     * @var string
      * @Type("string")
      *
      * @Assert\NotBlank(message="text for question isn't specified")

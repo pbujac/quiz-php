@@ -8,7 +8,7 @@ use JMS\Serializer\Annotation\Type;
 class AnswerDTO
 {
     /**
-     * @var $text
+     * @var string
      * @Type("string")
      *
      * @Assert\NotBlank(message="text for question isn't specified")
@@ -17,7 +17,7 @@ class AnswerDTO
     public $text;
 
     /**
-     * @var $correct
+     * @var bool
      * @Type("boolean")
      */
     public $correct;
