@@ -47,4 +47,11 @@ class QuizDTO
      * @Assert\Valid
      */
     public $questions;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime")
+     */
+    public $createdAt;
 }
