@@ -81,3 +81,14 @@ twig:
 assetic:
     filters:
         cssrewrite: ~
+
+fos_rest:
+    view:
+        view_response_listener: 'force'
+    body_converter:
+        enabled: true
+        validate: true
+    format_listener:
+        rules:
+            - { path: '^/api/v1', priorities: ['json'] }
+            - { path: '^/', stop: true }

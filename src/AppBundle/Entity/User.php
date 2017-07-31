@@ -12,7 +12,6 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
  * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\UserRepository")
  * @ORM\HasLifecycleCallbacks()
- *
  */
 class User implements AdvancedUserInterface
 {
@@ -209,6 +208,7 @@ class User implements AdvancedUserInterface
     {
         $this->createdAt = $createdAt;
     }
+
     /**
      * @ORM\PrePersist
      */
