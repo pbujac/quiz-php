@@ -48,10 +48,10 @@ class QuizDTO
      */
     public $questions;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="created_at", type="datetime")
-     */
-    public $createdAt;
+//    /**
+//     * @var \DateTime
+//     *
+//     * @ORM\Column(name="created_at", type="datetime")
+//     */
+//    public $createdAt;
 }

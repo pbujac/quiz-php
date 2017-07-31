@@ -58,14 +58,4 @@ class QuizHandler
         return $quizzesDTO;
     }
 
-//    public function handleQuizByFilter($filter)
-//    {
-//        $qb = $this->createQueryBuilder('q')
-//            ->addSelect('c, a')
-//            ->join('q.category', 'c')
-//            ->join('q.author', 'a');
-//
-//
-//        return $quizzes ;
-//    }
 }
