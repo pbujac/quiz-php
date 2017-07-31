@@ -27,12 +27,9 @@ class CategoryController extends FOSRestController
     /**
      * @param CategoryTransformer $categoryTransformer
      */
-    public function __construct(
-        CategoryTransformer $categoryTransformer
-    )
+    public function __construct(CategoryTransformer $categoryTransformer)
     {
         $this->categoryTransformer = $categoryTransformer;
-
     }
 
     /**
@@ -47,16 +44,17 @@ class CategoryController extends FOSRestController
 
         $maxPages = ceil($categories->count() / PaginatorManager::PAGE_LIMIT);
 
-        $collectionDTO=new ArrayCollection();
+        $collectionDTO = new ArrayCollection();
 
         foreach ($categories as $category) {
             $categoryDTO = $this->categoryTransformer->reverseTransform($category);
 
-            $collectionDTO[]= $categoryDTO;
+            $collectionDTO[] = $categoryDTO;
         }
 
         $paginatedCollection = new PaginatedRepresentation(
-            new CollectionRepresentation([$collectionDTO
+            new CollectionRepresentation([
+                $collectionDTO
             ],
                 'categories'
             ),
