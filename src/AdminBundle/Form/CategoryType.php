@@ -43,9 +43,4 @@ class CategoryType extends AbstractType
             'data_class' => Category::class,
         ]);
     }
-
-    public function getName()
-    {
-        return 'categories';
-    }
 }

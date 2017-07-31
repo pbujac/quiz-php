@@ -8,7 +8,10 @@ use JMS\Serializer\Annotation\Type;
 use Hateoas\Configuration\Annotation as Hateoas;
 
 /**
- * @Hateoas\Relation("self", href = "expr('/api/users/' ~ object.id)")
+ * @Hateoas\Relation(
+ *     "self",
+ *     href = "expr('/api/users/' ~ object.id)"
+ * )
  */
 class UserDTO
 {

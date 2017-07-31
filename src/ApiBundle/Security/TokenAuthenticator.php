@@ -89,6 +89,14 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
+        if (
+            !$credentials['token'] &&
+            !$credentials['username'] &&
+            !$credentials['password']
+        ) {
+            throw new UnauthorizedHttpException(null);
+        }
+
         if ($credentials['token']) {
             $this->validateToken($credentials);
 

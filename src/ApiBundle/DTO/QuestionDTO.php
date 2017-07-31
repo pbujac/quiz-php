@@ -8,7 +8,10 @@ use JMS\Serializer\Annotation\Type;
 use Hateoas\Configuration\Annotation as Hateoas;
 
 /**
- * @Hateoas\Relation("self", href = "expr('/api/question/' ~ object.id)")
+ * @Hateoas\Relation(
+ *     "self",
+ *     href = "expr('/api/questions/' ~ object.id)"
+ * )
  */
 class QuestionDTO
 {
@@ -23,19 +26,21 @@ class QuestionDTO
 
 
     /**
-     * @var $text
      * @Type("string")
      *
      * @Assert\NotBlank(message="text for question isn't specified")
      * @Assert\Length(max=5000, maxMessage="too long")
+     *
+     * @var $text
      */
     public $text;
 
     /**
-     * @var ArrayCollection|AnswerDTO[]
      * @Type("ArrayCollection<ApiBundle\DTO\AnswerDTO>")
      *
      * @Assert\Valid
+     *
+     * @var ArrayCollection|AnswerDTO[]
      */
     public $answers;
 }
