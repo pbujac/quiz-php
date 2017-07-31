@@ -22,12 +22,13 @@ class RegistrationHandler
      * @param ValidatorInterface $validator
      */
     public function __construct(
-                                EntityManagerInterface $em,
-                                UserTransformer $userTransformer,
-                                ValidatorInterface $validator
-    ){
+        EntityManagerInterface $em,
+        UserTransformer $userTransformer,
+        ValidatorInterface $validator
+    )
+    {
         $this->em = $em;
-        $this->transformUser=$userTransformer;
+        $this->transformUser = $userTransformer;
         $this->validator = $validator;
     }
 
@@ -39,7 +40,7 @@ class RegistrationHandler
         $this->validateRegistrationDTO($registrationDTO);
         $this->em->persist(
             $this->transformUser->transformRegistrationDTO($registrationDTO)
-            );
+        );
         $this->em->flush();
     }
 
@@ -47,10 +48,11 @@ class RegistrationHandler
     {
         $errors = $this->validator->validate($registrationDTO);
 
-        if (count($errors)>0) {
-            $mesage="";
+        if (count($errors) > 0) {
+            $mesage = "";
+
             foreach ($errors as $violation) {
-                $mesage = $mesage .' - '. $violation->getPropertyPath().'-'.$violation->getMessage();
+                $mesage = $mesage . ' - ' . $violation->getPropertyPath() . '-' . $violation->getMessage();
             }
             throw new BadRequestHttpException($mesage);
         }
