@@ -2,8 +2,6 @@
 
 namespace ApiBundle\Handler;
 
-use ApiBundle\DTO\AnswerDTO;
-use ApiBundle\DTO\QuestionDTO;
 use ApiBundle\DTO\QuizDTO;
 use ApiBundle\Transformer\QuizTransformer;
 use AppBundle\Entity\Quiz;
@@ -20,7 +18,7 @@ class QuizHandler
     private $validator;
 
     /** @var QuizTransformer */
-    private $transformQuiz;
+    private $quizTransformer;
 
     /**
      * @param EntityManagerInterface $em
@@ -35,7 +33,7 @@ class QuizHandler
     {
         $this->em = $em;
         $this->validator = $validator;
-        $this->transformQuiz = $transformQuiz;
+        $this->quizTransformer = $transformQuiz;
     }
 
     /**
@@ -44,7 +42,7 @@ class QuizHandler
     public function handleCreate(QuizDTO $quizDTO)
     {
         $this->validateQuizDTO($quizDTO);
-        $this->em->persist($this->transformQuiz->transformQuizDTO($quizDTO));
+        $this->em->persist($this->quizTransformer->transformQuizDTO($quizDTO));
         $this->em->flush();
     }
 
