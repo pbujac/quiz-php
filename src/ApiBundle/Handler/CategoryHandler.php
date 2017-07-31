@@ -44,12 +44,10 @@ class CategoryHandler
      */
     public function handlerGetByPage(int $page){
 
+        $categories=$this->em->getRepository(Category::class)
+            ->findAll();
+
         $collectionDTO =new ArrayCollection();
-
-        $categories = $this->em->getRepository(Category::class)
-            ->getCategoriesByPage($page);
-
-
         foreach ($categories as $category) {
             $categoryDTO = $this->categoryTransformer->reverseTransform($category);
 

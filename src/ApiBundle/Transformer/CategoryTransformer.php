@@ -11,6 +11,7 @@ class CategoryTransformer
     {
         $category = new Category();
         $category->setTitle($categoryDTO->title);
+
         return $category;
     }
 
@@ -20,8 +21,7 @@ class CategoryTransformer
         $categoryDTO->title = $category->getTitle();
         $categoryDTO->id = $category->getId();
 
-
-       return $categoryDTO;
+        return $categoryDTO;
     }
 
 }
