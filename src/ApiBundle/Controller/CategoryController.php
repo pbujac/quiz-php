@@ -2,8 +2,7 @@
 
 namespace ApiBundle\Controller;
 
-use ApiBundle\DTO\CategoryDTO;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Hateoas\Representation\PaginatedRepresentation;
 use Hateoas\Representation\CollectionRepresentation;
 use ApiBundle\Transformer\CategoryTransformer;
@@ -12,6 +11,7 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\View\View;
+use AdminBundle\Manager\PaginatorManager;
 
 
 /**
@@ -20,53 +20,55 @@ use FOS\RestBundle\View\View;
 class CategoryController extends FOSRestController
 {
     /**
-     * @var EntityManagerInterface
-     */
-    private $em;
-    /**
      * @var CategoryTransformer
      */
     private $categoryTransformer;
 
     /**
-     * @param EntityManagerInterface $em
      * @param CategoryTransformer $categoryTransformer
      */
     public function __construct(
-        EntityManagerInterface $em,
         CategoryTransformer $categoryTransformer
     )
     {
-        $this->em = $em;
         $this->categoryTransformer = $categoryTransformer;
 
     }
 
     /**
-     * @Rest\Get()
+     * @Rest\Get("/list/{page}")
+     *
      */
-    public function getByPageAction()
+    public function getByPageAction(int $page)
     {
-        $categoryDTO = new CategoryDTO();
-        $categories = $this->em->getRepository(Category::class)->findAll();
+        $categories = $this->getDoctrine()
+            ->getRepository(Category::class)
+            ->getCategoriesByPage($page);
+
+        $maxPages = ceil($categories->count() / PaginatorManager::PAGE_LIMIT);
+
+        $collectionDTO=new ArrayCollection();
+
         foreach ($categories as $category) {
-            $categoryDTO = $this->categoryTransformer->transformCategoryObj($category);
+            $categoryDTO = $this->categoryTransformer->reverseTransform($category);
+
+            $collectionDTO[]= $categoryDTO;
         }
 
         $paginatedCollection = new PaginatedRepresentation(
-            new CollectionRepresentation([$categoryDTO],
-                'categories', // embedded rel
-                'categories'  // xml element name
+            new CollectionRepresentation([$collectionDTO
+            ],
+                'categories'
             ),
-            "api_category_getbypage", // route
-            array(), // route parameters
-            1,       // page number
-            19,      // limit
-            3,       // total pages
-            'page',  // page route parameter name, optional, defaults to 'page'
-            'limit', // limit route parameter name, optional, defaults to 'limit'
-            false,   // generate relative URIs, optional, defaults to `false`
-            75       // total collection size, optional, defaults to `null`
+            "api_category_getbypage",
+            array(),
+            $page,
+            PaginatorManager::PAGE_LIMIT,
+            $maxPages,
+            'page',
+            'limit',
+            false,
+            $categories->count()
         );
 
         return View::create($paginatedCollection, Response::HTTP_OK);
