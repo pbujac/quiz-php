@@ -10,7 +10,7 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 class QuizController
 {
     /**
-     * @Rest\Get("/{filter}")
+     * @Rest\Get("/q:/{filter}")
      */
     public function quizSearch()
     {
