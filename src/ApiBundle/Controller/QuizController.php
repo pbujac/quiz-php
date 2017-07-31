@@ -2,15 +2,18 @@
 
 namespace ApiBundle\Controller;
 
-use FOS\RestBundle\Controller\Annotations as Rest;
-use Symfony\Component\HttpFoundation\Request;
+use ApiBundle\Handler\QuizSearchHandler;
 use AppBundle\Entity\Quiz;
-use AdminBundle\Manager\PaginatorManager;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\View\View;
+use Symfony\Component\HttpFoundation\Request;
+
+//use AdminBundle\Manager\PaginatorManager;
 
 /**
  * @Rest\Route("/quizzes")
  */
-class QuizController
+class QuizController extends QuizSearchHandler
 {
     /**
      * @Rest\Get()
@@ -19,16 +22,31 @@ class QuizController
      *
      * @param Request $request
      * @param int $page
+     * @param Quiz $quiz
+     *
+     * @return View
      */
-    public function quizSearch(Request $request, int $page=1)
+    public function quizSearch(Request $request, int $page = 1, Quiz $quiz)
     {
         $filter = $request->get('filter');
 
-        $quizzes = $this->getDoctrine()
-            ->getRepository(Quiz::class)
-            ->getQuizByFilter($filter, $page);
+        $quizzes[]=$this->handleQuizByFilter($filter);
 
-        $maxPages = ceil($quizzes->count() / PaginatorManager::PAGE_LIMIT);
+
+        foreach ($quizzes as $quiz) {
+            $quizzes[] = array(
+                $quiz->getTitle(),
+                $quiz->getDescription(),
+                $quiz->getCreatedAt(),
+                $quiz->getCategody(),
+                $quiz->getAuthor()
+            );
+        }
+
+
+//        $maxPages = ceil(count($quizzes) / PaginatorManager::PAGE_LIMIT);
+
+        return View::create($quizzes[] = $this->handleQuizSearch($quiz), http_response_code(200));
 
     }
 }
