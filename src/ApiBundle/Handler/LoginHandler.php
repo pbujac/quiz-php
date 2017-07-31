@@ -23,18 +23,29 @@ class LoginHandler
      *
      * @return array
      */
-    public function generateToken(LoginDTO $loginDTO): array
+    public function handleLogin(LoginDTO $loginDTO): array
     {
+        return $this->generateToken($loginDTO);
+    }
+
+    /**
+     * @param LoginDTO $loginDTO
+     *
+     * @return array
+     */
+    private function generateToken(LoginDTO $loginDTO): array
+    {
+        $expirationDate = new \DateTime();
         $token = [
             "username" => $loginDTO->username,
-            "nbf" => (new \DateTime())->getTimestamp()
+            "nbf" => $expirationDate->getTimestamp()
         ];
 
         $jwt = JWT::encode($token, $this->secretKey);
 
         return $tokenResponse = [
             'token' => $jwt,
-            'token_exp' => (new \Datetime())->getTimestamp(),
+            'token_exp' => $expirationDate->getTimestamp(),
         ];
     }
 }

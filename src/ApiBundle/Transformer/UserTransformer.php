@@ -12,7 +12,7 @@ class UserTransformer
      *
      * @return UserDTO
      */
-    public function transformToDTO(User $user)
+    public function reverseTransform(User $user)
     {
         $userDTO = new UserDTO();
 
