@@ -8,7 +8,7 @@ use JMS\Serializer\Annotation\Type;
 use Hateoas\Configuration\Annotation as Hateoas;
 
 /**
- * @Hateoas\Relation("self", href = "expr('/api/users/' ~ object.getId())")
+ * @Hateoas\Relation("self", href = "expr('/api/users/' ~ object.id)")
  */
 class UserDTO
 {
@@ -43,8 +43,6 @@ class UserDTO
     /**
      * @Type("string")
      *
-     * @Assert\NotBlank()
-     *
      * @var string
      */
     public $firstName;
@@ -52,26 +50,28 @@ class UserDTO
     /**
      * @Type("string")
      *
-     * @Assert\NotBlank()
-     *
      * @var string
      */
     public $lastName;
 
+    /**
+     * @Type("int")
+     *
+     * @var \DateTime
+     */
+    public $createdAt;
 
     /**
-     * @return int
+     * @Type("boolean")
+     *
+     * @var bool
      */
-    public function getId(): int
-    {
-        return $this->id;
-    }
+    public $active;
 
     /**
-     * @param int $id
+     * @Type("array")
+     *
+     * @var array
      */
-    public function setId(int $id)
-    {
-        $this->id = $id;
-    }
+    public $roles;
 }
