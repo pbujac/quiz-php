@@ -49,12 +49,12 @@ class RegistrationHandler
         $errors = $this->validator->validate($registrationDTO);
 
         if (count($errors) > 0) {
-            $mesage = "";
+            $message = "";
 
             foreach ($errors as $violation) {
-                $mesage = $mesage . ' - ' . $violation->getPropertyPath() . '-' . $violation->getMessage();
+                $message = $message . ' - ' . $violation->getPropertyPath() . '-' . $violation->getMessage();
             }
-            throw new BadRequestHttpException($mesage);
+            throw new BadRequestHttpException($message);
         }
     }
 }
