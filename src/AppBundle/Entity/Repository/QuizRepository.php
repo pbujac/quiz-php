@@ -4,6 +4,7 @@ namespace AppBundle\Entity\Repository;
 
 use AdminBundle\Manager\PaginatorManager;
 use AppBundle\Entity\User;
+use AppBundle\Entity\Category;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\ORM\EntityRepository;
 
@@ -45,9 +46,27 @@ class QuizRepository extends EntityRepository
         $paginator = new PaginatorManager();
 
         $query = $this->createQueryBuilder('quiz')
-            ->join('quiz.author', 'a')
-            ->where('a.id = :userId')
-            ->setParameter('userId', $user->getId())
+            ->where('quiz.author = :user')
+            ->setParameter('user', $user)
+            ->getQuery();
+
+        return $paginator->paginate($query, $page, $count);
+    }
+
+    /**
+     * @param Category $category
+     * @param int $page
+     * @param int $count
+     *
+     * @return Paginator
+     */
+    public function getQuizzesByCategoryAndPage(Category $category, int $page, int $count)
+    {
+        $paginator = new PaginatorManager();
+
+        $query = $this->createQueryBuilder('quiz')
+            ->where('quiz.category = :category')
+            ->setParameter('category', $category)
             ->getQuery();
 
         return $paginator->paginate($query, $page, $count);

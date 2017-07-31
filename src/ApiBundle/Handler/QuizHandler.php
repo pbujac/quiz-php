@@ -4,6 +4,7 @@ namespace ApiBundle\Handler;
 
 use ApiBundle\DTO\QuizDTO;
 use ApiBundle\Transformer\QuizTransformer;
+use AppBundle\Entity\Category;
 use AppBundle\Entity\Quiz;
 use AppBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -50,7 +51,6 @@ class QuizHandler
         $this->em->flush();
     }
 
-
     /**
      * @param User $user
      * @param int $page
@@ -64,8 +64,25 @@ class QuizHandler
             ->getRepository(Quiz::class)
             ->getQuizzesByAuthorAndPage($user, $page, $count);
 
-        $quizzesDTO = new ArrayCollection();
-        $this->addQuizzesToDTO($quizzes, $quizzesDTO);
+        $quizzesDTO = $this->addQuizzesToDTO($quizzes);
+
+        return $this->paginate($quizzesDTO,'api.user.quizzes');
+    }
+
+    /**
+     * @param Category $category
+     * @param int $page
+     * @param int $count
+     *
+     * @return PaginatedRepresentation
+     */
+    public function getQuizzesByCategory(Category $category, int $page, int $count)
+    {
+        $quizzes = $this->em
+            ->getRepository(Quiz::class)
+            ->getQuizzesByCategoryAndPage($category, $page, $count);
+
+        $quizzesDTO = $this->addQuizzesToDTO($quizzes);
 
         return $this->paginate($quizzesDTO);
     }
@@ -87,26 +104,30 @@ class QuizHandler
     }
 
     /**
-     * @param Paginator|Quiz[] $quizzes
-     * @param ArrayCollection|Quiz[] $quizzesDTO
+     * @param Paginator $quizzes
+     *
+     * @return ArrayCollection
      */
-    public function addQuizzesToDTO(
-        Paginator $quizzes,
-        ArrayCollection $quizzesDTO
-    ) {
+    public function addQuizzesToDTO(Paginator $quizzes)
+    {
+        $quizzesDTO = new ArrayCollection();
+
         foreach ($quizzes as $quiz) {
             $quizzesDTO->add(
                 $this->transformQuiz->reverseTransform($quiz)
             );
         }
+
+        return $quizzesDTO;
     }
 
     /**
      * @param ArrayCollection|Quiz[] $quizzes
+     * @param string $route
      *
      * @return PaginatedRepresentation
      */
-    private function paginate(ArrayCollection $quizzes)
+    private function paginate(ArrayCollection $quizzes, string $route)
     {
         $totalQuizzes = $quizzes->count();
 
@@ -117,7 +138,7 @@ class QuizHandler
 
         return new PaginatedRepresentation(
             $collectionRepresentation,
-            'api.user.quizzes',
+            $route,
             [],
             null,
             null,
