@@ -14,7 +14,7 @@ class QuizRepository extends EntityRepository
      *
      * @return Paginator
      */
-    public function getQuizByFilter(?string $filter = null, int $page = 1)
+    public function getQuizByFilterAndPage(?string $filter = null, int $page = 1)
     {
         $paginator = new PaginatorManager();
 

@@ -29,7 +29,7 @@ class QuizController extends Controller
 
         $quizzes = $this->getDoctrine()
             ->getRepository(Quiz::class)
-            ->getQuizByFilter($filter, $page);
+            ->getQuizByFilterAndPage($filter, $page);
 
         $maxPages = ceil($quizzes->count() / PaginatorManager::PAGE_LIMIT);
 
