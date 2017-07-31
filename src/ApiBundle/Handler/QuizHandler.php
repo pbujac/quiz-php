@@ -8,6 +8,7 @@ use AppBundle\Entity\Quiz;
 use AppBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Hateoas\Representation\CollectionRepresentation;
 use Hateoas\Representation\PaginatedRepresentation;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -52,24 +53,19 @@ class QuizHandler
 
     /**
      * @param User $user
+     * @param int $page
+     * @param int $count
      *
      * @return PaginatedRepresentation
      */
-    public function handleGetQuizzesByUser(User $user)
+    public function getQuizzesByUser(User $user, int $page, int $count)
     {
-        $quizzesDTO = new ArrayCollection();
-
         $quizzes = $this->em
             ->getRepository(Quiz::class)
-            ->findBy([
-                'author' => $user,
-            ]);
+            ->getQuizzesByAuthorAndPage($user, $page, $count);
 
-        foreach ($quizzes as $quiz) {
-            $quizzesDTO->add(
-                $this->transformQuiz->reverseTransform($quiz)
-            );
-        }
+        $quizzesDTO = new ArrayCollection();
+        $this->addQuizzesToDTO($quizzes, $quizzesDTO);
 
         return $this->paginate($quizzesDTO);
     }
@@ -91,28 +87,45 @@ class QuizHandler
     }
 
     /**
+     * @param Paginator|Quiz[] $quizzes
+     * @param ArrayCollection|Quiz[] $quizzesDTO
+     */
+    public function addQuizzesToDTO(
+        Paginator $quizzes,
+        ArrayCollection $quizzesDTO
+    ) {
+        foreach ($quizzes as $quiz) {
+            $quizzesDTO->add(
+                $this->transformQuiz->reverseTransform($quiz)
+            );
+        }
+    }
+
+    /**
      * @param ArrayCollection|Quiz[] $quizzes
      *
      * @return PaginatedRepresentation
      */
     private function paginate(ArrayCollection $quizzes)
     {
+        $totalQuizzes = $quizzes->count();
+
         $collectionRepresentation = new CollectionRepresentation(
-            [$quizzes],
+            $quizzes,
             'quizzes'
         );
 
         return new PaginatedRepresentation(
-            [$collectionRepresentation],
+            $collectionRepresentation,
             'api.user.quizzes',
             [],
-            1,
-            20,
-            4,
+            null,
+            null,
+            null,
             'page',
-            'limit',
+            'count',
             false,
-            75
+            $totalQuizzes
         );
     }
 }

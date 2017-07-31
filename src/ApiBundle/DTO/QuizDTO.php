@@ -24,6 +24,7 @@ class QuizDTO
 
     /**
      * @var string
+     *
      * @Type("string")
      *
      * @Assert\NotBlank(message="title isn't specified")
@@ -33,13 +34,18 @@ class QuizDTO
     public $title;
 
     /**
-     * @Type("ApiBundle\DTO\QuestionDTO")
+     * @Type("ApiBundle\DTO\CategoryDTO")
      */
     public $category;
 
+    /**
+     * @Type("int")
+     */
+    public $createdAt;
 
     /**
      * @var string
+     *
      * @Type("string")
      *
      * @Assert\NotBlank(message="description for quiz isn't specified")
@@ -54,9 +60,11 @@ class QuizDTO
 
     /**
      * @var ArrayCollection|QuestionDTO[]
+     *
      * @Type("ArrayCollection<ApiBundle\DTO\QuestionDTO>")
      *
      * @Assert\Valid
      */
     public $questions;
+
 }

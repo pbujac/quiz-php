@@ -2,22 +2,22 @@
 
 namespace ApiBundle\Controller;
 
+use AdminBundle\Manager\PaginatorManager;
 use ApiBundle\DTO\QuizDTO;
 use ApiBundle\Handler\QuizHandler;
-use ApiBundle\Manager\UserTokenManager;
-use AppBundle\Entity\User;
-use Firebase\JWT\JWT;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class QuizController extends FOSRestController
 {
     /**
-     * @Rest\Post("/quizzes", name="quizzes")
+     * @Rest\Post(
+     *     "/quizzes",
+     *     name="quizzes"
+     * )
      *
      * @param QuizDTO $quizDTO
      *
@@ -31,21 +31,22 @@ class QuizController extends FOSRestController
     }
 
     /**
-     *
-     * @Rest\Route(
+     * @Rest\Get(
      *     "/user/quizzes" ,
      *     name="api.user.quizzes"
      * )
-     * @Rest\Get()
+     * @param Request $request
      *
      * @return View
      */
-    public function getQuizzesByUserAction()
+    public function getQuizzesByUserAction(Request $request)
     {
+        $user = $this->getUser();
+        $page = $request->get('page') ?: 1;
+        $count = $request->get('count') ?: PaginatorManager::PAGE_LIMIT;
+
         $quizzes = $this->get(QuizHandler::class)
-            ->handleGetQuizzesByUser(
-                $this->getUser()
-            );
+            ->getQuizzesByUser($user, $page, $count);
 
         return View::create($quizzes, Response::HTTP_OK);
     }

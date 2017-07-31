@@ -12,17 +12,22 @@ class PaginatorManager
     /**
      * @param Query $query
      * @param int $page
+     * @param int $count
      *
      * @return Paginator
      */
-    public function paginate(Query $query, int $page)
-    {
+    public function paginate(
+        Query $query,
+        int $page,
+        int $count = self::PAGE_LIMIT
+    ) {
         $paginator = new Paginator($query);
-        $paginator
-            ->getQuery()
-            ->setFirstResult(self::PAGE_LIMIT * ($page - 1))
-            ->setMaxResults(self::PAGE_LIMIT);
+
+        $paginator->getQuery()
+            ->setFirstResult($count * ($page - 1))
+            ->setMaxResults($count);
 
         return $paginator;
     }
+
 }

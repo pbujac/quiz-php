@@ -20,19 +20,25 @@ class QuizTransformer
     /** @var UserTransformer */
     private $userTransformer;
 
+    /** @var CategoryTransformer */
+    private $categoryTransformer;
+
     /**
      * @param EntityManagerInterface $em
      * @param QuestionTransformer $transformQuestion
      * @param UserTransformer $userTransformer
+     * @param CategoryTransformer $categoryTransformer
      */
     public function __construct(
         EntityManagerInterface $em,
         QuestionTransformer $transformQuestion,
-        UserTransformer $userTransformer
+        UserTransformer $userTransformer,
+        CategoryTransformer $categoryTransformer
     ) {
         $this->em = $em;
         $this->transformQuestion = $transformQuestion;
         $this->userTransformer = $userTransformer;
+        $this->categoryTransformer = $categoryTransformer;
     }
 
 
@@ -78,14 +84,17 @@ class QuizTransformer
         $quizDTO->id = $quiz->getId();
         $quizDTO->title = $quiz->getTitle();
         $quizDTO->description = $quiz->getDescription();
-        $quizDTO->author =
-            $this->userTransformer->reverseTransform(
-                $quiz->getAuthor()
-            );
-        $quizDTO->author =
-            $this->userTransformer->reverseTransform(
-                $quiz->getAuthor()
-            );
+        $quizDTO->createdAt = $quiz->getCreatedAt()->getTimestamp();
+        $quizDTO->category = $this->categoryTransformer->reverseTransform(
+            $quiz->getCategory()
+        );
+        $quizDTO->description = $quiz->getDescription();
+        $quizDTO->author = $this->userTransformer->reverseTransform(
+            $quiz->getAuthor()
+        );
+        $quizDTO->author = $this->userTransformer->reverseTransform(
+            $quiz->getAuthor()
+        );
         $quizDTO->questions = new ArrayCollection();
 
         foreach ($quiz->getQuestions() as $question) {
