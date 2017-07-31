@@ -11,15 +11,13 @@ use Hateoas\Configuration\Annotation as Hateoas;
 /**
  * @Hateoas\Relation(
  *     "self",
- *     href = "expr('/api/quizzes/' ~ object.id)"
+ *     href = "expr('/api/quizzes' ~ object.id)"
  * )
  */
 class QuizDTO
 {
     /**
      * @Type("int")
-     *
-     * @Assert\NotBlank()
      *
      * @var int
      */
@@ -45,6 +43,13 @@ class QuizDTO
     public $category;
 
     /**
+     * @Type("ApiBundle\DTO\UserDTO")
+     *
+     * @var UserDTO
+     */
+    public $author;
+
+    /**
      * @Type("int")
      *
      * @var int
@@ -60,13 +65,6 @@ class QuizDTO
      * @var string
      */
     public $description;
-
-    /**
-     * @Type("ApiBundle\DTO\UserDTO")
-     *
-     * @var UserDTO
-     */
-    public $author;
 
     /**
      * @Type("ArrayCollection<ApiBundle\DTO\QuestionDTO>")

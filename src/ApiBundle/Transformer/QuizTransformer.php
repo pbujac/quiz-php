@@ -45,29 +45,23 @@ class QuizTransformer
     /**
      * @param QuizDTO $quizDTO
      *
+     * @param User $user
      * @return Quiz
      */
-    public function transformQuizDTO(QuizDTO $quizDTO)
+    public function transform(QuizDTO $quizDTO, User $user)
     {
         $quiz = new Quiz();
         $quiz->setTitle($quizDTO->title);
         $quiz->setDescription($quizDTO->description);
-        $quiz->setCreatedAt();
+        $quiz->setAuthor($user);
 
-//        $quiz->setCategory(
-//            $this->em->getRepository(Category::class)->findOneBy([
-//                "id" => $quizDTO->category_id
-//            ]));
-//
-//        $quiz->setAuthor(
-//            $this->em->getRepository(User::class)->findOneBy([
-//                "id" => $quizDTO->author_id
-//            ]));
-//
-//        foreach ($quizDTO->questions as $questionDTO) {
-//            $quiz->addQuestion(
-//                $this->transformQuestion->transformQuestionDTO($questionDTO, $quiz));
-//        }
+        $category = $this->findCategoryById($quizDTO->category->id);
+        $quiz->setCategory($category);
+
+        foreach ($quizDTO->questions as $questionDTO) {
+            $quiz->addQuestion(
+                $this->transformQuestion->transformQuestionDTO($questionDTO, $quiz));
+        }
 
         return $quiz;
     }
@@ -104,5 +98,18 @@ class QuizTransformer
         }
 
         return $quizDTO;
+    }
+
+    /**
+     * @param int $categoryId
+     * @return Category|null|object
+     */
+    public function findCategoryById(int $categoryId)
+    {
+        $category = $this->em->getRepository(Category::class)
+            ->findOneBy([
+                "id" => $categoryId
+            ]);
+        return $category;
     }
 }

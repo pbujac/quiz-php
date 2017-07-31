@@ -11,8 +11,6 @@ use AppBundle\Entity\Category;
 use Doctrine\Common\Collections\ArrayCollection;
 use AdminBundle\Manager\PaginatorManager;
 
-
-
 class CategoryHandler
 {
     /** @var EntityManagerInterface $em */
@@ -30,8 +28,7 @@ class CategoryHandler
     public function __construct(
         EntityManagerInterface $em,
         CategoryTransformer $categoryTransformer
-    )
-    {
+    ) {
         $this->em = $em;
         $this->categoryTransformer = $categoryTransformer;
 
@@ -42,9 +39,10 @@ class CategoryHandler
      *
      * @return PaginatedRepresentation
      */
-    public function handlerGetByPage(int $page){
+    public function handlerGetByPage(int $page)
+    {
 
-        $collectionDTO =new ArrayCollection();
+        $collectionDTO = new ArrayCollection();
 
         $categories = $this->em->getRepository(Category::class)
             ->getCategoriesByPage($page);
@@ -53,10 +51,10 @@ class CategoryHandler
         foreach ($categories as $category) {
             $categoryDTO = $this->categoryTransformer->reverseTransform($category);
 
-            $collectionDTO[]= $categoryDTO;
+            $collectionDTO[] = $categoryDTO;
         }
 
-        return $this->paginate($collectionDTO,$page);
+        return $this->paginate($collectionDTO, $page);
     }
 
 
@@ -66,7 +64,7 @@ class CategoryHandler
      *
      * @return PaginatedRepresentation
      */
-    private function paginate(ArrayCollection $collectionDTO,int $page)
+    private function paginate(ArrayCollection $collectionDTO, int $page)
     {
         $maxPages = ceil($collectionDTO->count() / PaginatorManager::PAGE_LIMIT);
 

@@ -18,8 +18,6 @@ class QuestionDTO
     /**
      * @Type("int")
      *
-     * @Assert\NotBlank()
-     *
      * @var int
      */
     public $id;

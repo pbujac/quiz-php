@@ -4,9 +4,42 @@ namespace ApiBundle\Transformer;
 
 use ApiBundle\DTO\UserDTO;
 use AppBundle\Entity\User;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserTransformer
 {
+    /** @var  UserPasswordEncoderInterface $encoder */
+    private $encoder;
+
+    /**
+     * @param UserPasswordEncoderInterface $encoder
+     */
+    public function __construct(UserPasswordEncoderInterface $encoder)
+    {
+        $this->encoder = $encoder;
+    }
+
+    /**
+     * @param UserDTO $userDTO
+     * @param User|null $user
+     *
+     * @return User
+     */
+    public function transform(UserDTO $userDTO, User $user = null)
+    {
+        $user ?: new User();
+        $user->setUsername($userDTO->username);
+        $user->setPassword(
+            $this->encoder->encodePassword($user, $userDTO->password)
+        );
+        $user->setFirstName($userDTO->firstName);
+        $user->setLastName($userDTO->lastName);
+        $user->setActive(true);
+        $user->addRole(User::ROLE_USER);
+
+        return $user;
+    }
+
     /**
      * @param User $user
      *

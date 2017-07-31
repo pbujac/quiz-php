@@ -3,6 +3,7 @@
 namespace ApiBundle\Handler;
 
 use ApiBundle\DTO\QuizDTO;
+use ApiBundle\Traits\ValidationErrorTrait;
 use ApiBundle\Transformer\QuizTransformer;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Quiz;
@@ -17,6 +18,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class QuizHandler
 {
+    use ValidationErrorTrait;
+
     /** @var EntityManagerInterface $em */
     private $em;
 
@@ -43,11 +46,15 @@ class QuizHandler
 
     /**
      * @param QuizDTO $quizDTO
+     * @param User $user
      */
-    public function postAction(QuizDTO $quizDTO)
+    public function postAction(QuizDTO $quizDTO, User $user)
     {
         $this->validateQuizDTO($quizDTO);
-        $this->em->persist($this->transformQuiz->transformQuizDTO($quizDTO));
+
+        $quiz = $this->transformQuiz->transform($quizDTO, $user);
+
+        $this->em->persist($quiz);
         $this->em->flush();
     }
 
@@ -66,7 +73,11 @@ class QuizHandler
 
         $quizzesDTO = $this->addQuizzesToDTO($quizzes);
 
-        return $this->paginate($quizzesDTO,'api.user.quizzes');
+        return $this->paginate(
+            $quizzesDTO,
+            'api.user.quizzes',
+            $page
+        );
     }
 
     /**
@@ -84,7 +95,12 @@ class QuizHandler
 
         $quizzesDTO = $this->addQuizzesToDTO($quizzes);
 
-        return $this->paginate($quizzesDTO);
+        return $this->paginate(
+            $quizzesDTO,
+            'api.category.quizzes',
+            ['category_id' => $category->getId()],
+            $page
+        );
     }
 
     /**
@@ -95,10 +111,8 @@ class QuizHandler
         $errors = $this->validator->validate($quizDTO);
 
         if (count($errors) > 0) {
-            $errorMessage = "";
-            foreach ($errors as $violation) {
-                $errorMessage .= $violation->getPropertyPath() . '-' . $violation->getMessage();
-            }
+            $errorMessage = $this->getErrorMessage($errors);
+
             throw new BadRequestHttpException($errorMessage);
         }
     }
@@ -124,13 +138,17 @@ class QuizHandler
     /**
      * @param ArrayCollection|Quiz[] $quizzes
      * @param string $route
+     * @param array $routeParams
      *
+     * @param int $page
      * @return PaginatedRepresentation
      */
-    private function paginate(ArrayCollection $quizzes, string $route)
-    {
-        $totalQuizzes = $quizzes->count();
-
+    private function paginate(
+        ArrayCollection $quizzes,
+        string $route,
+        array $routeParams = [],
+        int $page
+    ) {
         $collectionRepresentation = new CollectionRepresentation(
             $quizzes,
             'quizzes'
@@ -139,14 +157,14 @@ class QuizHandler
         return new PaginatedRepresentation(
             $collectionRepresentation,
             $route,
-            [],
-            null,
+            $routeParams,
+            $page,
             null,
             null,
             'page',
             'count',
             false,
-            $totalQuizzes
+            null
         );
     }
 }
