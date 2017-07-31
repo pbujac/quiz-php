@@ -23,7 +23,7 @@ class QuizDTO
      * @var int
      * @Type("int")
      */
-    public $category_id;
+    public $categoryId;
 
     /**
      * @var string
@@ -38,7 +38,7 @@ class QuizDTO
      * @var int
      * @Type("int")
      */
-    public $author_id;
+    public $authorId;
 
     /**
      * @var ArrayCollection|QuestionDTO[]

@@ -9,18 +9,21 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @Rest\Route("/quizzes")
+ */
 class QuizController extends FOSRestController
 {
     /**
-     * @Rest\Post("/quizzes", name="quizzes")
+     * @Rest\Post("", name="quizzes.create")
      *
      * @param QuizDTO $quizDTO
      *
      * @return View
      */
-    public function createAction(QuizDTO $quizDTO)
+    public function postAction(QuizDTO $quizDTO)
     {
-        $this->get(QuizHandler::class)->postAction($quizDTO);
+        $this->get(QuizHandler::class)->handleCreate($quizDTO);
 
         return View::create($quizDTO, Response::HTTP_CREATED);
     }

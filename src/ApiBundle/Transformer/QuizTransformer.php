@@ -40,17 +40,17 @@ class QuizTransformer
 
         $quiz->setCategory(
             $this->em->getRepository(Category::class)->findOneBy([
-                "id" => $quizDTO->category_id
+                "id" => $quizDTO->categoryId
             ]));
 
         $quiz->setAuthor(
             $this->em->getRepository(User::class)->findOneBy([
-                "id" => $quizDTO->author_id
+                "id" => $quizDTO->authorId
             ]));
 
         foreach ($quizDTO->questions as $questionDTO) {
             $quiz->addQuestion(
-                $this->transformQuestion->transformQuestionDTO($questionDTO, $quiz));
+                $this->transformQuestion->transform($questionDTO, $quiz));
         }
 
         return $quiz;
