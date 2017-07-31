@@ -1,6 +1,6 @@
 <?php
 
-namespace ApiBundle\DTO ;
+namespace ApiBundle\DTO;
 
 use AdminBundle\Validator\Constraints\UniqueUser;
 use Symfony\Component\Validator\Constraints as Assert;
