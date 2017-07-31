@@ -3,6 +3,7 @@
 namespace ApiBundle\Controller;
 
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Rest\Route("/quizzes")
@@ -10,11 +11,15 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 class QuizController
 {
     /**
-     * @Rest\Get("/q:/{filter}")
+     * @Rest\Get()
+     *
+     * @Rest\Route("/{filter}", name="api.search.quiz")
+     *
+     * @param Request $request
      */
-    public function quizSearch()
+    public function quizSearch(Request $request)
     {
-
+        $filter = $request->get('filter');
 
 
     }
