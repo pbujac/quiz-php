@@ -20,6 +20,7 @@
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/doctrine-migrations-bundle": "^1.0",
         "doctrine/orm": "^2.5",
+        "firebase/php-jwt": "^5.0",
         "friendsofsymfony/rest-bundle": "^2.2",
         "fzaninotto/faker": "^1.6",
         "incenteev/composer-parameter-handler": "^2.0",
@@ -31,7 +32,8 @@
         "symfony/polyfill-apcu": "^1.0",
         "symfony/swiftmailer-bundle": "^2.3.10",
         "symfony/symfony": "3.3.*",
-        "twig/twig": "^1.0||^2.0"
+        "twig/twig": "^1.0||^2.0",
+        "willdurand/hateoas-bundle": "^1.3"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^2.3",

@@ -9,13 +9,10 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @Rest\Route("/quizzes")
- */
 class QuizController extends FOSRestController
 {
     /**
-     * @Rest\Post("", name="quizzes.create")
+     * @Rest\Post("/quizzes", name="quizzes.create")
      *
      * @param QuizDTO $quizDTO
      *

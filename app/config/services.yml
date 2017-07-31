@@ -5,7 +5,7 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
-        public: true
+        public: false
 
     AppBundle\:
         resource: '../../src/AppBundle/*'
@@ -13,11 +13,6 @@ services:
 
     AdminBundle\:
         resource: '../../src/AdminBundle/*'
-        exclude: '../../src/AdminBundle/{Entity,Repository}'
-
-    ApiBundle\:
-        resource: '../../src/ApiBundle/*'
-        exclude: '../../src/ApiBundle/{Entity,Repository}'
 
     AdminBundle\Controller\:
         resource: '../../src/AdminBundle/Controller'
@@ -25,6 +20,10 @@ services:
         tags: ['controller.service_arguments']
 
     ApiBundle\Controller\:
-         resource: '../../src/ApiBundle/Controller'
-         public: true
-         tags: ['controller.service_arguments']
+        resource: '../../src/ApiBundle/Controller'
+        public: true
+        tags: ['controller.service_arguments']
+
+    ApiBundle\Transformer\:
+        resource: '../../src/ApiBundle/Transformer'
+        public: true
