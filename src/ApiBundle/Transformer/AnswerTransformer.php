@@ -23,4 +23,19 @@ class AnswerTransformer
 
         return $answer;
     }
+
+    /**
+     * @param Answer $answer
+     *
+     * @return AnswerDTO
+     */
+    public function reverseTransform(Answer $answer)
+    {
+        $answerDTO = new AnswerDTO();
+        $answerDTO->id = $answer->getId();
+        $answerDTO->text = $answer->getText();
+        $answerDTO->correct = $answer->isCorrect();
+
+        return $answerDTO;
+    }
 }

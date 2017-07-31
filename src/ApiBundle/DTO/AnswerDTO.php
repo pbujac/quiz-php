@@ -4,9 +4,23 @@ namespace ApiBundle\DTO;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation\Type;
+use Hateoas\Configuration\Annotation as Hateoas;
 
+/**
+ * @Hateoas\Relation("self", href = "expr('/api/answers/' ~ object.id)")
+ */
 class AnswerDTO
 {
+    /**
+     * @Type("int")
+     *
+     * @Assert\NotBlank()
+     *
+     * @var int
+     */
+    public $id;
+
+
     /**
      * @var $text
      * @Type("string")

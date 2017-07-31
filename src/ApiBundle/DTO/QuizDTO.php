@@ -6,9 +6,22 @@ use AdminBundle\Validator\Constraints\UniqueQuiz;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\Type;
 use Symfony\Component\Validator\Constraints as Assert;
+use Hateoas\Configuration\Annotation as Hateoas;
 
+/**
+ * @Hateoas\Relation("self", href = "expr('/api/quizzes/' ~ object.id)")
+ */
 class QuizDTO
 {
+    /**
+     * @Type("int")
+     *
+     * @Assert\NotBlank()
+     *
+     * @var int
+     */
+    public $id;
+
     /**
      * @var string
      * @Type("string")
@@ -20,10 +33,10 @@ class QuizDTO
     public $title;
 
     /**
-     * @var int
-     * @Type("int")
+     * @Type("ApiBundle\DTO\QuestionDTO")
      */
-    public $category_id;
+    public $category;
+
 
     /**
      * @var string
@@ -35,10 +48,9 @@ class QuizDTO
     public $description;
 
     /**
-     * @var int
-     * @Type("int")
+     * @Type("ApiBundle\DTO\UserDTO")
      */
-    public $author_id;
+    public $author;
 
     /**
      * @var ArrayCollection|QuestionDTO[]
