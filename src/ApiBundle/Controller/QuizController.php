@@ -32,10 +32,10 @@ class QuizController extends FOSRestController
         $em->flush();
 
         $this->addFlash(
-             'notice',
-          'Quiz has been successfully removed!'
+            'notice',
+            'Quiz has been successfully removed!'
         );
 
-        return new Response(null ,204);
+        return new Response(null, 204);
     }
 }
