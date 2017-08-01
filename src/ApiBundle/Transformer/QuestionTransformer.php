@@ -9,14 +9,14 @@ use AppBundle\Entity\Quiz;
 class QuestionTransformer
 {
     /** @var AnswerTransformer */
-    private $answerTransformer;
+    private $transformAnswer;
 
     /**
-     * @param AnswerTransformer $answerTransformer
+     * @param AnswerTransformer $transformAnswer
      */
-    public function __construct(AnswerTransformer $answerTransformer)
+    public function __construct(AnswerTransformer $transformAnswer)
     {
-        $this->answerTransformer = $answerTransformer;
+        $this->transformAnswer = $transformAnswer;
     }
 
     /**
@@ -25,7 +25,7 @@ class QuestionTransformer
      *
      * @return Question
      */
-    public function reverseTransformQuestion(QuestionDTO $questionDTO, Quiz $quiz)
+    public function transform(QuestionDTO $questionDTO, Quiz $quiz)
     {
         $question = new Question();
         $question->setText($questionDTO->text);
@@ -33,7 +33,7 @@ class QuestionTransformer
 
         foreach ($questionDTO->answers as $answerDTO) {
             $question->addAnswer(
-                $this->answerTransformer->reverseTransformAnswer($answerDTO, $question));
+                $this->transformAnswer->transform($answerDTO, $question));
         }
 
         return $question;

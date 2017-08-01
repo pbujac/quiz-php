@@ -19,7 +19,6 @@ class UserHandler
         $this->userTransformer = $userTransformer;
     }
 
-
     /**
      * @param User $user
      *
