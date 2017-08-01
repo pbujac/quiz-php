@@ -25,7 +25,7 @@ class QuestionTransformer
      *
      * @return Question
      */
-    public function transformQuestion(QuestionDTO $questionDTO, Quiz $quiz)
+    public function reverseTransformQuestion(QuestionDTO $questionDTO, Quiz $quiz)
     {
         $question = new Question();
         $question->setText($questionDTO->text);
@@ -33,7 +33,7 @@ class QuestionTransformer
 
         foreach ($questionDTO->answers as $answerDTO) {
             $question->addAnswer(
-                $this->answerTransformer->transformAnswer($answerDTO, $question));
+                $this->answerTransformer->reverseTransformAnswer($answerDTO, $question));
         }
 
         return $question;

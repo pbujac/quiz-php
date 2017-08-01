@@ -52,7 +52,7 @@ class QuizHandler
         $quizzesDTO = new ArrayCollection();
         foreach ($quizzes as $quiz) {
             $quizzesDTO->add(
-                $this->quizTransformer->reverseTransform($quiz)
+                $this->quizTransformer->transform($quiz)
             );
         }
         return $quizzesDTO;

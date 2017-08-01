@@ -14,7 +14,7 @@ class AnswerTransformer
      *
      * @return Answer
      */
-    public function transformAnswer(AnswerDTO $answerDTO, Question $question)
+    public function reverseTransformAnswer(AnswerDTO $answerDTO, Question $question)
     {
         $answer = new Answer();
         $answer->setText($answerDTO->text);
