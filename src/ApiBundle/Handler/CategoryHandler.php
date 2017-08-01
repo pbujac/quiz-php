@@ -46,7 +46,7 @@ class CategoryHandler
 
         $collectionDTO = new ArrayCollection();
         foreach ($categories as $category) {
-            $categoryDTO = $this->categoryTransformer->reverseTransform($category);
+            $categoryDTO = $this->categoryTransformer->transform($category);
 
             $collectionDTO[] = $categoryDTO;
         }
@@ -56,7 +56,7 @@ class CategoryHandler
 
         $collectionDTOByPage = new ArrayCollection();
         foreach ($categoriesByPage as $category) {
-            $categoryDTOByPage = $this->categoryTransformer->reverseTransform($category);
+            $categoryDTOByPage = $this->categoryTransformer->transform($category);
 
             $collectionDTOByPage[] = $categoryDTOByPage;
         }
