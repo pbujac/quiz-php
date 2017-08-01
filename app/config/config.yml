@@ -90,6 +90,6 @@ fos_rest:
         validate: true
     format_listener:
         rules:
-            - { path: '^/api/v1', priorities: ['json'] }
+            - { path: '^/api/v1', priorities: ['json'], fallback_format: json  }
             - { path: '^/', stop: true }
 

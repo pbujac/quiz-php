@@ -6,12 +6,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation\Type;
 use Hateoas\Configuration\Annotation as Hateoas;
 
-/**
- * @Hateoas\Relation(
- *     "self",
- *     href = "expr('/api/answers/' ~ object.id)"
- * )
- */
 class AnswerDTO
 {
     /**

@@ -5,7 +5,6 @@ namespace ApiBundle\Handler;
 use ApiBundle\DTO\LoginDTO;
 use Firebase\JWT\JWT;
 
-
 class LoginHandler
 {
     /** @var string $secretKey */

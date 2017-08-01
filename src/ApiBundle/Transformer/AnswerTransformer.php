@@ -9,33 +9,40 @@ use AppBundle\Entity\Question;
 class AnswerTransformer
 {
     /**
-     * @param AnswerDTO $answerDTO
-     * @param Question $question
-     *
-     * @return Answer
-     */
-    public function transformAnswerDTO(AnswerDTO $answerDTO, Question $question)
-    {
-        $answer = new Answer();
-        $answer->setText($answerDTO->text);
-        $answer->setCorrect($answerDTO->correct);
-        $answer->setQuestion($question);
-
-        return $answer;
-    }
-
-    /**
      * @param Answer $answer
+     * @param AnswerDTO|null $answerDTO
      *
      * @return AnswerDTO
      */
-    public function reverseTransform(Answer $answer)
-    {
-        $answerDTO = new AnswerDTO();
+    public function transform(
+        Answer $answer,
+        AnswerDTO $answerDTO = null
+    ) {
+        $answerDTO ?: new AnswerDTO();
         $answerDTO->id = $answer->getId();
         $answerDTO->text = $answer->getText();
         $answerDTO->correct = $answer->isCorrect();
 
         return $answerDTO;
+    }
+
+    /**
+     * @param AnswerDTO $answerDTO
+     * @param Question $question
+     * @param Answer|null $answer
+     *
+     * @return Answer
+     */
+    public function reverseTransform(
+        AnswerDTO $answerDTO,
+        Question $question,
+        Answer $answer = null
+    ) {
+        $answer ?: new Answer();
+        $answer->setText($answerDTO->text);
+        $answer->setCorrect($answerDTO->correct);
+        $answer->setQuestion($question);
+
+        return $answer;
     }
 }

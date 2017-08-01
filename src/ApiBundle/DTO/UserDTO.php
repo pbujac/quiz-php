@@ -46,12 +46,16 @@ class UserDTO
     /**
      * @Type("string")
      *
+     * @Assert\NotBlank()
+     *
      * @var string
      */
     public $firstName;
 
     /**
      * @Type("string")
+     *
+     * @Assert\NotBlank()
      *
      * @var string
      */

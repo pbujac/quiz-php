@@ -11,10 +11,16 @@ use FOS\RestBundle\View\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @Rest\Route("/users")
+ */
 class UserController extends FOSRestController
 {
     /**
-     * @Rest\Get("/users/{user_id}")
+     * @Rest\Get(
+     *     "/{user_id}",
+     *     name="api.users.get"
+     * )
      *
      * @param User $user
      *
@@ -32,7 +38,10 @@ class UserController extends FOSRestController
     }
 
     /**
-     * @Rest\Put("/user/{user_id}")
+     * @Rest\Put(
+     *     "/{user_id}",
+     *     name="api.users.put"
+     * )
      *
      * @param UserDTO $userDTO
      * @param User $user
@@ -45,9 +54,9 @@ class UserController extends FOSRestController
      */
     public function putAction(UserDTO $userDTO, User $user)
     {
-        $userDTO = $this->get(UserHandler::class)->putUser($userDTO, $user);
+        $this->get(UserHandler::class)->handlePutUser($userDTO, $user);
 
-        return View::create($userDTO, Response::HTTP_OK);
+        return View::create(null, Response::HTTP_NO_CONTENT);
     }
 
 }

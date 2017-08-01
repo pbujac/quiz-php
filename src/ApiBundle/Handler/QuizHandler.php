@@ -3,6 +3,7 @@
 namespace ApiBundle\Handler;
 
 use ApiBundle\DTO\QuizDTO;
+use ApiBundle\Manager\PaginatorManager;
 use ApiBundle\Traits\ValidationErrorTrait;
 use ApiBundle\Transformer\QuizTransformer;
 use AppBundle\Entity\Category;
@@ -52,7 +53,10 @@ class QuizHandler
     {
         $this->validateQuizDTO($quizDTO);
 
-        $quiz = $this->transformQuiz->transform($quizDTO, $user);
+        $quiz = $this->transformQuiz->reverseTransform(
+            $quizDTO,
+            $user
+        );
 
         $this->em->persist($quiz);
         $this->em->flush();
@@ -65,18 +69,26 @@ class QuizHandler
      *
      * @return PaginatedRepresentation
      */
-    public function getQuizzesByUser(User $user, int $page, int $count)
-    {
+    public function handleGetQuizzesByUser(
+        User $user,
+        int $page,
+        int $count
+    ) {
         $quizzes = $this->em
             ->getRepository(Quiz::class)
             ->getQuizzesByAuthorAndPage($user, $page, $count);
 
         $quizzesDTO = $this->addQuizzesToDTO($quizzes);
 
-        return $this->paginate(
-            $quizzesDTO,
-            'api.user.quizzes',
-            $page
+        $paginator = new PaginatorManager();
+        $collectionRepresentation = $this->getQuizCollectionRepresentation(
+            $quizzesDTO
+        );
+
+        return $paginator->paginate(
+            $collectionRepresentation,
+            $page,
+            'api.user.quizzes'
         );
     }
 
@@ -87,26 +99,52 @@ class QuizHandler
      *
      * @return PaginatedRepresentation
      */
-    public function getQuizzesByCategory(Category $category, int $page, int $count)
-    {
+    public function handleGetQuizzesByCategory(
+        Category $category,
+        int $page,
+        int $count
+    ) {
         $quizzes = $this->em
             ->getRepository(Quiz::class)
             ->getQuizzesByCategoryAndPage($category, $page, $count);
 
         $quizzesDTO = $this->addQuizzesToDTO($quizzes);
 
-        return $this->paginate(
-            $quizzesDTO,
-            'api.category.quizzes',
-            ['category_id' => $category->getId()],
-            $page
+        $paginator = new PaginatorManager();
+        $collectionRepresentation = $this->getQuizCollectionRepresentation(
+            $quizzesDTO
         );
+
+        return $paginator->paginate(
+            $collectionRepresentation,
+            $page,
+            'api.category.quizzes',
+            ['category_id' => $category->getId()]
+        );
+    }
+
+    /**
+     * @param Paginator $quizzes
+     *
+     * @return ArrayCollection
+     */
+    private function addQuizzesToDTO(Paginator $quizzes): ArrayCollection
+    {
+        $quizzesDTO = new ArrayCollection();
+
+        foreach ($quizzes as $quiz) {
+            $quizzesDTO->add(
+                $this->transformQuiz->transform($quiz)
+            );
+        }
+
+        return $quizzesDTO;
     }
 
     /**
      * @param QuizDTO $quizDTO
      */
-    public function validateQuizDTO(QuizDTO $quizDTO): void
+    private function validateQuizDTO(QuizDTO $quizDTO): void
     {
         $errors = $this->validator->validate($quizDTO);
 
@@ -118,53 +156,17 @@ class QuizHandler
     }
 
     /**
-     * @param Paginator $quizzes
+     * @param $quizzesDTO
      *
-     * @return ArrayCollection
+     * @return CollectionRepresentation
      */
-    public function addQuizzesToDTO(Paginator $quizzes)
+    private function getQuizCollectionRepresentation($quizzesDTO): CollectionRepresentation
     {
-        $quizzesDTO = new ArrayCollection();
-
-        foreach ($quizzes as $quiz) {
-            $quizzesDTO->add(
-                $this->transformQuiz->reverseTransform($quiz)
-            );
-        }
-
-        return $quizzesDTO;
-    }
-
-    /**
-     * @param ArrayCollection|Quiz[] $quizzes
-     * @param string $route
-     * @param array $routeParams
-     *
-     * @param int $page
-     * @return PaginatedRepresentation
-     */
-    private function paginate(
-        ArrayCollection $quizzes,
-        string $route,
-        array $routeParams = [],
-        int $page
-    ) {
         $collectionRepresentation = new CollectionRepresentation(
-            $quizzes,
+            $quizzesDTO,
             'quizzes'
         );
 
-        return new PaginatedRepresentation(
-            $collectionRepresentation,
-            $route,
-            $routeParams,
-            $page,
-            null,
-            null,
-            'page',
-            'count',
-            false,
-            null
-        );
+        return $collectionRepresentation;
     }
 }

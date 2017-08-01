@@ -18,7 +18,7 @@ class QuizController extends FOSRestController
     /**
      * @Rest\Post(
      *     "/quizzes",
-     *     name="quizzes"
+     *     name="api.quizzes.post"
      * )
      * @param QuizDTO $quizDTO
      *
@@ -50,7 +50,7 @@ class QuizController extends FOSRestController
         $count = $request->get('count') ?: PaginatorManager::PAGE_LIMIT;
 
         $quizzes = $this->get(QuizHandler::class)
-            ->getQuizzesByUser($user, $page, $count);
+            ->handleGetQuizzesByUser($user, $page, $count);
 
         return View::create($quizzes, Response::HTTP_OK);
     }
@@ -77,7 +77,7 @@ class QuizController extends FOSRestController
         $count = $request->get('count') ?: PaginatorManager::PAGE_LIMIT;
 
         $quizzes = $this->get(QuizHandler::class)
-            ->getQuizzesByCategory($category, $page, $count);
+            ->handleGetQuizzesByCategory($category, $page, $count);
 
         return View::create($quizzes, Response::HTTP_OK);
     }

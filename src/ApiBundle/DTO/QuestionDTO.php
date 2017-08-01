@@ -7,12 +7,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\Type;
 use Hateoas\Configuration\Annotation as Hateoas;
 
-/**
- * @Hateoas\Relation(
- *     "self",
- *     href = "expr('/api/questions/' ~ object.id)"
- * )
- */
 class QuestionDTO
 {
     /**

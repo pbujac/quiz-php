@@ -2,14 +2,14 @@
 
 namespace ApiBundle\Handler;
 
-use ApiBundle\DTO\CategoryDTO;
 use ApiBundle\Transformer\CategoryTransformer;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Hateoas\Representation\CollectionRepresentation;
-use Hateoas\Representation\PaginatedRepresentation;
 use Doctrine\ORM\EntityManagerInterface;
 use AppBundle\Entity\Category;
 use Doctrine\Common\Collections\ArrayCollection;
-use AdminBundle\Manager\PaginatorManager;
+use ApiBundle\Manager\PaginatorManager;
+use Hateoas\Representation\PaginatedRepresentation;
 
 class CategoryHandler
 {
@@ -36,54 +36,62 @@ class CategoryHandler
 
     /**
      * @param int $page
+     * @param int $count
      *
      * @return PaginatedRepresentation
      */
-    public function handlerGetByPage(int $page)
+    public function handlePagination(int $page, int $count)
     {
-
-        $collectionDTO = new ArrayCollection();
-
         $categories = $this->em->getRepository(Category::class)
-            ->getCategoriesByPage($page);
+            ->getCategoriesByPage($page, $count);
 
+        $categoriesDTO = $this->addCategoriesDTO($categories);
 
-        foreach ($categories as $category) {
-            $categoryDTO = $this->categoryTransformer->reverseTransform($category);
+        $paginator = new PaginatorManager();
+        $collectionRepresentation = $this->getCategoriesCollectionRepresentation(
+            $categoriesDTO
+        );
 
-            $collectionDTO[] = $categoryDTO;
-        }
-
-        return $this->paginate($collectionDTO, $page);
+        return $paginator->paginate(
+            $collectionRepresentation,
+            $page,
+            'api.categories.list'
+        );
     }
 
 
     /**
-     * @param ArrayCollection|CategoryDTO[] $collectionDTO
-     * @param int $page
+     * @param Paginator $categories
      *
-     * @return PaginatedRepresentation
+     * @return ArrayCollection
      */
-    private function paginate(ArrayCollection $collectionDTO, int $page)
+    public function addCategoriesDTO($categories): ArrayCollection
     {
-        $maxPages = ceil($collectionDTO->count() / PaginatorManager::PAGE_LIMIT);
+        $categoriesDTO = new ArrayCollection();
 
+        foreach ($categories as $category) {
+            $categoriesDTO->add(
+                $this->categoryTransformer->transform($category)
+            );
+        }
+
+        return $categoriesDTO;
+    }
+
+    /**
+     * @param ArrayCollection $categoriesDTO
+     *
+     * @return CollectionRepresentation
+     */
+    private function getCategoriesCollectionRepresentation(
+        ArrayCollection $categoriesDTO
+    ) {
         $collectionRepresentation = new CollectionRepresentation(
-            $collectionDTO,
+            $categoriesDTO,
             'categories'
         );
 
-        return new PaginatedRepresentation($collectionRepresentation,
-            "api_category_get",
-            array(),
-            $page,
-            PaginatorManager::PAGE_LIMIT,
-            $maxPages,
-            'page',
-            'limit',
-            false,
-            $collectionDTO->count()
-        );
+        return $collectionRepresentation;
     }
 
 }

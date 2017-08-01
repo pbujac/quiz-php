@@ -10,17 +10,18 @@ class CategoryRepository extends EntityRepository
 {
     /**
      * @param int $page
+     * @param int $count
      *
      * @return Paginator
      */
-    public function getCategoriesByPage(int $page)
+    public function getCategoriesByPage(int $page, int $count)
     {
         $paginator = new PaginatorManager();
 
         $query = $this->createQueryBuilder('c')
             ->getQuery();
 
-        return $paginator->paginate($query, $page);
+        return $paginator->paginate($query, $page, $count);
     }
 
 }

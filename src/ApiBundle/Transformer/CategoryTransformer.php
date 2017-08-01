@@ -7,22 +7,37 @@ use ApiBundle\DTO\CategoryDTO;
 
 class CategoryTransformer
 {
-    public function transform(CategoryDTO $categoryDTO)
-    {
-        $category = new Category();
+    /**
+     * @param Category $category
+     *
+     * @return CategoryDTO
+     */
+    public function transform(
+        Category $category
+    ) {
+        $categoryDTO = new CategoryDTO();
+        $categoryDTO->id = $category->getId();
+        $categoryDTO->title = $category->getTitle();
+
+        return $categoryDTO;
+    }
+
+    /**
+     * @param CategoryDTO $categoryDTO
+     * @param Category $category
+     *
+     * @return Category
+     */
+    public function reverseTransform(
+        CategoryDTO $categoryDTO,
+        Category $category = null
+    ) {
+        $category ?: new Category();
         $category->setTitle($categoryDTO->title);
 
         return $category;
     }
 
-    public function reverseTransform(Category $category)
-    {
-        $categoryDTO = new CategoryDTO();
-        $categoryDTO->title = $category->getTitle();
-        $categoryDTO->id = $category->getId();
-
-        return $categoryDTO;
-    }
 
 }
 

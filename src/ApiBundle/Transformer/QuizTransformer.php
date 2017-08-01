@@ -41,37 +41,12 @@ class QuizTransformer
         $this->categoryTransformer = $categoryTransformer;
     }
 
-
-    /**
-     * @param QuizDTO $quizDTO
-     *
-     * @param User $user
-     * @return Quiz
-     */
-    public function transform(QuizDTO $quizDTO, User $user)
-    {
-        $quiz = new Quiz();
-        $quiz->setTitle($quizDTO->title);
-        $quiz->setDescription($quizDTO->description);
-        $quiz->setAuthor($user);
-
-        $category = $this->findCategoryById($quizDTO->category->id);
-        $quiz->setCategory($category);
-
-        foreach ($quizDTO->questions as $questionDTO) {
-            $quiz->addQuestion(
-                $this->transformQuestion->transformQuestionDTO($questionDTO, $quiz));
-        }
-
-        return $quiz;
-    }
-
     /**
      * @param Quiz $quiz
      *
      * @return QuizDTO
      */
-    public function reverseTransform(Quiz $quiz)
+    public function transform(Quiz $quiz)
     {
         $quizDTO = new QuizDTO();
 
@@ -79,37 +54,89 @@ class QuizTransformer
         $quizDTO->title = $quiz->getTitle();
         $quizDTO->description = $quiz->getDescription();
         $quizDTO->createdAt = $quiz->getCreatedAt()->getTimestamp();
-        $quizDTO->category = $this->categoryTransformer->reverseTransform(
+        $quizDTO->description = $quiz->getDescription();
+        $quizDTO->category = $this->categoryTransformer->transform(
             $quiz->getCategory()
         );
-        $quizDTO->description = $quiz->getDescription();
-        $quizDTO->author = $this->userTransformer->reverseTransform(
+        $quizDTO->author = $this->userTransformer->transform(
             $quiz->getAuthor()
         );
-        $quizDTO->author = $this->userTransformer->reverseTransform(
+        $quizDTO->author = $this->userTransformer->transform(
             $quiz->getAuthor()
         );
-        $quizDTO->questions = new ArrayCollection();
-
-        foreach ($quiz->getQuestions() as $question) {
-            $quizDTO->questions->add(
-                $this->transformQuestion->reverseTransform($question)
-            );
-        }
+        $this->addQuestionsDTO($quiz, $quizDTO);
 
         return $quizDTO;
     }
 
     /**
-     * @param int $categoryId
-     * @return Category|null|object
+     * @param QuizDTO $quizDTO
+     * @param Quiz|null $quiz
+     * @param User|null $user
+     *
+     * @return Quiz
      */
-    public function findCategoryById(int $categoryId)
+    public function reverseTransform(
+        QuizDTO $quizDTO,
+        User $user = null,
+        Quiz $quiz = null
+    ) {
+        $quiz ?: new Quiz();
+        $quiz->setTitle($quizDTO->title);
+        $quiz->setDescription($quizDTO->description);
+        $quiz->setAuthor($user);
+        $this->setQuizCategory(
+            $quiz,
+            $quizDTO->category->id
+        );
+
+        $this->addQuestions($quizDTO, $quiz);
+
+        return $quiz;
+    }
+
+    /**
+     * @param Quiz $quiz
+     * @param int $categoryId
+     */
+    private function setQuizCategory(Quiz $quiz, int $categoryId)
     {
         $category = $this->em->getRepository(Category::class)
             ->findOneBy([
                 "id" => $categoryId
             ]);
-        return $category;
+
+        $quiz->setCategory($category);
+    }
+
+    /**
+     * @param QuizDTO $quizDTO
+     * @param Quiz $quiz
+     */
+    private function addQuestions(QuizDTO $quizDTO, Quiz $quiz)
+    {
+        foreach ($quizDTO->questions as $questionDTO) {
+            $quiz->addQuestion(
+                $this->transformQuestion->reverseTransform(
+                    $questionDTO,
+                    $quiz
+                )
+            );
+        }
+    }
+
+    /**
+     * @param Quiz $quiz
+     * @param $quizDTO
+     */
+    public function addQuestionsDTO(Quiz $quiz, $quizDTO)
+    {
+        $quizDTO->questions = new ArrayCollection();
+
+        foreach ($quiz->getQuestions() as $question) {
+            $quizDTO->questions->add(
+                $this->transformQuestion->transform($question)
+            );
+        }
     }
 }

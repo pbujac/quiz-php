@@ -25,7 +25,7 @@ class UserTransformer
      *
      * @return User
      */
-    public function transform(UserDTO $userDTO, User $user = null)
+    public function reverseTransform(UserDTO $userDTO, User $user = null)
     {
         $user ?: new User();
         $user->setUsername($userDTO->username);
@@ -45,7 +45,7 @@ class UserTransformer
      *
      * @return UserDTO
      */
-    public function reverseTransform(User $user)
+    public function transform(User $user)
     {
         $userDTO = new UserDTO();
 

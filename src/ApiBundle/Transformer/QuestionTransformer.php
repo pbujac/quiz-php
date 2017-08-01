@@ -21,42 +21,65 @@ class QuestionTransformer
     }
 
     /**
+     * @param Question $question
+     *
+     * @return QuestionDTO
+     */
+    public function transform(Question $question)
+    {
+        $questionDTO = new QuestionDTO();
+        $questionDTO->id = $question->getId();
+        $questionDTO->text = $question->getText();
+        $this->addAnswers($question, $questionDTO);
+
+        return $questionDTO;
+    }
+
+    /**
      * @param QuestionDTO $questionDTO
      * @param Quiz $quiz
+     * @param Question|null $question
      *
      * @return Question
      */
-    public function transformQuestionDTO(QuestionDTO $questionDTO, Quiz $quiz)
+    public function reverseTransform(QuestionDTO $questionDTO, Quiz $quiz, Question $question = null)
     {
-        $question = new Question();
+        $question ?: new Question();
         $question->setText($questionDTO->text);
         $question->setQuiz($quiz);
-
-        foreach ($questionDTO->answers as $answerDTO) {
-            $question->addAnswer(
-                $this->transformAnswer->transformAnswerDTO($answerDTO, $question));
-        }
+        $this->addAnswersDTO($questionDTO, $question);
 
         return $question;
     }
 
     /**
+     * @param QuestionDTO $questionDTO
      * @param Question $question
-     *
-     * @return QuestionDTO
      */
-    public function reverseTransform(Question $question)
+    public function addAnswersDTO(QuestionDTO $questionDTO, Question $question)
     {
-        $questionDTO = new QuestionDTO();
-        $questionDTO->id = $question->getId();
-        $questionDTO->text = $question->getText();
+        foreach ($questionDTO->answers as $answerDTO) {
+            $question->addAnswer(
+                $this->transformAnswer->reverseTransform(
+                    $answerDTO,
+                    $question
+                )
+            );
+        }
+    }
+
+    /**
+     * @param Question $question
+     * @param QuestionDTO $questionDTO
+     */
+    public function addAnswers(Question $question, QuestionDTO $questionDTO)
+    {
         $questionDTO->answers = new ArrayCollection();
 
         foreach ($question->getAnswers() as $answer) {
             $questionDTO->answers->add(
-                $this->transformAnswer->reverseTransform($answer));
+                $this->transformAnswer->transform($answer)
+            );
         }
-
-        return $questionDTO;
     }
 }

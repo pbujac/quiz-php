@@ -11,7 +11,7 @@ use Hateoas\Configuration\Annotation as Hateoas;
 /**
  * @Hateoas\Relation(
  *     "self",
- *     href = "expr('/api/quizzes' ~ object.id)"
+ *     href = "expr('/api/quizzes/' ~ object.id)"
  * )
  */
 class QuizDTO
@@ -27,9 +27,9 @@ class QuizDTO
      *
      * @Type("string")
      *
-     * @Assert\NotBlank(message="title isn't specified")
-     * @Assert\Length(max=255, maxMessage="too long")
-     * @UniqueQuiz(message="the quiz with this title already exist")
+     * @Assert\NotBlank(message="Title isn't specified")
+     * @Assert\Length(max=255, maxMessage="Title is too long")
+     * @UniqueQuiz(message="The quiz with this title already exist")
      *
      * @var string
      */
@@ -59,8 +59,8 @@ class QuizDTO
     /**
      * @Type("string")
      *
-     * @Assert\NotBlank(message="description for quiz isn't specified")
-     * @Assert\Length(max=5000, maxMessage="too long")
+     * @Assert\NotBlank(message="Description for quiz isn't specified")
+     * @Assert\Length(max=5000, maxMessage="Description is too long")
      *
      * @var string
      */
