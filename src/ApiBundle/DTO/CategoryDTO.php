@@ -8,10 +8,17 @@ use JMS\Serializer\Annotation\Type;
 class CategoryDTO
 {
     /**
-     * @var string
+     * @Type("int")
+     * @Assert\NotBlank()
+     * @var int
+     */
+    public $id;
+
+    /**
+     * @Assert\NotBlank
      * @Type("string")
-     *
-     * @Assert\NotBlank(message="title isn't specified")
+     * @var string
      */
     public $title;
 }
+

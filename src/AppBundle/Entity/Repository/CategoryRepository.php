@@ -22,4 +22,5 @@ class CategoryRepository extends EntityRepository
 
         return $paginator->paginate($query, $page);
     }
+
 }
