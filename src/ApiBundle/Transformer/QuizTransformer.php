@@ -28,11 +28,32 @@ class QuizTransformer
     }
 
     /**
+     * @param Quiz $quiz
+     *
+     * @return QuizDTO
+     */
+    public function transform(Quiz $quiz){
+
+        $quizDTO = new QuizDTO();
+        $quizDTO->title=$quiz->getTitle();
+        $quizDTO->description=$quiz->getDescription();
+        $quizDTO->categoryId=$quiz->getCategory()->getId();
+        $quizDTO->authorId=$quiz->getAuthor()->getId();
+
+        $quizDTO->questions = new ArrayCollection();
+        foreach ($quiz->getQuestions() as $question){
+            $quizDTO->questions->add($this->transformQuestion->transform($question));
+        }
+
+        return $quizDTO;
+    }
+
+    /**
      * @param QuizDTO $quizDTO
      *
      * @return Quiz
      */
-    public function transform(QuizDTO $quizDTO)
+    public function reverseTransform(QuizDTO $quizDTO)
     {
         $quiz = new Quiz();
         $quiz->setTitle($quizDTO->title);
@@ -51,30 +72,9 @@ class QuizTransformer
 
         foreach ($quizDTO->questions as $questionDTO) {
             $quiz->addQuestion(
-                $this->transformQuestion->transform($questionDTO, $quiz));
+                $this->transformQuestion->reverseTransform($questionDTO, $quiz));
         }
 
         return $quiz;
-    }
-
-    /**
-     * @param Quiz $quiz
-     *
-     * @return QuizDTO
-     */
-    public function reverseTransform(Quiz $quiz){
-
-        $quizDTO = new QuizDTO();
-        $quizDTO->title=$quiz->getTitle();
-        $quizDTO->description=$quiz->getDescription();
-        $quizDTO->categoryId=$quiz->getCategory()->getId();
-        $quizDTO->authorId=$quiz->getAuthor()->getId();
-
-        $quizDTO->questions = new ArrayCollection();
-        foreach ($quiz->getQuestions() as $question){
-            $quizDTO->questions->add($this->transformQuestion->reverseTransform($question));
-        }
-
-        return $quizDTO;
     }
 }

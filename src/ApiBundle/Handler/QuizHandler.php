@@ -42,7 +42,7 @@ class QuizHandler
     public function handleCreate(QuizDTO $quizDTO)
     {
         $this->validateQuizDTO($quizDTO);
-        $this->em->persist($this->quizTransformer->transform($quizDTO));
+        $this->em->persist($this->quizTransformer->reverseTransform($quizDTO));
         $this->em->flush();
     }
 
@@ -56,7 +56,7 @@ class QuizHandler
         $quiz = $this->em->getRepository(Quiz::class)->findOneBy(["id" => $quizId]);
 
         if ($quiz != null){
-            return $this->quizTransformer->reverseTransform($quiz);
+            return $this->quizTransformer->transform($quiz);
         }
         else throw new BadRequestHttpException("Quiz with this id does not exist");
     }
