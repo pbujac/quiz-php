@@ -31,6 +31,5 @@ class QuizController extends FOSRestController
         $quizzes = $this->get(QuizHandler::class)->searchByFilter($page, $filter);
 
         return View::create($quizzes, Response::HTTP_OK);
-
     }
 }
