@@ -41,28 +41,28 @@ class QuizRepository extends EntityRepository
     /**
      * @Rest\QueryParam(
      *   name="title",
-     *   requirements="[a-z]+",
+     *   requirements="[a-zA-Z]+",
      *   default=null,
      *   allowBlank=true
      * )
      *
      * @Rest\QueryParam(
      *   name="description",
-     *   requirements="[a-z]+",
+     *   requirements="[a-zA-Z]+",
      *   default=null,
      *   allowBlank=true
      * )
      *
      * @Rest\QueryParam(
      *   name="category",
-     *   requirements="[a-z]+",
+     *   requirements="[a-zA-Z]+",
      *   default=null,
      *   allowBlank=true
      * )
      *
      * @Rest\QueryParam(
      *   name="author",
-     *   requirements="[a-z]+",
+     *   requirements="[a-zA-Z]+",
      *   default=null,
      *   allowBlank=true
      * )
@@ -90,7 +90,7 @@ class QuizRepository extends EntityRepository
         $dynamicQueryParam->name = "dynamic_query";
         $dynamicQueryParam->requirements = "[a-z]+";
         $paramFetcher->addParam($dynamicQueryParam);
-//
+
 //        $title = $paramFetcher->get('title');
 //        $description = $paramFetcher->get('description');
 //        $category = $paramFetcher->get('category');
