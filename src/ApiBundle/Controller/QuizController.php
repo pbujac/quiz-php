@@ -7,7 +7,6 @@ use ApiBundle\Handler\QuizHandler;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Response;
 
 class QuizController extends FOSRestController
@@ -30,11 +29,6 @@ class QuizController extends FOSRestController
      * @Rest\Get("/quiz/{quizId}", name="quiz.id")
      *
      * @param int $quizId
-     *
-     * @ParamConverter(
-     *     "quiz",
-     *     options={"id" = "quiz_id"}
-     * )
      *
      * @return View
      */
