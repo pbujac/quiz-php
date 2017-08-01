@@ -53,6 +53,6 @@ class QuizController extends FOSRestController
             'Quiz has been successfully removed!'
         );
 
-        return new Response(null, 204);
+        return new Response(null,Response::HTTP_NO_CONTENT);
     }
 }
