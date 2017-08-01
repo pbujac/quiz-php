@@ -42,9 +42,12 @@ class QuestionTransformer
      *
      * @return Question
      */
-    public function reverseTransform(QuestionDTO $questionDTO, Quiz $quiz, Question $question = null)
-    {
-        $question ?: new Question();
+    public function reverseTransform(
+        QuestionDTO $questionDTO,
+        Quiz $quiz,
+        Question $question = null
+    ) {
+        $question = $question ?: new Question();
         $question->setText($questionDTO->text);
         $question->setQuiz($quiz);
         $this->addAnswersDTO($questionDTO, $question);

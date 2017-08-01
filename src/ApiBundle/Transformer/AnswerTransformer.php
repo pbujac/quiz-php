@@ -10,15 +10,13 @@ class AnswerTransformer
 {
     /**
      * @param Answer $answer
-     * @param AnswerDTO|null $answerDTO
      *
      * @return AnswerDTO
      */
     public function transform(
-        Answer $answer,
-        AnswerDTO $answerDTO = null
+        Answer $answer
     ) {
-        $answerDTO ?: new AnswerDTO();
+        $answerDTO = new AnswerDTO();
         $answerDTO->id = $answer->getId();
         $answerDTO->text = $answer->getText();
         $answerDTO->correct = $answer->isCorrect();
@@ -38,7 +36,7 @@ class AnswerTransformer
         Question $question,
         Answer $answer = null
     ) {
-        $answer ?: new Answer();
+        $answer = $answer ?: new Answer();
         $answer->setText($answerDTO->text);
         $answer->setCorrect($answerDTO->correct);
         $answer->setQuestion($question);

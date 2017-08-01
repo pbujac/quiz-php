@@ -50,6 +50,20 @@ class UserHandler
 
     /**
      * @param UserDTO $userDTO
+     */
+    public function handleRegistration(UserDTO $userDTO)
+    {
+        $this->validateUserDTO($userDTO);
+
+        $this->em->persist(
+            $this->userTransformer->reverseTransform($userDTO)
+        );
+        $this->em->flush();
+    }
+
+
+    /**
+     * @param UserDTO $userDTO
      * @param User $user
      */
     public function handlePutUser(UserDTO $userDTO, User $user)

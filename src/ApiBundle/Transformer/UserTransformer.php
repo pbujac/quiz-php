@@ -27,7 +27,7 @@ class UserTransformer
      */
     public function reverseTransform(UserDTO $userDTO, User $user = null)
     {
-        $user ?: new User();
+        $user = $user ?: new User();
         $user->setUsername($userDTO->username);
         $user->setPassword(
             $this->encoder->encodePassword($user, $userDTO->password)

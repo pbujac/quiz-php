@@ -32,7 +32,7 @@ class CategoryTransformer
         CategoryDTO $categoryDTO,
         Category $category = null
     ) {
-        $category ?: new Category();
+        $category = $category ?: new Category();
         $category->setTitle($categoryDTO->title);
 
         return $category;

@@ -81,7 +81,7 @@ class QuizTransformer
         User $user = null,
         Quiz $quiz = null
     ) {
-        $quiz ?: new Quiz();
+        $quiz = $quiz ?: new Quiz();
         $quiz->setTitle($quizDTO->title);
         $quiz->setDescription($quizDTO->description);
         $quiz->setAuthor($user);

@@ -38,6 +38,20 @@ class UserController extends FOSRestController
     }
 
     /**
+     * @Rest\Post("/register")
+     *
+     * @param UserDTO $userDTO
+     *
+     * @return View
+     */
+    public function postAction(UserDTO $userDTO)
+    {
+        $userDTO = $this->get(UserHandler::class)->handleRegistration($userDTO);
+
+        return View::create($userDTO, Response::HTTP_CREATED);
+    }
+
+    /**
      * @Rest\Put(
      *     "/{user_id}",
      *     name="api.users.put"

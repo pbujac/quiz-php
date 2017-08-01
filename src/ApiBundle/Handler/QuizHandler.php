@@ -156,12 +156,13 @@ class QuizHandler
     }
 
     /**
-     * @param $quizzesDTO
+     * @param ArrayCollection $quizzesDTO
      *
      * @return CollectionRepresentation
      */
-    private function getQuizCollectionRepresentation($quizzesDTO): CollectionRepresentation
-    {
+    private function getQuizCollectionRepresentation(
+        ArrayCollection $quizzesDTO
+    ): CollectionRepresentation {
         $collectionRepresentation = new CollectionRepresentation(
             $quizzesDTO,
             'quizzes'
