@@ -36,7 +36,7 @@ class QuizController extends FOSRestController
      * @param Quiz $quiz
      * @ParamConverter("quiz", options={"id" = "quiz_id"})
      *
-     * @return Response
+     * @return View
      */
     public function deleteQuizById(Quiz $quiz)
     {
@@ -53,6 +53,6 @@ class QuizController extends FOSRestController
             'Quiz has been successfully removed!'
         );
 
-        return new Response(null,Response::HTTP_NO_CONTENT);
+        return  View::create(null,Response::HTTP_NO_CONTENT);
     }
 }
