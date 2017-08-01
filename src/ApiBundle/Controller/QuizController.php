@@ -38,4 +38,18 @@ class QuizController extends FOSRestController
 
         return View::create($quizDTO, Response::HTTP_OK);
     }
+
+    /**
+     * @Rest\Get("/quizzes/{quizId}", name="quiz.id")
+     *
+     * @param int $quizId
+     *
+     * @return View
+     */
+    public function patchAction(int $quizId)
+    {
+        $quizDTO = $this->get(QuizHandler::class)->handleGetQuiz($quizId);
+
+        return View::create($quizDTO, Response::HTTP_OK);
+    }
 }

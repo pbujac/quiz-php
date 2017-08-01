@@ -59,6 +59,18 @@ class QuizHandler
     }
 
     /**
+     * @param int $quizId
+     *
+     * @return QuizDTO
+     */
+    public function handlePatchQuiz(int $quizId)
+    {
+        $quiz = $this->em->getRepository(Quiz::class)->findOneBy(["id" => $quizId]);
+
+        return $this->quizTransformer->reverseTransform($quiz);
+    }
+
+    /**
      * @param QuizDTO $quizDTO
      */
     public function validateQuizDTO(QuizDTO $quizDTO): void
