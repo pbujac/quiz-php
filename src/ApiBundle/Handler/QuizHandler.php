@@ -55,22 +55,22 @@ class QuizHandler
     {
         $quiz = $this->em->getRepository(Quiz::class)->findOneBy(["id" => $quizId]);
 
-        if ($quiz != null){
+        if ($quiz != null) {
             return $this->quizTransformer->reverseTransform($quiz);
-        }
-        else throw new BadRequestHttpException("Quiz with this id does not exist");
+        } else throw new BadRequestHttpException("Quiz with this id does not exist");
     }
 
     /**
-     * @param int $quizId
+     * @param QuizDTO $quizDTO
+     * @param Quiz $quiz
      *
      * @return QuizDTO
      */
-    public function handlePatchQuiz(int $quizId)
+    public function handlePatch(QuizDTO $quizDTO, Quiz $quiz)
     {
-        $quiz = $this->em->getRepository(Quiz::class)->findOneBy(["id" => $quizId]);
-
-        return $this->quizTransformer->reverseTransform($quiz);
+        $this->validateQuizDTO($quizDTO);
+        $this->em->persist($this->quizTransformer->transform($quizDTO, $quiz));
+        $this->em->flush();
     }
 
     /**

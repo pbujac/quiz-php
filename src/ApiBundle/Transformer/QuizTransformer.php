@@ -66,14 +66,14 @@ class QuizTransformer
 
         $quizDTO = new QuizDTO();
         $quizDTO->title=$quiz->getTitle();
-        $quizDTO->description=$quiz->getDescription();
-        $quizDTO->categoryId=$quiz->getCategory()->getId();
-        $quizDTO->authorId=$quiz->getAuthor()->getId();
-
-        $quizDTO->questions = new ArrayCollection();
-        foreach ($quiz->getQuestions() as $question){
-            $quizDTO->questions->add($this->transformQuestion->reverseTransform($question));
-        }
+//        $quizDTO->description=$quiz->getDescription();
+//        $quizDTO->categoryId=$quiz->getCategory()->getId();
+//        $quizDTO->authorId=$quiz->getAuthor()->getId();
+//
+//        $quizDTO->questions = new ArrayCollection();
+//        foreach ($quiz->getQuestions() as $question){
+//            $quizDTO->questions->add($this->transformQuestion->reverseTransform($question));
+//        }
 
         return $quizDTO;
     }
