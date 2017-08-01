@@ -31,7 +31,7 @@ class QuizController extends FOSRestController
     }
 
     /**
-     * @Rest\Delete("/{quiz_id}")
+     * @Rest\Delete("/{quiz_id}",name="quiz.delete")
      *
      * @param Quiz $quiz
      * @ParamConverter("quiz", options={"id" = "quiz_id"})
