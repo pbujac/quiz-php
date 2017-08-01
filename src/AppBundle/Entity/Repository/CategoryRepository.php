@@ -14,7 +14,7 @@ class CategoryRepository extends EntityRepository
      *
      * @return Paginator
      */
-    public function getCategoriesByPage(int $page, int $count)
+    public function getCategoriesByPage(int $page, int $count = PaginatorManager::PAGE_LIMIT)
     {
         $paginator = new PaginatorManager();
 
