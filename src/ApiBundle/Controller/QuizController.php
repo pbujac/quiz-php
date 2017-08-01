@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class QuizController extends FOSRestController
 {
-
     /**
      * @Rest\Get()
      *
