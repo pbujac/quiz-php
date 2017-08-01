@@ -39,7 +39,7 @@ class RegistrationHandler
     {
         $this->validateRegistrationDTO($registrationDTO);
         $this->em->persist(
-            $this->transformUser->transformRegistrationDTO($registrationDTO)
+            $this->transformUser->reverseTransform($registrationDTO)
         );
         $this->em->flush();
     }

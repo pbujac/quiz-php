@@ -7,7 +7,7 @@ use AppBundle\Entity\User;
 
 class UserTransformer
 {
-    public function transformRegistrationDTO(RegistrationDTO $registrationDTO)
+    public function reverseTransform(RegistrationDTO $registrationDTO)
     {
         $user= new User();
         $user->setUsername($registrationDTO->username);
