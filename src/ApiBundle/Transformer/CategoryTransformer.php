@@ -11,7 +11,6 @@ class CategoryTransformer
     {
         $categoryDTO = new CategoryDTO();
         $categoryDTO->title = $category->getTitle();
-        $categoryDTO->id = $category->getId();
         return $categoryDTO;
     }
 
