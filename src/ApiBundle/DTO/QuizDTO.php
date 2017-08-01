@@ -23,7 +23,7 @@ class QuizDTO
      * @var int
      * @Type("int")
      */
-    public $category_id;
+    public $categoryId;
 
     /**
      * @var string
@@ -38,7 +38,7 @@ class QuizDTO
      * @var int
      * @Type("int")
      */
-    public $author_id;
+    public $authorId;
 
     /**
      * @var ArrayCollection|QuestionDTO[]
@@ -47,11 +47,4 @@ class QuizDTO
      * @Assert\Valid
      */
     public $questions;
-
-//    /**
-//     * @var \DateTime
-//     *
-//     * @ORM\Column(name="created_at", type="datetime")
-//     */
-//    public $createdAt;
 }

@@ -66,9 +66,8 @@ class QuizTransformer
         $quizDTO = new QuizDTO();
         $quizDTO->title = $quiz->getTitle();
         $quizDTO->description = $quiz->getDescription();
-        $quizDTO->createdAt = $quiz->getCreatedAt();
-//        $quizDTO->category= $quiz->getCategory();
-//        $quizDTO->author= $quiz->getAuthor();
+        $quizDTO->categoryId= $quiz->getCategory()->getId();
+        $quizDTO->authorId= $quiz->getAuthor()->getId();
 
         return $quizDTO;
     }
