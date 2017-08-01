@@ -6,6 +6,7 @@ use ApiBundle\DTO\QuizDTO;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Quiz;
 use AppBundle\Entity\User;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 
 class QuizTransformer
@@ -62,15 +63,18 @@ class QuizTransformer
      * @return QuizDTO
      */
     public function reverseTransform(Quiz $quiz){
+
         $quizDTO = new QuizDTO();
         $quizDTO->title=$quiz->getTitle();
         $quizDTO->description=$quiz->getDescription();
         $quizDTO->categoryId=$quiz->getCategory()->getId();
         $quizDTO->authorId=$quiz->getAuthor()->getId();
 
+        $quizDTO->questions = new ArrayCollection();
         foreach ($quiz->getQuestions() as $question){
-            $this->transformQuestion->reverseTransform($question);
+            $quizDTO->questions->add($this->transformQuestion->reverseTransform($question));
         }
+
         return $quizDTO;
     }
 }

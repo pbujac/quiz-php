@@ -7,6 +7,7 @@ use ApiBundle\Handler\QuizHandler;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Response;
 
 class QuizController extends FOSRestController
@@ -30,12 +31,17 @@ class QuizController extends FOSRestController
      *
      * @param int $quizId
      *
-     * @return Response
+     * @ParamConverter(
+     *     "quiz",
+     *     options={"id" = "quiz_id"}
+     * )
+     *
+     * @return View
      */
-    public function getAction(int $quizId)
+    public function getByIdAction(int $quizId)
     {
-        $this->get(QuizHandler::class)->handlerById($quizId);
+        $quizDTO = $this->get(QuizHandler::class)->handleGetQuiz($quizId);
 
-        return new Response('Hello. this is quiz id = ' .$quizId);
+        return View::create($quizDTO, Response::HTTP_OK);
     }
 }

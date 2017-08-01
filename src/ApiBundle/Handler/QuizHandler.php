@@ -4,6 +4,7 @@ namespace ApiBundle\Handler;
 
 use ApiBundle\DTO\QuizDTO;
 use ApiBundle\Transformer\QuizTransformer;
+use AppBundle\Entity\Quiz;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -47,10 +48,14 @@ class QuizHandler
 
     /**
      * @param int $quizId
+     *
+     * @return QuizDTO
      */
-    public function handlerById(int $quizId)
+    public function handleGetQuiz(int $quizId)
     {
+        $quiz = $this->em->getRepository(Quiz::class)->findOneBy(["id" => $quizId]);
 
+        return $this->quizTransformer->reverseTransform($quiz);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace ApiBundle\Transformer;
 use ApiBundle\DTO\QuestionDTO;
 use AppBundle\Entity\Question;
 use AppBundle\Entity\Quiz;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class QuestionTransformer
 {
@@ -49,8 +50,9 @@ class QuestionTransformer
         $questionDTO = new QuestionDTO();
         $questionDTO->text = $question->getText();
 
+        $questionDTO->answers = new ArrayCollection();
         foreach ($question->getAnswers() as $answer) {
-            $this->transformAnswer->reverseTransform($answer);
+            $questionDTO->answers->add($this->transformAnswer->reverseTransform($answer));
         }
 
         return $questionDTO;
