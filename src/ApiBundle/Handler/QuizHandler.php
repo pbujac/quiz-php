@@ -40,14 +40,14 @@ class QuizHandler
         $quizzes = $this->em->getRepository(Quiz::class)
             ->getQuizByFilterAndPage($filter, $page);
 
-        return $this->tranformQuizzes($quizzes);
+        return $this->transformQuizzes($quizzes);
     }
 
     /**
      * @param $quizzes
      * @return ArrayCollection
      */
-    public function tranformQuizzes($quizzes): ArrayCollection
+    public function transformQuizzes($quizzes): ArrayCollection
     {
         $quizzesDTO = new ArrayCollection();
         foreach ($quizzes as $quiz) {

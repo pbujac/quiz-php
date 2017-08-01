@@ -40,12 +40,12 @@ class QuizTransformer
 
         $quiz->setCategory(
             $this->em->getRepository(Category::class)->findOneBy([
-                "id" => $quizDTO->category_id
+                "id" => $quizDTO->categoryId
             ]));
 
         $quiz->setAuthor(
             $this->em->getRepository(User::class)->findOneBy([
-                "id" => $quizDTO->author_id
+                "id" => $quizDTO->authorId
             ]));
 
         foreach ($quizDTO->questions as $questionDTO) {
@@ -66,8 +66,8 @@ class QuizTransformer
         $quizDTO = new QuizDTO();
         $quizDTO->title = $quiz->getTitle();
         $quizDTO->description = $quiz->getDescription();
-        $quizDTO->categoryId= $quiz->getCategory()->getId();
-        $quizDTO->authorId= $quiz->getAuthor()->getId();
+        $quizDTO->categoryId = $quiz->getCategory()->getId();
+        $quizDTO->authorId = $quiz->getAuthor()->getId();
 
         return $quizDTO;
     }
