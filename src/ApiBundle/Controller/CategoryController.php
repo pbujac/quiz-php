@@ -23,7 +23,7 @@ class CategoryController extends FOSRestController
     public function getAction(int $page)
     {
         $categories = $this->get(CategoryHandler::class)
-            ->handlerGetByPage($page);
+            ->handlePagination($page);
 
         return View::create($categories, Response::HTTP_OK);
     }

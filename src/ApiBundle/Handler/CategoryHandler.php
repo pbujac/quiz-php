@@ -39,7 +39,7 @@ class CategoryHandler
      *
      * @return PaginatedRepresentation
      */
-    public function handlerGetByPage(int $page)
+    public function handlePagination(int $page)
     {
         $categories = $this->em->getRepository(Category::class)
             ->findAll();
