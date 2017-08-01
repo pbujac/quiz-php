@@ -81,3 +81,26 @@ twig:
 assetic:
     filters:
         cssrewrite: ~
+
+fos_rest:
+  param_fetcher_listener: true
+  body_listener: true
+  format_listener:
+      enabled: true
+      rules:
+         - { path: '^/api/v1', priorities: ['json'], fallback_format: json }
+         - { path: '^/', stop: true }
+  view:
+      view_response_listener: 'force'
+      formats:
+          json : true
+      templating_formats:
+          html: true
+      force_redirects:
+          html: true
+      failed_validation: HTTP_BAD_REQUEST
+      default_engine: twig
+  routing_loader:
+       default_format: json
+  body_converter:
+       enabled: true

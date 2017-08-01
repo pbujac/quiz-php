@@ -2,9 +2,12 @@
 
 namespace ApiBundle\Controller;
 
-use AppBundle\Entity\Quiz;
+use ApiBundle\DTO\QuizDTO;
+use ApiBundle\Handler\QuizHandler;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\View\View;
+use AppBundle\Entity\Quiz;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -13,6 +16,20 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class QuizController extends FOSRestController
 {
+    /**
+     * @Rest\Post("", name="quizzes.create")
+     *
+     * @param QuizDTO $quizDTO
+     *
+     * @return View
+     */
+    public function postAction(QuizDTO $quizDTO)
+    {
+        $this->get(QuizHandler::class)->handleCreate($quizDTO);
+
+        return View::create($quizDTO, Response::HTTP_CREATED);
+    }
+
     /**
      * @Rest\Delete("/{quiz_id}")
      *
