@@ -69,8 +69,8 @@ class QuizHandler
      */
     public function handlePatch(QuizDTO $quizDTO, Quiz $quiz)
     {
-        $this->validateQuizDTO($quizDTO);
-        $this->em->persist($this->quizTransformer->reverseTransform($quizDTO, $quiz));
+//        $this->validateQuizDTO($quizDTO);
+        $this->quizTransformer->reverseTransform($quizDTO, $quiz);
         $this->em->flush();
     }
 

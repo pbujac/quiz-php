@@ -45,14 +45,14 @@ class QuizController extends FOSRestController
     }
 
     /**
-     * @Rest\Patch("/{quizId}", name="quizzes.id")
+     * @Rest\Patch("/{quiz_id}", name="quizzes.id")
      *
      * @param QuizDTO $quizDTO
      * @param Quiz $quiz
      *
      * @ParamConverter(
      * "quiz",
-     * options={"id" = "userId"}
+     * options={"id" = "quiz_id"}
      * )
      *
      * @return View
