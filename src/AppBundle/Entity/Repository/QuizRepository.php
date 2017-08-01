@@ -5,6 +5,12 @@ namespace AppBundle\Entity\Repository;
 use AdminBundle\Manager\PaginatorManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Controller\Annotations\QueryParam;
+use FOS\RestBundle\Controller\Annotations\RequestParam;
+use FOS\RestBundle\Request\ParamFetcher;
+
+//use FOS\RestBundle\Controller\Annotations\FileParam;
 
 class QuizRepository extends EntityRepository
 {
@@ -32,7 +38,41 @@ class QuizRepository extends EntityRepository
         return $paginator->paginate($qb->getQuery(), $page);
     }
 
-    public function getQuizByQueryAndPage(?string $filter = null, int $page = 1)
+    /**
+     * @Rest\QueryParam(
+     *   name="title",
+     *   requirements="[a-z]+",
+     *   default=null,
+     *   allowBlank=true
+     * )
+     *
+     * @Rest\QueryParam(
+     *   name="description",
+     *   requirements="[a-z]+",
+     *   default=null,
+     *   allowBlank=true
+     * )
+     *
+     * @Rest\QueryParam(
+     *   name="category",
+     *   requirements="[a-z]+",
+     *   default=null,
+     *   allowBlank=true
+     * )
+     *
+     * @Rest\QueryParam(
+     *   name="author",
+     *   requirements="[a-z]+",
+     *   default=null,
+     *   allowBlank=true
+     * )
+     *
+     * @param ParamFetcher $paramFetcher
+     * @param int $page
+     *
+     * @return Paginator
+     */
+    public function getQuizByQueryAndPage($paramFetcher, int $page = 1)
     {
         $paginator = new PaginatorManager();
 
@@ -41,17 +81,39 @@ class QuizRepository extends EntityRepository
             ->join('q.category', 'c')
             ->join('q.author', 'a');
 
-        $parsed[] = ($title = null . $description = null . $category = null . $author = null);
+        $dynamicRequestParam = new RequestParam();
+        $dynamicRequestParam->name = "dynamic_request";
+        $dynamicRequestParam->requirements = "\d+";
+        $paramFetcher->addParam($dynamicRequestParam);
 
-        if (parse_str($filter, $parsed)) {
-            $qb->where('q.title LIKE :title')
-                ->orWhere('q.description  LIKE :description')
-                ->orWhere('q.category  LIKE :category')
-                ->orWhere('q.author  LIKE :author')
-                ->setParameter('title', '%' . $parsed.$title . '%')
-                ->setParameter('description', '%' . $parsed.$description . '%')
-                ->setParameter('category', '%' . $parsed.$category . '%')
-                ->setParameter('author', '%' . $parsed.$author . '%');
+        $dynamicQueryParam = new QueryParam();
+        $dynamicQueryParam->name = "dynamic_query";
+        $dynamicQueryParam->requirements = "[a-z]+";
+        $paramFetcher->addParam($dynamicQueryParam);
+//
+//        $title = $paramFetcher->get('title');
+//        $description = $paramFetcher->get('description');
+//        $category = $paramFetcher->get('category');
+//        $author = $paramFetcher->get('author');
+
+        if (isset($filter['title'])) {
+            $qb->orWhere('q.title LIKE :title')
+                ->setParameter('title', $paramFetcher->get('title'));
+        }
+
+        if (isset($filter['description'])) {
+            $qb->orWhere('q.description  LIKE :description')
+                ->setParameter('description', $paramFetcher->get('description'));
+        }
+
+        if (isset($filter['category'])) {
+            $qb->orWhere('q.category  LIKE :category')
+                ->setParameter('category', $paramFetcher->get('category'));
+        }
+
+        if (isset($filter['author'])) {
+            $qb->orWhere('q.author  LIKE :author')
+                ->setParameter('author', $paramFetcher->get('author'));
         }
 
         return $paginator->paginate($qb->getQuery(), $page);

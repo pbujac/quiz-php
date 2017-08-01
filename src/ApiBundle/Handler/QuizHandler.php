@@ -7,6 +7,7 @@ use ApiBundle\Transformer\QuizTransformer;
 use AppBundle\Entity\Quiz;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use FOS\RestBundle\Request\ParamFetcher;
 
 class QuizHandler
 {
@@ -31,14 +32,14 @@ class QuizHandler
 
     /**
      * @param int $page
-     * @param string|null $filter
+     * @param ParamFetcher $paramFetcher
      *
      * @return ArrayCollection|QuizDTO[]
      */
-    public function searchByFilter(int $page, string $filter = null)
+    public function searchByFilter(int $page, ParamFetcher $paramFetcher)
     {
         $quizzes = $this->em->getRepository(Quiz::class)
-            ->getQuizByQueryAndPage($filter, $page);
+            ->getQuizByQueryAndPage($paramFetcher, $page);
 
         return $this->transformQuizzes($quizzes);
     }
