@@ -38,7 +38,7 @@ class QuizHandler
     public function searchByFilter(int $page, string $filter = null)
     {
         $quizzes = $this->em->getRepository(Quiz::class)
-            ->getQuizByFilterAndPage($filter, $page);
+            ->getQuizByQueryAndPage($filter, $page);
 
         return $this->transformQuizzes($quizzes);
     }
