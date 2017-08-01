@@ -11,7 +11,7 @@ use Hateoas\Configuration\Annotation as Hateoas;
 /**
  * @Hateoas\Relation(
  *     "self",
- *     href = "expr('/api/quizzes/' ~ object.id)"
+ *     href = "expr('/api/v1/quizzes/' ~ object.id)"
  * )
  */
 class QuizDTO

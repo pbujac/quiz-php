@@ -10,7 +10,7 @@ use Hateoas\Configuration\Annotation as Hateoas;
 /**
  * @Hateoas\Relation(
  *     "self",
- *     href = "expr('/api/users/' ~ object.id)"
+ *     href = "expr('/api/v1/users/' ~ object.id)"
  * )
  */
 class UserDTO
