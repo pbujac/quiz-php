@@ -2,28 +2,21 @@
 
 namespace ApiBundle\Transformer;
 
-use ApiBundle\DTO\UserDTO;
+use ApiBundle\DTO\RegistrationDTO;
 use AppBundle\Entity\User;
 
 class UserTransformer
 {
-    /**
-     * @param User $user
-     *
-     * @return UserDTO
-     */
-    public function reverseTransform(User $user)
+    public function reverseTransform(RegistrationDTO $registrationDTO)
     {
-        $userDTO = new UserDTO();
+        $user = new User();
+        $user->setUsername($registrationDTO->username);
+        $user->setPassword($registrationDTO->password);
+        $user->setFirstName($registrationDTO->firstName);
+        $user->setLastName($registrationDTO->lastName);
+        $user->setActive(true);
+        $user->addRole('ROLE_USER');
 
-        $userDTO->id = $user->getId();
-        $userDTO->username = $user->getUsername();
-        $userDTO->lastName = $user->getLastName();
-        $userDTO->firstName = $user->getFirstName();
-        $userDTO->active = $user->isActive();
-        $userDTO->roles = $user->getRoles();
-        $userDTO->createdAt = $user->getCreatedAt()->getTimestamp();
-
-        return $userDTO;
+        return $user;
     }
 }
