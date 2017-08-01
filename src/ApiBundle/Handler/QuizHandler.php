@@ -3,7 +3,7 @@
 namespace ApiBundle\Handler;
 
 use ApiBundle\DTO\QuizDTO;
-use ApiBundle\Manager\PaginatorManager;
+use ApiBundle\Manager\ApiPaginatorManager;
 use ApiBundle\Traits\ValidationErrorTrait;
 use ApiBundle\Transformer\QuizTransformer;
 use AppBundle\Entity\Category;
@@ -80,7 +80,7 @@ class QuizHandler
 
         $quizzesDTO = $this->addQuizzesToDTO($quizzes);
 
-        $paginator = new PaginatorManager();
+        $paginator = new ApiPaginatorManager();
         $collectionRepresentation = $this->getQuizCollectionRepresentation(
             $quizzesDTO
         );
@@ -110,7 +110,7 @@ class QuizHandler
 
         $quizzesDTO = $this->addQuizzesToDTO($quizzes);
 
-        $paginator = new PaginatorManager();
+        $paginator = new ApiPaginatorManager();
         $collectionRepresentation = $this->getQuizCollectionRepresentation(
             $quizzesDTO
         );

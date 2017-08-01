@@ -5,7 +5,7 @@ namespace ApiBundle\Manager;
 use Hateoas\Representation\CollectionRepresentation;
 use Hateoas\Representation\PaginatedRepresentation;
 
-class PaginatorManager
+class ApiPaginatorManager
 {
     /**
      * @param CollectionRepresentation $collectionRepresentation

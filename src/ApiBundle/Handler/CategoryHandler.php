@@ -8,7 +8,7 @@ use Hateoas\Representation\CollectionRepresentation;
 use Doctrine\ORM\EntityManagerInterface;
 use AppBundle\Entity\Category;
 use Doctrine\Common\Collections\ArrayCollection;
-use ApiBundle\Manager\PaginatorManager;
+use ApiBundle\Manager\ApiPaginatorManager;
 use Hateoas\Representation\PaginatedRepresentation;
 
 class CategoryHandler
@@ -47,7 +47,7 @@ class CategoryHandler
 
         $categoriesDTO = $this->addCategoriesDTO($categories);
 
-        $paginator = new PaginatorManager();
+        $paginator = new ApiPaginatorManager();
         $collectionRepresentation = $this->getCategoriesCollectionRepresentation(
             $categoriesDTO
         );
