@@ -9,7 +9,7 @@ class UserTransformer
 {
     public function reverseTransform(RegistrationDTO $registrationDTO)
     {
-        $user= new User();
+        $user = new User();
         $user->setUsername($registrationDTO->username);
         $user->setPassword($registrationDTO->password);
         $user->setFirstName($registrationDTO->firstName);

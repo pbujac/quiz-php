@@ -3,8 +3,8 @@
 namespace ApiBundle\DTO;
 
 use AdminBundle\Validator\Constraints\UniqueUser;
-use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation\Type;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class RegistrationDTO
 {
