@@ -5,9 +5,6 @@ namespace AppBundle\Entity\Repository;
 use AdminBundle\Manager\PaginatorManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Controller\Annotations\QueryParam;
-use FOS\RestBundle\Controller\Annotations\RequestParam;
 use FOS\RestBundle\Request\ParamFetcher;
 
 //use FOS\RestBundle\Controller\Annotations\FileParam;
@@ -39,40 +36,12 @@ class QuizRepository extends EntityRepository
     }
 
     /**
-     * @Rest\QueryParam(
-     *   name="title",
-     *   requirements="[a-zA-Z]+",
-     *   default=null,
-     *   allowBlank=true
-     * )
-     *
-     * @Rest\QueryParam(
-     *   name="description",
-     *   requirements="[a-zA-Z]+",
-     *   default=null,
-     *   allowBlank=true
-     * )
-     *
-     * @Rest\QueryParam(
-     *   name="category",
-     *   requirements="[a-zA-Z]+",
-     *   default=null,
-     *   allowBlank=true
-     * )
-     *
-     * @Rest\QueryParam(
-     *   name="author",
-     *   requirements="[a-zA-Z]+",
-     *   default=null,
-     *   allowBlank=true
-     * )
-     *
      * @param ParamFetcher $paramFetcher
      * @param int $page
      *
      * @return Paginator
      */
-    public function getQuizByQueryAndPage($paramFetcher, int $page = 1)
+    public function getQuizByQueryAndPage(ParamFetcher $paramFetcher, int $page = 1)
     {
         $paginator = new PaginatorManager();
 
@@ -81,16 +50,6 @@ class QuizRepository extends EntityRepository
             ->join('q.category', 'c')
             ->join('q.author', 'a');
 
-        $dynamicRequestParam = new RequestParam();
-        $dynamicRequestParam->name = "dynamic_request";
-        $dynamicRequestParam->requirements = "\d+";
-        $paramFetcher->addParam($dynamicRequestParam);
-
-        $dynamicQueryParam = new QueryParam();
-        $dynamicQueryParam->name = "dynamic_query";
-        $dynamicQueryParam->requirements = "[a-zA-z]+";
-        $paramFetcher->addParam($dynamicQueryParam);
-
         $title = $paramFetcher->get('title');
         $description = $paramFetcher->get('description');
         $category = $paramFetcher->get('category');
@@ -98,27 +57,24 @@ class QuizRepository extends EntityRepository
 
         if ($title) {
             $qb->orWhere('q.title LIKE :title')
-                ->setParameter('title', $paramFetcher->get('title'));
+                ->setParameter('title', '%' . $paramFetcher->get('title') . '%');
         }
 
         if ($description) {
             $qb->orWhere('q.description  LIKE :description')
-                ->setParameter('description', $paramFetcher->get('description'));
+                ->setParameter('description', '%' . $paramFetcher->get('description') . '%');
         }
 
         if ($category) {
             $qb->orWhere('q.category  LIKE :category')
-                ->setParameter('category', $paramFetcher->get('category'));
+                ->setParameter('category', '%' . $paramFetcher->get('category') . '%');
         }
 
         if ($author) {
             $qb->orWhere('q.author  LIKE :author')
-                ->setParameter('author', $paramFetcher->get('author'));
+                ->setParameter('author', '%' . $paramFetcher->get('author') . '%');
         }
 
         return $paginator->paginate($qb->getQuery(), $page);
-
-
     }
-
 }

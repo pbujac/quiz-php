@@ -21,6 +21,22 @@ class QuizController extends FOSRestController
      *
      * @Rest\Route(name="api.quiz.search")
      *
+     * @Rest\QueryParam(
+     *   name="title"
+     * )
+     *
+     * @Rest\QueryParam(
+     *   name="description"
+     * )
+     *
+     * @Rest\QueryParam(
+     *   name="category"
+     * )
+     *
+     * @Rest\QueryParam(
+     *   name="author"
+     * )
+     *
      * @param ParamFetcher $paramFetcher
      * @param int $page
      *
@@ -28,7 +44,10 @@ class QuizController extends FOSRestController
      */
     public function search(ParamFetcher $paramFetcher, int $page = 1)
     {
-        $quizzes = $this->get(QuizHandler::class)->searchByFilter($page, $paramFetcher);
+        $quizzes = $this->get(QuizHandler::class)->searchByFilter(
+            $page,
+            $paramFetcher
+        );
 
         return View::create($quizzes, Response::HTTP_OK);
     }
