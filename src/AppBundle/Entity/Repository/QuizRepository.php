@@ -88,30 +88,30 @@ class QuizRepository extends EntityRepository
 
         $dynamicQueryParam = new QueryParam();
         $dynamicQueryParam->name = "dynamic_query";
-        $dynamicQueryParam->requirements = "[a-z]+";
+        $dynamicQueryParam->requirements = "[a-zA-z]+";
         $paramFetcher->addParam($dynamicQueryParam);
 
-//        $title = $paramFetcher->get('title');
-//        $description = $paramFetcher->get('description');
-//        $category = $paramFetcher->get('category');
-//        $author = $paramFetcher->get('author');
+        $title = $paramFetcher->get('title');
+        $description = $paramFetcher->get('description');
+        $category = $paramFetcher->get('category');
+        $author = $paramFetcher->get('author');
 
-        if (isset($filter['title'])) {
+        if ($title) {
             $qb->orWhere('q.title LIKE :title')
                 ->setParameter('title', $paramFetcher->get('title'));
         }
 
-        if (isset($filter['description'])) {
+        if ($description) {
             $qb->orWhere('q.description  LIKE :description')
                 ->setParameter('description', $paramFetcher->get('description'));
         }
 
-        if (isset($filter['category'])) {
+        if ($category) {
             $qb->orWhere('q.category  LIKE :category')
                 ->setParameter('category', $paramFetcher->get('category'));
         }
 
-        if (isset($filter['author'])) {
+        if ($author) {
             $qb->orWhere('q.author  LIKE :author')
                 ->setParameter('author', $paramFetcher->get('author'));
         }
