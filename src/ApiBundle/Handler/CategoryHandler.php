@@ -48,6 +48,7 @@ class CategoryHandler
         $categoriesDTO = $this->addCategoriesDTO($categories);
 
         $paginator = new ApiPaginatorManager();
+
         $collectionRepresentation = $this->getCategoriesCollectionRepresentation(
             $categoriesDTO
         );

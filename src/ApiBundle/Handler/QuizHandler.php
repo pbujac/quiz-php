@@ -81,6 +81,7 @@ class QuizHandler
         $quizzesDTO = $this->addQuizzesToDTO($quizzes);
 
         $paginator = new ApiPaginatorManager();
+
         $collectionRepresentation = $this->getQuizCollectionRepresentation(
             $quizzesDTO
         );
@@ -111,6 +112,7 @@ class QuizHandler
         $quizzesDTO = $this->addQuizzesToDTO($quizzes);
 
         $paginator = new ApiPaginatorManager();
+
         $collectionRepresentation = $this->getQuizCollectionRepresentation(
             $quizzesDTO
         );
