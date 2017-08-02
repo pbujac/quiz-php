@@ -44,8 +44,24 @@ class QuizHandler extends FOSRestController
     public function handleCreate(QuizDTO $quizDTO)
     {
         $this->validateQuizDTO($quizDTO);
-        $this->em->persist($this->quizTransformer->transform($quizDTO));
+        $this->em->persist($this->quizTransformer->reverseTransform($quizDTO));
         $this->em->flush();
+    }
+
+    /**
+     * @param int $quizId
+     *
+     * @return QuizDTO
+     */
+    public function handleGetQuiz(int $quizId)
+    {
+        $quiz = $this->em->getRepository(Quiz::class)->findOneBy(["id" => $quizId]);
+
+        if ($quiz != null) {
+            return $this->quizTransformer->transform($quiz);
+        } else {
+            throw new BadRequestHttpException("Quiz with this id does not exist");
+        }
     }
 
     /**
