@@ -32,16 +32,16 @@ class QuizTransformer
      *
      * @return QuizDTO
      */
-    public function transform(Quiz $quiz){
-
+    public function transform(Quiz $quiz)
+    {
         $quizDTO = new QuizDTO();
-        $quizDTO->title=$quiz->getTitle();
-        $quizDTO->description=$quiz->getDescription();
-        $quizDTO->categoryId=$quiz->getCategory()->getId();
-        $quizDTO->authorId=$quiz->getAuthor()->getId();
+        $quizDTO->title = $quiz->getTitle();
+        $quizDTO->description = $quiz->getDescription();
+        $quizDTO->categoryId = $quiz->getCategory()->getId();
+        $quizDTO->authorId = $quiz->getAuthor()->getId();
 
         $quizDTO->questions = new ArrayCollection();
-        foreach ($quiz->getQuestions() as $question){
+        foreach ($quiz->getQuestions() as $question) {
             $quizDTO->questions->add($this->transformQuestion->transform($question));
         }
 

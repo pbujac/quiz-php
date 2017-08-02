@@ -29,7 +29,7 @@ class QuizController extends FOSRestController
     }
 
     /**
-     * @Rest\Get("/{quizId}", name="quiz.id")
+     * @Rest\Get("/{quizId}", name="quizzes.quiz.get")
      *
      * @param int $quizId
      *

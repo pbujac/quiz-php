@@ -55,10 +55,11 @@ class QuizHandler
     {
         $quiz = $this->em->getRepository(Quiz::class)->findOneBy(["id" => $quizId]);
 
-        if ($quiz != null){
+        if ($quiz != null) {
             return $this->quizTransformer->transform($quiz);
+        } else {
+            throw new BadRequestHttpException("Quiz with this id does not exist");
         }
-        else throw new BadRequestHttpException("Quiz with this id does not exist");
     }
 
     /**
