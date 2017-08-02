@@ -4,8 +4,10 @@ namespace ApiBundle\Controller;
 
 use AdminBundle\Manager\PaginatorManager;
 use ApiBundle\DTO\QuizDTO;
+use ApiBundle\DTO\ResultDTO;
 use ApiBundle\Handler\QuizHandler;
 use AppBundle\Entity\Category;
+use AppBundle\Entity\Quiz;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
@@ -80,6 +82,33 @@ class QuizController extends FOSRestController
             ->handleGetQuizzesByCategory($category, $page, $count);
 
         return View::create($quizzes, Response::HTTP_OK);
+    }
+
+    /**
+     * @Rest\Post(
+     *     "/quiz/{quiz_id}/solve" ,
+     *     name="api.quiz.solve"
+     * )
+     * @param Quiz $quiz
+     * @param ResultDTO $resultDTO
+     *
+     * @ParamConverter(
+     *     "quiz",
+     *     options={"id" = "quiz_id"}
+     * )
+     * @return View
+     */
+    public function postSolveQuizAction(ResultDTO $resultDTO, Quiz $quiz)
+    {
+        $user = $this->getUser();
+
+        $this->get(QuizHandler::class)->handleSolveQuiz(
+            $resultDTO,
+            $quiz,
+            $user
+        );
+
+        return View::create(null, Response::HTTP_CREATED);
     }
 
 }

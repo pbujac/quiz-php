@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Table(name="results")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ResultRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Result
 {
@@ -124,6 +125,14 @@ class Result
     public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAtValue()
+    {
+        $this->createdAt = new \DateTime();
     }
 
     /**

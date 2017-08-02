@@ -10,14 +10,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 class QuestionTransformer
 {
     /** @var AnswerTransformer */
-    private $transformAnswer;
+    private $answerTransformer;
 
     /**
-     * @param AnswerTransformer $transformAnswer
+     * @param AnswerTransformer $answerTransformer
      */
-    public function __construct(AnswerTransformer $transformAnswer)
+    public function __construct(AnswerTransformer $answerTransformer)
     {
-        $this->transformAnswer = $transformAnswer;
+        $this->answerTransformer = $answerTransformer;
     }
 
     /**
@@ -63,7 +63,7 @@ class QuestionTransformer
     {
         foreach ($questionDTO->answers as $answerDTO) {
             $question->addAnswer(
-                $this->transformAnswer->reverseTransform(
+                $this->answerTransformer->reverseTransform(
                     $answerDTO,
                     $question
                 )
@@ -81,7 +81,7 @@ class QuestionTransformer
 
         foreach ($question->getAnswers() as $answer) {
             $questionDTO->answers->add(
-                $this->transformAnswer->transform($answer)
+                $this->answerTransformer->transform($answer)
             );
         }
     }

@@ -3,11 +3,16 @@
 namespace ApiBundle\Handler;
 
 use ApiBundle\DTO\QuizDTO;
+use ApiBundle\DTO\ResultAnswerDTO;
+use ApiBundle\DTO\ResultDTO;
 use ApiBundle\Manager\ApiPaginatorManager;
 use ApiBundle\Traits\ValidationErrorTrait;
 use ApiBundle\Transformer\QuizTransformer;
+use ApiBundle\Transformer\ResultTransformer;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Quiz;
+use AppBundle\Entity\Result;
+use AppBundle\Entity\ResultAnswer;
 use AppBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,19 +35,25 @@ class QuizHandler
     /** @var QuizTransformer */
     private $transformQuiz;
 
+    /** @var ResultTransformer */
+    private $resultTransformer;
+
     /**
      * @param EntityManagerInterface $em
      * @param ValidatorInterface $validator
      * @param QuizTransformer $transformQuiz
+     * @param ResultTransformer $resultTransformer
      */
     public function __construct(
         EntityManagerInterface $em,
         ValidatorInterface $validator,
-        QuizTransformer $transformQuiz
+        QuizTransformer $transformQuiz,
+        ResultTransformer $resultTransformer
     ) {
         $this->em = $em;
         $this->validator = $validator;
         $this->transformQuiz = $transformQuiz;
+        $this->resultTransformer = $resultTransformer;
     }
 
     /**
@@ -126,6 +137,32 @@ class QuizHandler
     }
 
     /**
+     * @param ResultDTO $resultDTO
+     * @param Quiz $quiz
+     * @param User $user
+     */
+    public function handleSolveQuiz(
+        ResultDTO $resultDTO,
+        Quiz $quiz,
+        User $user
+    ) {
+        $result = new Result();
+        $result->setUser($user);
+        $result->setQuiz($quiz);
+
+        $result = $this->resultTransformer->reverseTransform(
+            $resultDTO,
+            $result
+        );
+        $result->setScore(
+            $this->calculateScore($result->getResultAnswers())
+        );
+
+        $this->em->persist($result);
+        $this->em->flush();
+    }
+
+    /**
      * @param Paginator $quizzes
      *
      * @return ArrayCollection
@@ -171,5 +208,25 @@ class QuizHandler
         );
 
         return $collectionRepresentation;
+    }
+
+    /**
+     * @param ArrayCollection|ResultAnswer[] $resultAnswers
+     *
+     * @return int
+     */
+    private function calculateScore(ArrayCollection $resultAnswers)
+    {
+        $correctAnswers = 0;
+
+        foreach ($resultAnswers as $resultAnswer) {
+
+            if ($resultAnswer->getAnswer()->isCorrect()) {
+                ++$correctAnswers;
+            }
+        }
+        $score = ceil($correctAnswers / $resultAnswers->count());
+
+        return $score;
     }
 }

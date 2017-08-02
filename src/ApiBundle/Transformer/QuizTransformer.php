@@ -78,8 +78,8 @@ class QuizTransformer
      */
     public function reverseTransform(
         QuizDTO $quizDTO,
-        User $user = null,
-        Quiz $quiz = null
+        Quiz $quiz = null,
+        User $user = null
     ) {
         $quiz = $quiz ?: new Quiz();
         $quiz->setTitle($quizDTO->title);
