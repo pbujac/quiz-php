@@ -7,7 +7,12 @@ use AppBundle\Entity\User;
 
 class UserTransformer
 {
-    public function reverseTransform(RegistrationDTO $registrationDTO)
+    /**
+     * @param RegistrationDTO $registrationDTO
+     *
+     * @return User
+     */
+    public function reverseTransform(RegistrationDTO $registrationDTO): User
     {
         $user = new User();
         $user->setUsername($registrationDTO->username);

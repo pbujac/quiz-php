@@ -25,7 +25,7 @@ class QuestionTransformer
      *
      * @return QuestionDTO
      */
-    public function transform(Question $question)
+    public function transform(Question $question): QuestionDTO
     {
         $questionDTO = new QuestionDTO();
         $questionDTO->text = $question->getText();
@@ -44,7 +44,7 @@ class QuestionTransformer
      *
      * @return Question
      */
-    public function reverseTransform(QuestionDTO $questionDTO, Quiz $quiz)
+    public function reverseTransform(QuestionDTO $questionDTO, Quiz $quiz): Question
     {
         $question = new Question();
         $question->setText($questionDTO->text);

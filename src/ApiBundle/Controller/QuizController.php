@@ -21,7 +21,7 @@ class QuizController extends FOSRestController
      *
      * @return View
      */
-    public function postAction(QuizDTO $quizDTO)
+    public function postAction(QuizDTO $quizDTO): View
     {
         $this->get(QuizHandler::class)->handleCreate($quizDTO);
 
@@ -35,7 +35,7 @@ class QuizController extends FOSRestController
      *
      * @return View
      */
-    public function getByIdAction(int $quizId)
+    public function getByIdAction(int $quizId): View
     {
         $quizDTO = $this->get(QuizHandler::class)->handleGetQuiz($quizId);
 
