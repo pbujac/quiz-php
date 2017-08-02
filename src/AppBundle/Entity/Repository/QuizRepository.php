@@ -66,12 +66,13 @@ class QuizRepository extends EntityRepository
         }
 
         if ($category) {
-            $qb->orWhere('q.category  LIKE :category')
+            $qb->orWhere('c.title  LIKE :category')
                 ->setParameter('category', '%' . $paramFetcher->get('category') . '%');
         }
 
         if ($author) {
-            $qb->orWhere('q.author  LIKE :author')
+            $qb->orWhere('a.firstName  LIKE :author')
+                ->orWhere('a.lastName  LIKE :author')
                 ->setParameter('author', '%' . $paramFetcher->get('author') . '%');
         }
 
