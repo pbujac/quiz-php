@@ -7,11 +7,13 @@ use ApiBundle\Transformer\QuizTransformer;
 use AppBundle\Entity\Quiz;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use FOS\RestBundle\Controller\FOSRestController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class QuizHandler
+class QuizHandler extends FOSRestController
 {
     /** @var EntityManagerInterface $em */
     private $em;
@@ -66,7 +68,8 @@ class QuizHandler
         }
         return $quizzesDTO;
     }
-        /**
+
+    /**
      * @param QuizDTO $quizDTO
      */
     public function handleCreate(QuizDTO $quizDTO)
@@ -90,5 +93,18 @@ class QuizHandler
             }
             throw new BadRequestHttpException($errorMessage);
         }
+    }
+
+    /**
+     * @param Quiz $quiz
+     *
+     * @ParamConverter("quiz")
+     */
+    public function handleDelete(Quiz $quiz)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($quiz);
+        $em->flush();
+
     }
 }
