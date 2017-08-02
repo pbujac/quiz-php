@@ -62,7 +62,7 @@ class QuizController extends FOSRestController
      *
      * @return View
      */
-    public function postAction(QuizDTO $quizDTO)
+    public function postAction(QuizDTO $quizDTO): View
     {
         $this->get(QuizHandler::class)->handleCreate($quizDTO);
 
@@ -77,10 +77,24 @@ class QuizController extends FOSRestController
      *
      * @return View
      */
-    public function deleteAction(Quiz $quiz)
+    public function deleteAction(Quiz $quiz): View
     {
         $this->get(QuizHandler::class)->handleDelete($quiz);
 
         return View::create(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * @Rest\Get("/{quizId}", name="quizzes.quiz.get")
+     *
+     * @param int $quizId
+     *
+     * @return View
+     */
+    public function getByIdAction(int $quizId): View
+    {
+        $quizDTO = $this->get(QuizHandler::class)->handleGetQuiz($quizId);
+
+        return View::create($quizDTO, Response::HTTP_OK);
     }
 }
