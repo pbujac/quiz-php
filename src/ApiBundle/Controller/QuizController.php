@@ -55,7 +55,6 @@ class QuizController extends FOSRestController
         return View::create($quizzes, Response::HTTP_OK);
     }
 
-
     /**
      * @Rest\Post("", name="quizzes.create")
      *
@@ -82,6 +81,6 @@ class QuizController extends FOSRestController
     {
         $this->get(QuizHandler::class)->handleDelete($quiz);
 
-        return  View::create(null,Response::HTTP_NO_CONTENT);
+        return View::create(null, Response::HTTP_NO_CONTENT);
     }
 }
