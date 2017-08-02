@@ -31,7 +31,6 @@ class CategoryHandler
     ) {
         $this->em = $em;
         $this->categoryTransformer = $categoryTransformer;
-
     }
 
     /**
@@ -40,26 +39,21 @@ class CategoryHandler
      *
      * @return PaginatedRepresentation
      */
-    public function handlePagination(int $page, int $count)
+    public function handlePagination(int $page, int $count): PaginatedRepresentation
     {
         $categories = $this->em->getRepository(Category::class)
             ->getCategoriesByPage($page, $count);
 
         $categoriesDTO = $this->addCategoriesDTO($categories);
 
-        $paginator = new ApiPaginatorManager();
+        $categoriesPagination = $this->getCategoriesPagination($categoriesDTO);
 
-        $collectionRepresentation = $this->getCategoriesCollectionRepresentation(
-            $categoriesDTO
-        );
-
-        return $paginator->paginate(
-            $collectionRepresentation,
+        return ApiPaginatorManager::paginate(
+            $categoriesPagination,
             $page,
             'api.categories.list'
         );
     }
-
 
     /**
      * @param Paginator $categories
@@ -71,9 +65,9 @@ class CategoryHandler
         $categoriesDTO = new ArrayCollection();
 
         foreach ($categories as $category) {
-            $categoriesDTO->add(
-                $this->categoryTransformer->transform($category)
-            );
+            $categoryDTO = $this->categoryTransformer->transform($category);
+
+            $categoriesDTO->add($categoryDTO);
         }
 
         return $categoriesDTO;
@@ -84,9 +78,8 @@ class CategoryHandler
      *
      * @return CollectionRepresentation
      */
-    private function getCategoriesCollectionRepresentation(
-        ArrayCollection $categoriesDTO
-    ) {
+    private function getCategoriesPagination(ArrayCollection $categoriesDTO): CollectionRepresentation
+    {
         $collectionRepresentation = new CollectionRepresentation(
             $categoriesDTO,
             'categories'

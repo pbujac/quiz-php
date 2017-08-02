@@ -3,8 +3,8 @@
 namespace ApiBundle\Transformer;
 
 use ApiBundle\DTO\QuestionDTO;
+use AppBundle\Entity\Answer;
 use AppBundle\Entity\Question;
-use AppBundle\Entity\Quiz;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class QuestionTransformer
@@ -25,32 +25,26 @@ class QuestionTransformer
      *
      * @return QuestionDTO
      */
-    public function transform(Question $question)
+    public function transform(Question $question): QuestionDTO
     {
         $questionDTO = new QuestionDTO();
         $questionDTO->id = $question->getId();
         $questionDTO->text = $question->getText();
-        $this->addAnswers($question, $questionDTO);
+        $this->addAnswers($questionDTO, $question);
 
         return $questionDTO;
     }
 
     /**
      * @param QuestionDTO $questionDTO
-     * @param Quiz $quiz
-     * @param Question|null $question
+     * @param Question $question
      *
      * @return Question
      */
-    public function reverseTransform(
-        QuestionDTO $questionDTO,
-        Quiz $quiz,
-        Question $question = null
-    ) {
-        $question = $question ?: new Question();
+    public function reverseTransform(QuestionDTO $questionDTO, Question $question): Question
+    {
         $question->setText($questionDTO->text);
-        $question->setQuiz($quiz);
-        $this->addAnswersDTO($questionDTO, $question);
+        $this->addAnswers($questionDTO, $question);
 
         return $question;
     }
@@ -59,30 +53,29 @@ class QuestionTransformer
      * @param QuestionDTO $questionDTO
      * @param Question $question
      */
-    public function addAnswersDTO(QuestionDTO $questionDTO, Question $question)
+    public function addAnswers(QuestionDTO $questionDTO, Question $question) : void
     {
         foreach ($questionDTO->answers as $answerDTO) {
-            $question->addAnswer(
-                $this->answerTransformer->reverseTransform(
-                    $answerDTO,
-                    $question
-                )
-            );
+            $answer = new Answer();
+            $answer->setQuestion($question);
+            $answer = $this->answerTransformer->reverseTransform($answerDTO, $answer);
+
+            $question->addAnswer($answer);
         }
     }
 
     /**
-     * @param Question $question
      * @param QuestionDTO $questionDTO
+     * @param Question $question
      */
-    public function addAnswers(Question $question, QuestionDTO $questionDTO)
+    public function addAnswersDTO(QuestionDTO $questionDTO, Question $question): void
     {
         $questionDTO->answers = new ArrayCollection();
 
         foreach ($question->getAnswers() as $answer) {
-            $questionDTO->answers->add(
-                $this->answerTransformer->transform($answer)
-            );
+            $answerDTO = $this->answerTransformer->transform($answer);
+
+            $questionDTO->answers->add($answerDTO);
         }
     }
 }

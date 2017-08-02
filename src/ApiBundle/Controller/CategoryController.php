@@ -28,10 +28,7 @@ class CategoryController extends FOSRestController
         $page = $request->get('page') ?: 1;
         $count = $request->get('count') ?: PaginatorManager::PAGE_LIMIT;
 
-        $categories = $this->get(CategoryHandler::class)->handlePagination(
-            $page,
-            $count
-        );
+        $categories = $this->get(CategoryHandler::class)->handlePagination($page, $count);
 
         return View::create($categories, Response::HTTP_OK);
     }

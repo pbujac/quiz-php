@@ -51,13 +51,13 @@ class UserHandler
     /**
      * @param UserDTO $userDTO
      */
-    public function handleRegistration(UserDTO $userDTO)
+    public function handleRegistration(UserDTO $userDTO): void
     {
         $this->validateUserDTO($userDTO);
 
-        $this->em->persist(
-            $this->userTransformer->reverseTransform($userDTO)
-        );
+        $user = $this->userTransformer->reverseTransform($userDTO);
+
+        $this->em->persist($user);
         $this->em->flush();
     }
 
@@ -66,14 +66,11 @@ class UserHandler
      * @param UserDTO $userDTO
      * @param User $user
      */
-    public function handlePutUser(UserDTO $userDTO, User $user)
+    public function handlePutUser(UserDTO $userDTO, User $user): void
     {
         $this->validateUserDTO($userDTO);
 
-        $this->userTransformer->reverseTransform(
-            $userDTO,
-            $user
-        );
+        $this->userTransformer->reverseTransform($userDTO, $user);
 
         $this->em->flush();
     }

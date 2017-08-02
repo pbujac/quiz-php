@@ -3,7 +3,6 @@
 namespace ApiBundle\Handler;
 
 use ApiBundle\DTO\QuizDTO;
-use ApiBundle\DTO\ResultAnswerDTO;
 use ApiBundle\DTO\ResultDTO;
 use ApiBundle\Manager\ApiPaginatorManager;
 use ApiBundle\Traits\ValidationErrorTrait;
@@ -60,14 +59,13 @@ class QuizHandler
      * @param QuizDTO $quizDTO
      * @param User $user
      */
-    public function postAction(QuizDTO $quizDTO, User $user)
+    public function postAction(QuizDTO $quizDTO, User $user): void
     {
         $this->validateQuizDTO($quizDTO);
 
-        $quiz = $this->transformQuiz->reverseTransform(
-            $quizDTO,
-            $user
-        );
+        $quiz = new Quiz();
+        $quiz->setAuthor($user);
+        $quiz = $this->transformQuiz->reverseTransform($quizDTO, $quiz);
 
         $this->em->persist($quiz);
         $this->em->flush();
@@ -80,25 +78,17 @@ class QuizHandler
      *
      * @return PaginatedRepresentation
      */
-    public function handleGetQuizzesByUser(
-        User $user,
-        int $page,
-        int $count
-    ) {
-        $quizzes = $this->em
-            ->getRepository(Quiz::class)
+    public function handleGetQuizzesByUser(User $user, int $page, int $count): PaginatedRepresentation
+    {
+        $quizzes = $this->em->getRepository(Quiz::class)
             ->getQuizzesByAuthorAndPage($user, $page, $count);
 
         $quizzesDTO = $this->addQuizzesToDTO($quizzes);
 
-        $paginator = new ApiPaginatorManager();
+        $quizzesPagination = $this->getQuizzesPagination($quizzesDTO);
 
-        $collectionRepresentation = $this->getQuizCollectionRepresentation(
-            $quizzesDTO
-        );
-
-        return $paginator->paginate(
-            $collectionRepresentation,
+        return ApiPaginatorManager::paginate(
+            $quizzesPagination,
             $page,
             'api.user.quizzes'
         );
@@ -111,25 +101,17 @@ class QuizHandler
      *
      * @return PaginatedRepresentation
      */
-    public function handleGetQuizzesByCategory(
-        Category $category,
-        int $page,
-        int $count
-    ) {
-        $quizzes = $this->em
-            ->getRepository(Quiz::class)
+    public function handleGetQuizzesByCategory(Category $category, int $page, int $count)
+    {
+        $quizzes = $this->em->getRepository(Quiz::class)
             ->getQuizzesByCategoryAndPage($category, $page, $count);
 
         $quizzesDTO = $this->addQuizzesToDTO($quizzes);
 
-        $paginator = new ApiPaginatorManager();
+        $quizzesPagination = $this->getQuizzesPagination($quizzesDTO);
 
-        $collectionRepresentation = $this->getQuizCollectionRepresentation(
-            $quizzesDTO
-        );
-
-        return $paginator->paginate(
-            $collectionRepresentation,
+        return ApiPaginatorManager::paginate(
+            $quizzesPagination,
             $page,
             'api.category.quizzes',
             ['category_id' => $category->getId()]
@@ -141,22 +123,16 @@ class QuizHandler
      * @param Quiz $quiz
      * @param User $user
      */
-    public function handleSolveQuiz(
-        ResultDTO $resultDTO,
-        Quiz $quiz,
-        User $user
-    ) {
+    public function handleSolveQuiz(ResultDTO $resultDTO, Quiz $quiz, User $user): void
+    {
         $result = new Result();
-        $result->setUser($user);
         $result->setQuiz($quiz);
+        $result->setUser($user);
 
-        $result = $this->resultTransformer->reverseTransform(
-            $resultDTO,
-            $result
-        );
-        $result->setScore(
-            $this->calculateScore($result->getResultAnswers())
-        );
+        $result = $this->resultTransformer->reverseTransform($resultDTO, $result);
+
+        $score = $this->calculateScore($result->getResultAnswers());
+        $result->setScore($score);
 
         $this->em->persist($result);
         $this->em->flush();
@@ -172,12 +148,41 @@ class QuizHandler
         $quizzesDTO = new ArrayCollection();
 
         foreach ($quizzes as $quiz) {
-            $quizzesDTO->add(
-                $this->transformQuiz->transform($quiz)
-            );
+            $quizDTO = $this->transformQuiz->transform($quiz);
+
+            $quizzesDTO->add($quizDTO);
         }
 
         return $quizzesDTO;
+    }
+
+    /**
+     * @param ArrayCollection|ResultAnswer[] $resultAnswers
+     *
+     * @return int
+     */
+    private function calculateScore(ArrayCollection $resultAnswers): int
+    {
+        $correctAnswers = 0;
+
+        foreach ($resultAnswers as $resultAnswer) {
+
+            if ($resultAnswer->getAnswer()->isCorrect()) {
+                ++$correctAnswers;
+            }
+        }
+
+        return ceil(($correctAnswers / $resultAnswers->count()) * 100);
+    }
+
+    /**
+     * @param ArrayCollection $quizzesDTO
+     *
+     * @return CollectionRepresentation
+     */
+    private function getQuizzesPagination(ArrayCollection $quizzesDTO): CollectionRepresentation
+    {
+        return new CollectionRepresentation($quizzesDTO, 'quizzes');
     }
 
     /**
@@ -194,39 +199,4 @@ class QuizHandler
         }
     }
 
-    /**
-     * @param ArrayCollection $quizzesDTO
-     *
-     * @return CollectionRepresentation
-     */
-    private function getQuizCollectionRepresentation(
-        ArrayCollection $quizzesDTO
-    ): CollectionRepresentation {
-        $collectionRepresentation = new CollectionRepresentation(
-            $quizzesDTO,
-            'quizzes'
-        );
-
-        return $collectionRepresentation;
-    }
-
-    /**
-     * @param ArrayCollection|ResultAnswer[] $resultAnswers
-     *
-     * @return int
-     */
-    private function calculateScore(ArrayCollection $resultAnswers)
-    {
-        $correctAnswers = 0;
-
-        foreach ($resultAnswers as $resultAnswer) {
-
-            if ($resultAnswer->getAnswer()->isCorrect()) {
-                ++$correctAnswers;
-            }
-        }
-        $score = ceil($correctAnswers / $resultAnswers->count());
-
-        return $score;
-    }
 }

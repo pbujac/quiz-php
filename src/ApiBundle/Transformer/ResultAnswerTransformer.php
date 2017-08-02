@@ -2,16 +2,9 @@
 
 namespace ApiBundle\Transformer;
 
-use ApiBundle\DTO\QuizDTO;
 use ApiBundle\DTO\ResultAnswerDTO;
-use ApiBundle\DTO\ResultDTO;
 use AppBundle\Entity\Answer;
-use AppBundle\Entity\Category;
-use AppBundle\Entity\Quiz;
-use AppBundle\Entity\Result;
 use AppBundle\Entity\ResultAnswer;
-use AppBundle\Entity\User;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ResultAnswerTransformer
@@ -24,7 +17,6 @@ class ResultAnswerTransformer
 
     /** @var AnswerTransformer */
     private $answerTransformer;
-
 
     /**
      * @param EntityManagerInterface $em
@@ -39,25 +31,6 @@ class ResultAnswerTransformer
         $this->em = $em;
         $this->questionTransformer = $questionTransformer;
         $this->answerTransformer = $answerTransformer;
-    }
-
-    /**
-     * @param ResultAnswer $resultAnswer
-     *
-     * @return ResultAnswerDTO
-     */
-    public function transform(ResultAnswer $resultAnswer)
-    {
-        $resultAnswerDTO = new ResultAnswerDTO();
-
-        $resultAnswerDTO->question = $this->questionTransformer->transform(
-            $resultAnswer->getQuestion()
-        );
-        $resultAnswerDTO->answer = $this->answerTransformer->transform(
-            $resultAnswer->getAnswer()
-        );
-
-        return $resultAnswerDTO;
     }
 
     /**
@@ -77,7 +50,6 @@ class ResultAnswerTransformer
 
         $resultAnswer->setAnswer($answer);
         $resultAnswer->setQuestion($answer->getQuestion());
-
 
         return $resultAnswer;
     }

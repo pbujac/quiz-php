@@ -15,7 +15,7 @@ class ApiPaginatorManager
      *
      * @return PaginatedRepresentation
      */
-    public function paginate(
+    public static function paginate(
         CollectionRepresentation $collectionRepresentation,
         int $page,
         string $route,

@@ -25,13 +25,14 @@ class UserTransformer
      *
      * @return User
      */
-    public function reverseTransform(UserDTO $userDTO, User $user = null)
+    public function reverseTransform(UserDTO $userDTO, User $user = null): User
     {
         $user = $user ?: new User();
         $user->setUsername($userDTO->username);
-        $user->setPassword(
-            $this->encoder->encodePassword($user, $userDTO->password)
-        );
+
+        $encodedPassword = $this->encoder->encodePassword($user, $userDTO->password);
+        $user->setPassword($encodedPassword);
+
         $user->setFirstName($userDTO->firstName);
         $user->setLastName($userDTO->lastName);
         $user->setActive(true);
@@ -45,7 +46,7 @@ class UserTransformer
      *
      * @return UserDTO
      */
-    public function transform(User $user)
+    public function transform(User $user): UserDTO
     {
         $userDTO = new UserDTO();
 
@@ -59,4 +60,5 @@ class UserTransformer
 
         return $userDTO;
     }
+
 }

@@ -4,8 +4,8 @@ namespace ApiBundle\Transformer;
 
 use ApiBundle\DTO\QuizDTO;
 use AppBundle\Entity\Category;
+use AppBundle\Entity\Question;
 use AppBundle\Entity\Quiz;
-use AppBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -55,15 +55,9 @@ class QuizTransformer
         $quizDTO->description = $quiz->getDescription();
         $quizDTO->createdAt = $quiz->getCreatedAt()->getTimestamp();
         $quizDTO->description = $quiz->getDescription();
-        $quizDTO->category = $this->categoryTransformer->transform(
-            $quiz->getCategory()
-        );
-        $quizDTO->author = $this->userTransformer->transform(
-            $quiz->getAuthor()
-        );
-        $quizDTO->author = $this->userTransformer->transform(
-            $quiz->getAuthor()
-        );
+        $quizDTO->category = $this->categoryTransformer->transform($quiz->getCategory());
+        $quizDTO->author = $this->userTransformer->transform($quiz->getAuthor());
+        $quizDTO->author = $this->userTransformer->transform($quiz->getAuthor());
         $this->addQuestionsDTO($quiz, $quizDTO);
 
         return $quizDTO;
@@ -71,25 +65,15 @@ class QuizTransformer
 
     /**
      * @param QuizDTO $quizDTO
-     * @param Quiz|null $quiz
-     * @param User|null $user
+     * @param Quiz $quiz
      *
      * @return Quiz
      */
-    public function reverseTransform(
-        QuizDTO $quizDTO,
-        Quiz $quiz = null,
-        User $user = null
-    ) {
-        $quiz = $quiz ?: new Quiz();
+    public function reverseTransform(QuizDTO $quizDTO, Quiz $quiz): Quiz
+    {
         $quiz->setTitle($quizDTO->title);
         $quiz->setDescription($quizDTO->description);
-        $quiz->setAuthor($user);
-        $this->setQuizCategory(
-            $quiz,
-            $quizDTO->category->id
-        );
-
+        $this->setQuizCategory($quiz, $quizDTO->category->id);
         $this->addQuestions($quizDTO, $quiz);
 
         return $quiz;
@@ -99,12 +83,10 @@ class QuizTransformer
      * @param Quiz $quiz
      * @param int $categoryId
      */
-    private function setQuizCategory(Quiz $quiz, int $categoryId)
+    private function setQuizCategory(Quiz $quiz, int $categoryId): void
     {
         $category = $this->em->getRepository(Category::class)
-            ->findOneBy([
-                "id" => $categoryId
-            ]);
+            ->findOneBy(["id" => $categoryId]);
 
         $quiz->setCategory($category);
     }
@@ -113,15 +95,14 @@ class QuizTransformer
      * @param QuizDTO $quizDTO
      * @param Quiz $quiz
      */
-    private function addQuestions(QuizDTO $quizDTO, Quiz $quiz)
+    private function addQuestions(QuizDTO $quizDTO, Quiz $quiz): void
     {
         foreach ($quizDTO->questions as $questionDTO) {
-            $quiz->addQuestion(
-                $this->transformQuestion->reverseTransform(
-                    $questionDTO,
-                    $quiz
-                )
-            );
+            $question = new Question();
+            $question->setQuiz($quiz);
+            $question = $this->transformQuestion->reverseTransform($questionDTO, $question);
+
+            $quiz->addQuestion($question);
         }
     }
 
@@ -129,14 +110,15 @@ class QuizTransformer
      * @param Quiz $quiz
      * @param $quizDTO
      */
-    public function addQuestionsDTO(Quiz $quiz, $quizDTO)
+    public function addQuestionsDTO(Quiz $quiz, $quizDTO): void
     {
         $quizDTO->questions = new ArrayCollection();
 
         foreach ($quiz->getQuestions() as $question) {
-            $quizDTO->questions->add(
-                $this->transformQuestion->transform($question)
-            );
+            $questionDTO = $this->transformQuestion->transform($question);
+
+            $quizDTO->questions->add($questionDTO);
         }
     }
+
 }

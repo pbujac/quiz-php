@@ -28,10 +28,8 @@ class QuizController extends FOSRestController
      */
     public function createAction(QuizDTO $quizDTO)
     {
-        $this->get(QuizHandler::class)->postAction(
-            $quizDTO,
-            $this->getUser()
-        );
+        $this->get(QuizHandler::class)
+            ->postAction($quizDTO, $this->getUser());
 
         return View::create($quizDTO, Response::HTTP_CREATED);
     }
@@ -71,10 +69,8 @@ class QuizController extends FOSRestController
      * )
      * @return View
      */
-    public function getQuizzesByCategoryAction(
-        Request $request,
-        Category $category
-    ) {
+    public function getQuizzesByCategoryAction(Request $request, Category $category): View
+    {
         $page = $request->get('page') ?: 1;
         $count = $request->get('count') ?: PaginatorManager::PAGE_LIMIT;
 
@@ -98,15 +94,12 @@ class QuizController extends FOSRestController
      * )
      * @return View
      */
-    public function postSolveQuizAction(ResultDTO $resultDTO, Quiz $quiz)
+    public function postSolveQuizAction(ResultDTO $resultDTO, Quiz $quiz): View
     {
         $user = $this->getUser();
 
-        $this->get(QuizHandler::class)->handleSolveQuiz(
-            $resultDTO,
-            $quiz,
-            $user
-        );
+        $this->get(QuizHandler::class)
+            ->handleSolveQuiz($resultDTO, $quiz, $user);
 
         return View::create(null, Response::HTTP_CREATED);
     }

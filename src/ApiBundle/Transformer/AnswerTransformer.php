@@ -13,9 +13,8 @@ class AnswerTransformer
      *
      * @return AnswerDTO
      */
-    public function transform(
-        Answer $answer
-    ) {
+    public function transform(Answer $answer): AnswerDTO
+    {
         $answerDTO = new AnswerDTO();
         $answerDTO->id = $answer->getId();
         $answerDTO->text = $answer->getText();
@@ -26,20 +25,14 @@ class AnswerTransformer
 
     /**
      * @param AnswerDTO $answerDTO
-     * @param Question $question
-     * @param Answer|null $answer
+     * @param Answer $answer
      *
      * @return Answer
      */
-    public function reverseTransform(
-        AnswerDTO $answerDTO,
-        Question $question,
-        Answer $answer = null
-    ) {
-        $answer = $answer ?: new Answer();
+    public function reverseTransform(AnswerDTO $answerDTO, Answer $answer) : Answer
+    {
         $answer->setText($answerDTO->text);
         $answer->setCorrect($answerDTO->correct);
-        $answer->setQuestion($question);
 
         return $answer;
     }
