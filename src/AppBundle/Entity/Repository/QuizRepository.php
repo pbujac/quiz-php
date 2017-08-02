@@ -7,8 +7,6 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use FOS\RestBundle\Request\ParamFetcher;
 
-//use FOS\RestBundle\Controller\Annotations\FileParam;
-
 class QuizRepository extends EntityRepository
 {
     /**
