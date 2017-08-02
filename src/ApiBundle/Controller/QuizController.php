@@ -31,27 +31,16 @@ class QuizController extends FOSRestController
     }
 
     /**
-     * @Rest\Delete("/{quiz_id}",name="quiz.delete")
+     * @Rest\Delete("/{id}",name="quiz.delete")
      *
      * @param Quiz $quiz
-     * @ParamConverter("quiz", options={"id" = "quiz_id"})
+     * @ParamConverter("quiz")
      *
      * @return View
      */
-    public function deleteQuizById(Quiz $quiz)
+    public function deleteAction(Quiz $quiz)
     {
-        if (!$quiz) {
-            throw $this->createNotFoundException();
-        }
-
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($quiz);
-        $em->flush();
-
-        $this->addFlash(
-            'notice',
-            'Quiz has been successfully removed!'
-        );
+        $this->get(QuizHandler::class)->handleDelete($quiz);
 
         return  View::create(null,Response::HTTP_NO_CONTENT);
     }
