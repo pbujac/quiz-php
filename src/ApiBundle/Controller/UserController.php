@@ -19,7 +19,7 @@ class UserController extends FOSRestController
     /**
      * @Rest\Get(
      *     "/{user_id}",
-     *     name="api.users.get"
+     *     name="api.users.user.get"
      * )
      *
      * @param User $user
@@ -54,7 +54,7 @@ class UserController extends FOSRestController
     /**
      * @Rest\Put(
      *     "/{user_id}",
-     *     name="api.users.put"
+     *     name="api.users.user.put"
      * )
      *
      * @param UserDTO $userDTO

@@ -18,7 +18,7 @@ class QuizController extends FOSRestController
     /**
      * @Rest\Post(
      *     "/quizzes",
-     *     name="api.quizzes.post"
+     *     name="api.quizzes.quiz.post"
      * )
      * @param QuizDTO $quizDTO
      *
