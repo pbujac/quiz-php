@@ -32,7 +32,7 @@ class QuizTransformer
      *
      * @return QuizDTO
      */
-    public function transform(Quiz $quiz)
+    public function transform(Quiz $quiz): QuizDTO
     {
         $quizDTO = new QuizDTO();
         $quizDTO->title = $quiz->getTitle();
@@ -50,13 +50,12 @@ class QuizTransformer
 
     /**
      * @param QuizDTO $quizDTO
-     * @param Quiz|null $quiz
      *
      * @return Quiz
      */
-    public function reverseTransform(QuizDTO $quizDTO, Quiz $quiz = null)
+    public function reverseTransform(QuizDTO $quizDTO): Quiz
     {
-        $quiz = $quiz ?: new Quiz();
+        $quiz = new Quiz();
         $quiz->setTitle($quizDTO->title);
         $quiz->setDescription($quizDTO->description);
         $quiz->setCreatedAt();

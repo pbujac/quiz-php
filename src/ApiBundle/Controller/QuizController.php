@@ -4,10 +4,10 @@ namespace ApiBundle\Controller;
 
 use ApiBundle\DTO\QuizDTO;
 use ApiBundle\Handler\QuizHandler;
-use AppBundle\Entity\Quiz;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
+use AppBundle\Entity\Quiz;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,7 +23,7 @@ class QuizController extends FOSRestController
      *
      * @return View
      */
-    public function postAction(QuizDTO $quizDTO)
+    public function postAction(QuizDTO $quizDTO): View
     {
         $this->get(QuizHandler::class)->handleCreate($quizDTO);
 
@@ -31,35 +31,30 @@ class QuizController extends FOSRestController
     }
 
     /**
-     * @Rest\Get("/{quizId}", name="quiz.id")
+     * @Rest\Delete("/{id}",name="quiz.delete")
+     *
+     * @param Quiz $quiz
+     * @ParamConverter("quiz")
+     *
+     * @return View
+     */
+    public function deleteAction(Quiz $quiz): View
+    {
+        $this->get(QuizHandler::class)->handleDelete($quiz);
+
+        return  View::create(null,Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * @Rest\Get("/{quizId}", name="quizzes.quiz.get")
      *
      * @param int $quizId
      *
      * @return View
      */
-    public function getByIdAction(int $quizId)
+    public function getByIdAction(int $quizId): View
     {
         $quizDTO = $this->get(QuizHandler::class)->handleGetQuiz($quizId);
-
-        return View::create($quizDTO, Response::HTTP_OK);
-    }
-
-    /**
-     * @Rest\Patch("/{quiz_id}", name="quizzes.id")
-     *
-     * @param QuizDTO $quizDTO
-     * @param Quiz $quiz
-     *
-     * @ParamConverter(
-     * "quiz",
-     * options={"id" = "quiz_id"}
-     * )
-     *
-     * @return View
-     */
-    public function patchAction(QuizDTO $quizDTO, Quiz $quiz)
-    {
-        $quizDTO = $this->get(QuizHandler::class)->handlePatch($quizDTO, $quiz);
 
         return View::create($quizDTO, Response::HTTP_OK);
     }

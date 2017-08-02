@@ -13,7 +13,7 @@ class AnswerTransformer
      *
      * @return AnswerDTO
      */
-    public function transform(Answer $answer)
+    public function transform(Answer $answer): AnswerDTO
     {
         $answerDTO = new AnswerDTO();
         $answerDTO->text = $answer->getText();
@@ -28,7 +28,7 @@ class AnswerTransformer
      *
      * @return Answer
      */
-    public function reverseTransform(AnswerDTO $answerDTO, Question $question)
+    public function reverseTransform(AnswerDTO $answerDTO, Question $question): Answer
     {
         $answer = new Answer();
         $answer->setText($answerDTO->text);

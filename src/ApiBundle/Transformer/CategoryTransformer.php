@@ -7,10 +7,16 @@ use ApiBundle\DTO\CategoryDTO;
 
 class CategoryTransformer
 {
-    public function transform(Category $category)
+    /**
+     * @param Category $category
+     *
+     * @return CategoryDTO
+     */
+    public function transform(Category $category): CategoryDTO
     {
         $categoryDTO = new CategoryDTO();
         $categoryDTO->title = $category->getTitle();
+
         return $categoryDTO;
     }
 
