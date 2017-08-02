@@ -7,6 +7,8 @@ use ApiBundle\Handler\QuizHandler;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
+use AppBundle\Entity\Quiz;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -26,5 +28,20 @@ class QuizController extends FOSRestController
         $this->get(QuizHandler::class)->handleCreate($quizDTO);
 
         return View::create($quizDTO, Response::HTTP_CREATED);
+    }
+
+    /**
+     * @Rest\Delete("/{id}",name="quiz.delete")
+     *
+     * @param Quiz $quiz
+     * @ParamConverter("quiz")
+     *
+     * @return View
+     */
+    public function deleteAction(Quiz $quiz)
+    {
+        $this->get(QuizHandler::class)->handleDelete($quiz);
+
+        return  View::create(null,Response::HTTP_NO_CONTENT);
     }
 }
