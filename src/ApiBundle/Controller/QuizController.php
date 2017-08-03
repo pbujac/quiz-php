@@ -42,7 +42,7 @@ class QuizController extends FOSRestController
     {
         $this->get(QuizHandler::class)->handleDelete($quiz);
 
-        return  View::create(null,Response::HTTP_NO_CONTENT);
+        return View::create(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -58,4 +58,29 @@ class QuizController extends FOSRestController
 
         return View::create($quizDTO, Response::HTTP_OK);
     }
+
+    /**
+     * @Rest\Patch("/{id}", name="quizzes.quiz.patch")
+     *
+     * @param Quiz $quiz
+     *
+     * @ParamConverter(
+     *     "quizDTO",
+     *     converter="fos_rest.request_body",
+     *     options={
+     *     "transformer" = "ApiBundle\Transformer\QuizTransformer"
+     * }
+     * )
+     *
+     * @param QuizDTO $quizDTO
+     *
+     * @return View
+     */
+    public function patchAction(QuizDTO $quizDTO, Quiz $quiz): View
+    {
+        $quizDTO = $this->get(QuizHandler::class)->handlePatch($quizDTO, $quiz);
+
+        return View::create($quizDTO, Response::HTTP_OK);
+    }
+
 }

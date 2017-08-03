@@ -9,7 +9,7 @@ use AppBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 
-class QuizTransformer
+class QuizTransformer implements TransformerInterface
 {
     /** @var EntityManagerInterface $em */
     private $em;
@@ -32,7 +32,7 @@ class QuizTransformer
      *
      * @return QuizDTO
      */
-    public function transform(Quiz $quiz): QuizDTO
+    public function transform($quiz): QuizDTO
     {
         $quizDTO = new QuizDTO();
         $quizDTO->title = $quiz->getTitle();
@@ -51,30 +51,37 @@ class QuizTransformer
     /**
      * @param QuizDTO $quizDTO
      *
+     * @param Quiz|null $quiz
      * @return Quiz
      */
-    public function reverseTransform(QuizDTO $quizDTO): Quiz
+    public function reverseTransform($quizDTO, $quiz = null): Quiz
     {
-        $quiz = new Quiz();
-        $quiz->setTitle($quizDTO->title);
-        $quiz->setDescription($quizDTO->description);
+        $quiz = $quiz ?: new Quiz();
+        !$quizDTO->title ?: $quiz->setTitle($quizDTO->title);
+        !$quizDTO->description ?: $quiz->setDescription($quizDTO->description);
         $quiz->setCreatedAt();
 
-        $quiz->setCategory(
+        !$quizDTO->categoryId ?: $quiz->setCategory(
             $this->em->getRepository(Category::class)->findOneBy([
                 "id" => $quizDTO->categoryId
             ]));
 
-        $quiz->setAuthor(
+        !$quizDTO->authorId ?: $quiz->setAuthor(
             $this->em->getRepository(User::class)->findOneBy([
                 "id" => $quizDTO->authorId
             ]));
 
         foreach ($quizDTO->questions as $questionDTO) {
-            $quiz->addQuestion(
-                $this->transformQuestion->reverseTransform($questionDTO, $quiz));
+            !$quizDTO->questions ?: $quiz->addQuestion(
+                $this->transformQuestion->reverseTransform($questionDTO));
         }
 
         return $quiz;
     }
+
+    public function getEntityClass(): string
+    {
+        return Quiz::class;
+    }
+
 }

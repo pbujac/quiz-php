@@ -6,14 +6,14 @@ use ApiBundle\DTO\AnswerDTO;
 use AppBundle\Entity\Answer;
 use AppBundle\Entity\Question;
 
-class AnswerTransformer
+class AnswerTransformer implements TransformerInterface
 {
     /**
      * @param Answer $answer
      *
      * @return AnswerDTO
      */
-    public function transform(Answer $answer): AnswerDTO
+    public function transform($answer): AnswerDTO
     {
         $answerDTO = new AnswerDTO();
         $answerDTO->text = $answer->getText();
@@ -24,17 +24,22 @@ class AnswerTransformer
 
     /**
      * @param AnswerDTO $answerDTO
-     * @param Question $question
+     * @param null $answer
      *
      * @return Answer
      */
-    public function reverseTransform(AnswerDTO $answerDTO, Question $question): Answer
+    public function reverseTransform($answerDTO, $answer = null): Answer
     {
         $answer = new Answer();
         $answer->setText($answerDTO->text);
         $answer->setCorrect($answerDTO->correct);
-        $answer->setQuestion($question);
 
         return $answer;
     }
+
+    public function getEntityClass(): string
+    {
+        return Answer::class;
+    }
+
 }

@@ -16,3 +16,7 @@ services:
     ApiBundle\EventListener\ExceptionListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
+
+    common.param_converter:
+        class:        ApiBundle\Decorator\ParamConverterDecorator
+        decorates: fos_rest.converter.request_body

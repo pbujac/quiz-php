@@ -7,7 +7,7 @@ use AppBundle\Entity\Question;
 use AppBundle\Entity\Quiz;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class QuestionTransformer
+class QuestionTransformer implements TransformerInterface
 {
     /** @var AnswerTransformer */
     private $transformAnswer;
@@ -25,7 +25,7 @@ class QuestionTransformer
      *
      * @return QuestionDTO
      */
-    public function transform(Question $question): QuestionDTO
+    public function transform($question): QuestionDTO
     {
         $questionDTO = new QuestionDTO();
         $questionDTO->text = $question->getText();
@@ -40,21 +40,27 @@ class QuestionTransformer
 
     /**
      * @param QuestionDTO $questionDTO
-     * @param Quiz $quiz
+     * @param null $question
      *
      * @return Question
      */
-    public function reverseTransform(QuestionDTO $questionDTO, Quiz $quiz): Question
+    public function reverseTransform($questionDTO, $question = null): Question
     {
+        $question = $question ?: new Question();
         $question = new Question();
         $question->setText($questionDTO->text);
-        $question->setQuiz($quiz);
 
         foreach ($questionDTO->answers as $answerDTO) {
             $question->addAnswer(
-                $this->transformAnswer->reverseTransform($answerDTO, $question));
+                $this->transformAnswer->reverseTransform($answerDTO));
         }
 
         return $question;
     }
+
+    public function getEntityClass(): string
+    {
+        return Question::class;
+    }
+
 }

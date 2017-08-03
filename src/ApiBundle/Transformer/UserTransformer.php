@@ -24,4 +24,5 @@ class UserTransformer
 
         return $user;
     }
+
 }
