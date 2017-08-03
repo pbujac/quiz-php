@@ -9,6 +9,13 @@ use Hateoas\Configuration\Annotation as Hateoas;
 class ResultAnswerDTO
 {
     /**
+     * @Type("int")
+     *
+     * @var int
+     */
+    public $id;
+
+    /**
      * @Type("ApiBundle\DTO\QuestionDTO")
      *
      * @Assert\NotBlank(groups={"quiz_solve"})

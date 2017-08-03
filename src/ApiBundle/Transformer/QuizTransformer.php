@@ -9,7 +9,7 @@ use AppBundle\Entity\Quiz;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 
-class QuizTransformer
+class QuizTransformer implements TransformerInterface
 {
     /** @var EntityManagerInterface $em */
     private $em;
@@ -46,7 +46,7 @@ class QuizTransformer
      *
      * @return QuizDTO
      */
-    public function transform(Quiz $quiz)
+    public function transform($quiz): QuizDTO
     {
         $quizDTO = new QuizDTO();
 
@@ -65,18 +65,27 @@ class QuizTransformer
 
     /**
      * @param QuizDTO $quizDTO
-     * @param Quiz $quiz
+     * @param Quiz|null $quiz
      *
      * @return Quiz
      */
-    public function reverseTransform(QuizDTO $quizDTO, Quiz $quiz): Quiz
+    public function reverseTransform($quizDTO, $quiz = null): Quiz
     {
+        $quiz = $quiz ?: new Quiz();
         $quiz->setTitle($quizDTO->title);
         $quiz->setDescription($quizDTO->description);
         $this->setQuizCategory($quiz, $quizDTO->category->id);
         $this->addQuestions($quizDTO, $quiz);
 
         return $quiz;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEntityClass(): string
+    {
+        return Quiz::class;
     }
 
     /**

@@ -7,7 +7,7 @@ use AppBundle\Entity\Answer;
 use AppBundle\Entity\Question;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class QuestionTransformer
+class QuestionTransformer implements TransformerInterface
 {
     /** @var AnswerTransformer */
     private $answerTransformer;
@@ -25,7 +25,7 @@ class QuestionTransformer
      *
      * @return QuestionDTO
      */
-    public function transform(Question $question): QuestionDTO
+    public function transform($question): QuestionDTO
     {
         $questionDTO = new QuestionDTO();
         $questionDTO->id = $question->getId();
@@ -37,12 +37,13 @@ class QuestionTransformer
 
     /**
      * @param QuestionDTO $questionDTO
-     * @param Question $question
+     * @param Question|null $question
      *
      * @return Question
      */
-    public function reverseTransform(QuestionDTO $questionDTO, Question $question): Question
+    public function reverseTransform($questionDTO, $question = null): Question
     {
+        $question = $question ?: new Question();
         $question->setText($questionDTO->text);
         $this->addAnswers($questionDTO, $question);
 
@@ -50,10 +51,18 @@ class QuestionTransformer
     }
 
     /**
+     * @return string
+     */
+    public function getEntityClass(): string
+    {
+        return Question::class;
+    }
+
+    /**
      * @param QuestionDTO $questionDTO
      * @param Question $question
      */
-    public function addAnswers(QuestionDTO $questionDTO, Question $question) : void
+    public function addAnswers(QuestionDTO $questionDTO, Question $question): void
     {
         foreach ($questionDTO->answers as $answerDTO) {
             $answer = new Answer();
@@ -78,4 +87,5 @@ class QuestionTransformer
             $questionDTO->answers->add($answerDTO);
         }
     }
+
 }

@@ -6,7 +6,7 @@ use ApiBundle\DTO\UserDTO;
 use AppBundle\Entity\User;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class UserTransformer
+class UserTransformer implements TransformerInterface
 {
     /** @var  UserPasswordEncoderInterface $encoder */
     private $encoder;
@@ -25,7 +25,7 @@ class UserTransformer
      *
      * @return User
      */
-    public function reverseTransform(UserDTO $userDTO, User $user = null): User
+    public function reverseTransform($userDTO, $user = null): User
     {
         $user = $user ?: new User();
         $user->setUsername($userDTO->username);
@@ -46,7 +46,7 @@ class UserTransformer
      *
      * @return UserDTO
      */
-    public function transform(User $user): UserDTO
+    public function transform($user): UserDTO
     {
         $userDTO = new UserDTO();
 
@@ -61,4 +61,11 @@ class UserTransformer
         return $userDTO;
     }
 
+    /**
+     * @return string
+     */
+    public function getEntityClass(): string
+    {
+        return User::class;
+    }
 }
