@@ -28,15 +28,16 @@ class UserTransformer implements TransformerInterface
     public function reverseTransform($userDTO, $user = null): User
     {
         $user = $user ?: new User();
-        $user->setUsername($userDTO->username);
+        !$userDTO->username ?: $user->setUsername($userDTO->username);
 
         $encodedPassword = $this->encoder->encodePassword($user, $userDTO->password);
-        $user->setPassword($encodedPassword);
+        !$userDTO->password ?: $user->setPassword($encodedPassword);
 
-        $user->setFirstName($userDTO->firstName);
-        $user->setLastName($userDTO->lastName);
+        !$userDTO->firstName ?: $user->setFirstName($userDTO->firstName);
+        !$userDTO->lastName ?: $user->setLastName($userDTO->lastName);
+        !$userDTO->roles ?: $user->addRole(User::ROLE_USER);
+
         $user->setActive(true);
-        $user->addRole(User::ROLE_USER);
 
         return $user;
     }

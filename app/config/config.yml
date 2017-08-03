@@ -82,6 +82,9 @@ assetic:
     filters:
         cssrewrite: ~
 
+sensio_framework_extra:
+    request: { converters: true }
+
 fos_rest:
     view:
         view_response_listener: 'force'

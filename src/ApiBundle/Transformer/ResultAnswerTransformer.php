@@ -18,25 +18,19 @@ class ResultAnswerTransformer implements TransformerInterface
     /** @var AnswerTransformer */
     private $answerTransformer;
 
-    /** @var ResultTransformer */
-    private $resultTransformer;
-
     /**
      * @param EntityManagerInterface $em
      * @param QuestionTransformer $questionTransformer
      * @param AnswerTransformer $answerTransformer
-     * @param ResultTransformer $resultTransformer
      */
     public function __construct(
         EntityManagerInterface $em,
         QuestionTransformer $questionTransformer,
-        AnswerTransformer $answerTransformer,
-        ResultTransformer $resultTransformer
+        AnswerTransformer $answerTransformer
     ) {
         $this->em = $em;
         $this->questionTransformer = $questionTransformer;
         $this->answerTransformer = $answerTransformer;
-        $this->resultTransformer = $resultTransformer;
     }
 
 
@@ -68,7 +62,6 @@ class ResultAnswerTransformer implements TransformerInterface
     {
         $resultAnswerDTO = new ResultAnswerDTO();
         $resultAnswerDTO->id = $resultAnswer->getId();
-        $resultAnswerDTO->result = $this->resultTransformer->transform($resultAnswer->getResult());
         $resultAnswerDTO->question = $this->questionTransformer->transform($resultAnswer->getQuestion());
         $resultAnswerDTO->answer = $this->answerTransformer->transform($resultAnswer->getAnswer());
 

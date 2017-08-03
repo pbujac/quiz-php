@@ -68,8 +68,6 @@ class UserHandler
      */
     public function handlePutUser(UserDTO $userDTO, User $user): void
     {
-        $this->validateUserDTO($userDTO);
-
         $this->userTransformer->reverseTransform($userDTO, $user);
 
         $this->em->flush();

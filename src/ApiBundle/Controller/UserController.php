@@ -56,7 +56,6 @@ class UserController extends FOSRestController
      *     "/{user_id}",
      *     name="api.users.user.put"
      * )
-     *
      * @param UserDTO $userDTO
      * @param User $user
      *
@@ -64,6 +63,7 @@ class UserController extends FOSRestController
      *     "user",
      *     options={"id" = "user_id"}
      * )
+     *
      * @return View
      */
     public function putAction(UserDTO $userDTO, User $user)
