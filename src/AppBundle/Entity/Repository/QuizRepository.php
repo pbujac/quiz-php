@@ -34,12 +34,12 @@ class QuizRepository extends EntityRepository
     }
 
     /**
-     * @param ParamFetcher $paramFetcher
+     * @param array $filter
      * @param int $page
      *
      * @return Paginator
      */
-    public function getQuizByQueryAndPage(ParamFetcher $paramFetcher, int $page = 1)
+    public function getQuizByQueryAndPage(array $filter, int $page = 1)
     {
         $paginator = new PaginatorManager();
 
@@ -48,30 +48,30 @@ class QuizRepository extends EntityRepository
             ->join('q.category', 'c')
             ->join('q.author', 'a');
 
-        $title = $paramFetcher->get('title');
-        $description = $paramFetcher->get('description');
-        $category = $paramFetcher->get('category');
-        $author = $paramFetcher->get('author');
+//        $title = $filter['title'];
+//        $description = $filter['description'];
+//        $category = $filter['category'];
+//        $author = $filter['author'];
 
-        if ($title) {
+        if (isset($filter['title'])) {
             $qb->orWhere('q.title LIKE :title')
-                ->setParameter('title', '%' . $paramFetcher->get('title') . '%');
+                ->setParameter('title', '%' . $filter['title'] . '%');
         }
 
-        if ($description) {
+        if (isset($filter['description'])) {
             $qb->orWhere('q.description  LIKE :description')
-                ->setParameter('description', '%' . $paramFetcher->get('description') . '%');
+                ->setParameter('description', '%' . $filter['description'] . '%');
         }
 
-        if ($category) {
+        if (isset($filter['category'])) {
             $qb->orWhere('c.title  LIKE :category')
-                ->setParameter('category', '%' . $paramFetcher->get('category') . '%');
+                ->setParameter('category', '%' . $filter['category'] . '%');
         }
 
-        if ($author) {
+        if (isset($filter['author'])) {
             $qb->orWhere('a.firstName  LIKE :author')
                 ->orWhere('a.lastName  LIKE :author')
-                ->setParameter('author', '%' . $paramFetcher->get('author') . '%');
+                ->setParameter('author', '%' . $filter['author'] . '%');
         }
 
         return $paginator->paginate($qb->getQuery(), $page);

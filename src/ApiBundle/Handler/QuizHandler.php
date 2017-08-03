@@ -42,14 +42,14 @@ class QuizHandler extends FOSRestController
 
     /**
      * @param int $page
-     * @param ParamFetcher $paramFetcher
+     * @param array $filter
      *
      * @return ArrayCollection|QuizDTO[]
      */
-    public function searchByFilter(int $page, ParamFetcher $paramFetcher)
+    public function searchByFilter(int $page, array $filter)
     {
         $quizzes = $this->em->getRepository(Quiz::class)
-            ->getQuizByQueryAndPage($paramFetcher, $page);
+            ->getQuizByQueryAndPage($filter, $page);
 
         return $this->transformQuizzes($quizzes);
     }
