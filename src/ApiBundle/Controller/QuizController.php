@@ -52,7 +52,7 @@ class QuizController extends FOSRestController
         $category = $paramFetcher->get('category');
         $author = $paramFetcher->get('author');
 
-        $filter=["title"=>$title, "description"=>$description, "category"=>$category, "author"=>$author];
+        $filter = ["title" => $title, "description" => $description, "category" => $category, "author" => $author];
 
         $quizzes = $this->get(QuizHandler::class)->searchByFilter(
             $page,
