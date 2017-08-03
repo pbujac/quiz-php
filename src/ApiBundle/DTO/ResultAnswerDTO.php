@@ -9,17 +9,9 @@ use Hateoas\Configuration\Annotation as Hateoas;
 class ResultAnswerDTO
 {
     /**
-     * @Type("ApiBundle\DTO\ResultDTO")
-     *
-     * @Assert\Valid
-     *
-     * @var ResultDTO
-     */
-    public $result;
-
-    /**
      * @Type("ApiBundle\DTO\QuestionDTO")
      *
+     * @Assert\NotBlank(groups={"quiz_solve"})
      * @Assert\Valid
      *
      * @var QuestionDTO
@@ -29,9 +21,20 @@ class ResultAnswerDTO
     /**
      * @Type("ApiBundle\DTO\AnswerDTO")
      *
+     * @Assert\NotBlank(groups={"quiz_solve"})
      * @Assert\Valid
      *
      * @var AnswerDTO
      */
     public $answer;
+
+    /**
+     * @Type("ApiBundle\DTO\ResultDTO")
+     *
+     * @Assert\Valid
+     *
+     * @var ResultDTO
+     */
+    public $result;
+
 }

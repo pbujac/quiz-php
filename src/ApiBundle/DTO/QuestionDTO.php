@@ -12,6 +12,8 @@ class QuestionDTO
     /**
      * @Type("int")
      *
+     * @Assert\NotBlank(groups={"quiz_solve"})
+     *
      * @var int
      */
     public $id;

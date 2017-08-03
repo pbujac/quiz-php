@@ -83,7 +83,7 @@ class QuizHandler
         $quizzes = $this->em->getRepository(Quiz::class)
             ->getQuizzesByAuthorAndPage($user, $page, $count);
 
-        $quizzesDTO = $this->addQuizzesToDTO($quizzes);
+        $quizzesDTO = $this->addQuizzesDTO($quizzes);
 
         $quizzesPagination = $this->getQuizzesPagination($quizzesDTO);
 
@@ -106,7 +106,7 @@ class QuizHandler
         $quizzes = $this->em->getRepository(Quiz::class)
             ->getQuizzesByCategoryAndPage($category, $page, $count);
 
-        $quizzesDTO = $this->addQuizzesToDTO($quizzes);
+        $quizzesDTO = $this->addQuizzesDTO($quizzes);
 
         $quizzesPagination = $this->getQuizzesPagination($quizzesDTO);
 
@@ -125,6 +125,8 @@ class QuizHandler
      */
     public function handleSolveQuiz(ResultDTO $resultDTO, Quiz $quiz, User $user): void
     {
+        $this->validateResultDTO($resultDTO);
+
         $result = new Result();
         $result->setQuiz($quiz);
         $result->setUser($user);
@@ -143,7 +145,7 @@ class QuizHandler
      *
      * @return ArrayCollection
      */
-    private function addQuizzesToDTO(Paginator $quizzes): ArrayCollection
+    private function addQuizzesDTO(Paginator $quizzes): ArrayCollection
     {
         $quizzesDTO = new ArrayCollection();
 
@@ -191,6 +193,20 @@ class QuizHandler
     private function validateQuizDTO(QuizDTO $quizDTO): void
     {
         $errors = $this->validator->validate($quizDTO);
+
+        if (count($errors) > 0) {
+            $errorMessage = $this->getErrorMessage($errors);
+
+            throw new BadRequestHttpException($errorMessage);
+        }
+    }
+
+    /**
+     * @param ResultDTO $resultDTO
+     */
+    private function validateResultDTO(ResultDTO $resultDTO): void
+    {
+        $errors = $this->validator->validate($resultDTO, null, ['quiz_solve']);
 
         if (count($errors) > 0) {
             $errorMessage = $this->getErrorMessage($errors);
