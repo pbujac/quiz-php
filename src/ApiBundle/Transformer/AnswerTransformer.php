@@ -30,9 +30,9 @@ class AnswerTransformer implements TransformerInterface
      */
     public function reverseTransform($answerDTO, $answer = null): Answer
     {
-        $answer = new Answer();
-        $answer->setText($answerDTO->text);
-        $answer->setCorrect($answerDTO->correct);
+        $answer = $answer ?: new Answer();
+        !$answerDTO->text ?: $answer->setText($answerDTO->text);
+        !$answerDTO->correct ?: $answer->setCorrect($answerDTO->correct);
 
         return $answer;
     }

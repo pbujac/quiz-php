@@ -47,13 +47,16 @@ class QuestionTransformer implements TransformerInterface
     public function reverseTransform($questionDTO, $question = null): Question
     {
         $question = $question ?: new Question();
-        $question = new Question();
-        $question->setText($questionDTO->text);
+        !$questionDTO->text ?: $question->setText($questionDTO->text);
 
-        foreach ($questionDTO->answers as $answerDTO) {
-            $question->addAnswer(
-                $this->transformAnswer->reverseTransform($answerDTO));
-        }
+//        if ($questionDTO->answers == null) {
+//            $question->getAnswers();
+//        } else {
+            foreach ($questionDTO->answers as $answerDTO) {
+                !$questionDTO->answers ?: $question->addAnswer(
+                    $this->transformAnswer->reverseTransform($answerDTO));
+            }
+//        }
 
         return $question;
     }
