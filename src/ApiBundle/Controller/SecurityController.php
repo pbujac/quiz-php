@@ -27,4 +27,5 @@ class SecurityController extends FOSRestController
 
         return View::create($token, Response::HTTP_OK);
     }
+
 }

@@ -16,11 +16,8 @@ class PaginatorManager
      *
      * @return Paginator
      */
-    public function paginate(
-        Query $query,
-        int $page,
-        int $count = self::PAGE_LIMIT
-    ) {
+    public function paginate(Query $query, int $page, int $count = self::PAGE_LIMIT)
+    {
         $paginator = new Paginator($query);
 
         $paginator->getQuery()
