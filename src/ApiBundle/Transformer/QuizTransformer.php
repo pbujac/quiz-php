@@ -42,7 +42,8 @@ class QuizTransformer implements TransformerInterface
 
         $quizDTO->questions = new ArrayCollection();
         foreach ($quiz->getQuestions() as $question) {
-            $quizDTO->questions->add($this->transformQuestion->transform($question));
+            $quizDTO->questions->add(
+                $this->transformQuestion->transform($question));
         }
 
         return $quizDTO;
@@ -71,14 +72,10 @@ class QuizTransformer implements TransformerInterface
                 "id" => $quizDTO->authorId
             ]));
 
-//        if ($quizDTO->questions == null) {
-//            $quiz->getQuestions();
-//        } else {
-            foreach ($quizDTO->questions as $questionDTO) {
-                !$quizDTO->questions ?: $quiz->addQuestion(
-                    $this->transformQuestion->reverseTransform($questionDTO));
-            }
-//        }
+        foreach ($quizDTO->questions as $questionDTO) {
+            $quiz->addQuestion(
+                $this->transformQuestion->reverseTransform($questionDTO));
+        }
 
         return $quiz;
     }

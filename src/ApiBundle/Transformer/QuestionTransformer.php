@@ -32,7 +32,8 @@ class QuestionTransformer implements TransformerInterface
 
         $questionDTO->answers = new ArrayCollection();
         foreach ($question->getAnswers() as $answer) {
-            $questionDTO->answers->add($this->transformAnswer->transform($answer));
+            $questionDTO->answers->add(
+                $this->transformAnswer->transform($answer));
         }
 
         return $questionDTO;
@@ -47,16 +48,12 @@ class QuestionTransformer implements TransformerInterface
     public function reverseTransform($questionDTO, $question = null): Question
     {
         $question = $question ?: new Question();
-        !$questionDTO->text ?: $question->setText($questionDTO->text);
+        $question->setText($questionDTO->text);
 
-//        if ($questionDTO->answers == null) {
-//            $question->getAnswers();
-//        } else {
-            foreach ($questionDTO->answers as $answerDTO) {
-                !$questionDTO->answers ?: $question->addAnswer(
-                    $this->transformAnswer->reverseTransform($answerDTO));
-            }
-//        }
+        foreach ($questionDTO->answers as $answerDTO) {
+            $question->addAnswer(
+                $this->transformAnswer->reverseTransform($answerDTO));
+        }
 
         return $question;
     }
