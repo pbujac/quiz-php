@@ -32,7 +32,7 @@ class QuizHandler
     private $validator;
 
     /** @var QuizTransformer */
-    private $transformQuiz;
+    private $quizTransformer;
 
     /** @var ResultTransformer */
     private $resultTransformer;
@@ -40,32 +40,43 @@ class QuizHandler
     /**
      * @param EntityManagerInterface $em
      * @param ValidatorInterface $validator
-     * @param QuizTransformer $transformQuiz
+     * @param QuizTransformer $quizTransformer
      * @param ResultTransformer $resultTransformer
      */
     public function __construct(
         EntityManagerInterface $em,
         ValidatorInterface $validator,
-        QuizTransformer $transformQuiz,
+        QuizTransformer $quizTransformer,
         ResultTransformer $resultTransformer
     ) {
         $this->em = $em;
         $this->validator = $validator;
-        $this->transformQuiz = $transformQuiz;
+        $this->quizTransformer = $quizTransformer;
         $this->resultTransformer = $resultTransformer;
     }
+
+    /**
+     * @param Quiz $quiz
+     *
+     * @return QuizDTO
+     */
+    public function handleGetQuiz(Quiz $quiz)
+    {
+        return $this->quizTransformer->transform($quiz);
+    }
+
 
     /**
      * @param QuizDTO $quizDTO
      * @param User $user
      */
-    public function postAction(QuizDTO $quizDTO, User $user): void
+    public function handlePostQuiz(QuizDTO $quizDTO, User $user): void
     {
         $this->validateQuizDTO($quizDTO);
 
         $quiz = new Quiz();
         $quiz->setAuthor($user);
-        $quiz = $this->transformQuiz->reverseTransform($quizDTO, $quiz);
+        $quiz = $this->quizTransformer->reverseTransform($quizDTO, $quiz);
 
         $this->em->persist($quiz);
         $this->em->flush();
@@ -150,7 +161,7 @@ class QuizHandler
         $quizzesDTO = new ArrayCollection();
 
         foreach ($quizzes as $quiz) {
-            $quizDTO = $this->transformQuiz->transform($quiz);
+            $quizDTO = $this->quizTransformer->transform($quiz);
 
             $quizzesDTO->add($quizDTO);
         }

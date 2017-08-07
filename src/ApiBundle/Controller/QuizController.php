@@ -18,6 +18,25 @@ use Symfony\Component\HttpFoundation\Response;
 class QuizController extends FOSRestController
 {
     /**
+     * @Rest\Get("/{quiz_id}", name="quizzes.quiz.get")
+     *
+     * @param Quiz $quiz
+     *
+     * @ParamConverter(
+     *     "quiz",
+     *     options={"id" = "quiz_id"}
+     * )
+     * @return View
+     */
+    public function getByIdAction(Quiz $quiz): View
+    {
+        $quizDTO = $this->get(QuizHandler::class)->handleGetQuiz($quiz);
+
+        return View::create($quizDTO, Response::HTTP_OK);
+    }
+
+
+    /**
      * @Rest\Post(
      *     "/quizzes",
      *     name="api.quizzes.quiz.post"
