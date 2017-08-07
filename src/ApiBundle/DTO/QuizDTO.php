@@ -13,8 +13,8 @@ class QuizDTO
      * @var string
      * @Type("string")
      *
-     * @Assert\NotBlank(message="title isn't specified")
-     * @Assert\Length(max=255, maxMessage="too long")
+     * @Assert\NotBlank(message="title isn't specified", groups={"patch"})
+     * @Assert\Length(max=255, maxMessage="too long", groups={"patch"})
      */
     public $title;
 
@@ -28,8 +28,8 @@ class QuizDTO
      * @var string
      * @Type("string")
      *
-     * @Assert\NotBlank(message="description for quiz isn't specified")
-     * @Assert\Length(max=5000, maxMessage="too long")
+     * @Assert\NotBlank(message="description for quiz isn't specified",groups={"patch"})
+     * @Assert\Length(max=5000, maxMessage="too long", groups={"patch"})
      */
     public $description;
 

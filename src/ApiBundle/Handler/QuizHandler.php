@@ -72,7 +72,7 @@ class QuizHandler extends FOSRestController
      */
     public function handlePatch(QuizDTO $quizDTO, Quiz $quiz)
     {
-//        $this->validateQuizDTO($quizDTO);
+        $this->validateQuizDTOForPatch($quizDTO);
         $this->quizTransformer->reverseTransform($quizDTO, $quiz);
         $this->em->flush();
     }
@@ -83,6 +83,22 @@ class QuizHandler extends FOSRestController
     public function validateQuizDTO(QuizDTO $quizDTO): void
     {
         $errors = $this->validator->validate($quizDTO);
+
+        if (count($errors) > 0) {
+            $errorMessage = "";
+            foreach ($errors as $violation) {
+                $errorMessage .= $violation->getPropertyPath() . '-' . $violation->getMessage();
+            }
+            throw new BadRequestHttpException($errorMessage);
+        }
+    }
+
+    /**
+     * @param QuizDTO $quizDTO
+     */
+    public function validateQuizDTOForPatch(QuizDTO $quizDTO): void
+    {
+        $errors = $this->validator->validate($quizDTO, null,['patch']);
 
         if (count($errors) > 0) {
             $errorMessage = "";
@@ -105,4 +121,5 @@ class QuizHandler extends FOSRestController
         $em->flush();
 
     }
+
 }
