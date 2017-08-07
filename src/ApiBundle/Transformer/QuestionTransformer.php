@@ -28,6 +28,7 @@ class QuestionTransformer implements TransformerInterface
     public function transform($question): QuestionDTO
     {
         $questionDTO = new QuestionDTO();
+        $questionDTO->id = $question->getId();
         $questionDTO->text = $question->getText();
 
         $questionDTO->answers = new ArrayCollection();
@@ -51,7 +52,7 @@ class QuestionTransformer implements TransformerInterface
         $question->setText($questionDTO->text);
 
         foreach ($questionDTO->answers as $answerDTO) {
-            $question->addAnswer(
+             $question->addAnswer(
                 $this->transformAnswer->reverseTransform($answerDTO));
         }
 

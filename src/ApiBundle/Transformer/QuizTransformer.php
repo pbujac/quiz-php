@@ -72,9 +72,11 @@ class QuizTransformer implements TransformerInterface
                 "id" => $quizDTO->authorId
             ]));
 
-        foreach ($quizDTO->questions as $questionDTO) {
-            $quiz->addQuestion(
-                $this->transformQuestion->reverseTransform($questionDTO));
+        if ($quizDTO->questions) {
+            foreach ($quizDTO->questions as $questionDTO) {
+                $quiz->addQuestion(
+                    $this->transformQuestion->reverseTransform($questionDTO));
+            }
         }
 
         return $quiz;

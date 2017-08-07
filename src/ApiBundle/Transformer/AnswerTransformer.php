@@ -16,6 +16,7 @@ class AnswerTransformer implements TransformerInterface
     public function transform($answer): AnswerDTO
     {
         $answerDTO = new AnswerDTO();
+        $answerDTO->id = $answer->getId();
         $answerDTO->text = $answer->getText();
         $answerDTO->correct = $answer->isCorrect();
 

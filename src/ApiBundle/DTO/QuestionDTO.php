@@ -9,6 +9,12 @@ use JMS\Serializer\Annotation\Type;
 class QuestionDTO
 {
     /**
+     * @var int
+     * @Type("int")
+     */
+    public $id;
+
+    /**
      * @var string
      * @Type("string")
      *
