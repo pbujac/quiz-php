@@ -82,7 +82,7 @@ class QuizHandler extends FOSRestController
      */
     public function validateQuizDTO(QuizDTO $quizDTO): void
     {
-        $errors = $this->validator->validate($quizDTO);
+        $errors = $this->validator->validate($quizDTO, null, ['QuizDTO']);
 
         if (count($errors) > 0) {
             $errorMessage = "";

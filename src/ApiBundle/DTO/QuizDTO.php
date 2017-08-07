@@ -15,6 +15,7 @@ class QuizDTO
      *
      * @Assert\NotBlank(message="title isn't specified", groups={"patch"})
      * @Assert\Length(max=255, maxMessage="too long", groups={"patch"})
+     * @UniqueQuiz()
      */
     public $title;
 
