@@ -5,7 +5,6 @@ namespace AppBundle\Entity\Repository;
 use AdminBundle\Manager\PaginatorManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use FOS\RestBundle\Request\ParamFetcher;
 
 class QuizRepository extends EntityRepository
 {
@@ -60,7 +59,7 @@ class QuizRepository extends EntityRepository
 
         if ($description) {
             $qb->orWhere('q.description  LIKE :description')
-                ->setParameter('description', '%' . $filter['description'] . '%');
+                ->setParameter('description', '%' .  $filter['description'] . '%' );
         }
 
         if ($category) {
