@@ -63,15 +63,6 @@ class QuizController extends FOSRestController
      * @Rest\Patch("/{id}", name="quizzes.quiz.patch")
      *
      * @param Quiz $quiz
-     *
-     * @ParamConverter(
-     *     "quizDTO",
-     *     converter="fos_rest.request_body",
-     *     options={
-     *     "transformer" = "ApiBundle\Transformer\QuizTransformer"
-     * }
-     * )
-     *
      * @param QuizDTO $quizDTO
      *
      * @return View
