@@ -25,19 +25,23 @@ class QuizController extends FOSRestController
      * @Rest\Route(name="api.quiz.search")
      *
      * @Rest\QueryParam(
-     *   name="title"
+     *   name="title",
+     *   default=null
      * )
      *
      * @Rest\QueryParam(
-     *   name="description"
+     *   name="description",
+     *     default=null
      * )
      *
      * @Rest\QueryParam(
-     *   name="category"
+     *   name="category",
+     *     default=null
      * )
      *
      * @Rest\QueryParam(
-     *   name="author"
+     *   name="author",
+     *     default=null
      * )
      *
      * @param ParamFetcher $paramFetcher
