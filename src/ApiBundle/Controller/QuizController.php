@@ -6,6 +6,7 @@ use ApiBundle\DTO\QuizDTO;
 use ApiBundle\Handler\QuizHandler;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\View\View;
 use AppBundle\Entity\Quiz;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -16,6 +17,50 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class QuizController extends FOSRestController
 {
+    /**
+     * @Rest\Get()
+     *
+     * @Rest\QueryParam(name="")
+     *
+     * @Rest\Route(name="api.quiz.search")
+     *
+     * @Rest\QueryParam(
+     *   name="title",
+     *   default=null
+     * )
+     *
+     * @Rest\QueryParam(
+     *   name="description",
+     *     default=null
+     * )
+     *
+     * @Rest\QueryParam(
+     *   name="category",
+     *     default=null
+     * )
+     *
+     * @Rest\QueryParam(
+     *   name="author",
+     *     default=null
+     * )
+     *
+     * @param ParamFetcher $paramFetcher
+     * @param int $page
+     *
+     * @return View
+     */
+    public function search(ParamFetcher $paramFetcher, int $page = 1)
+    {
+        $filter = $paramFetcher->all();
+
+        $quizzes = $this->get(QuizHandler::class)->searchByFilter(
+            $page,
+            $filter
+        );
+
+        return View::create($quizzes, Response::HTTP_OK);
+    }
+
     /**
      * @Rest\Post("", name="quizzes.create")
      *
@@ -42,7 +87,7 @@ class QuizController extends FOSRestController
     {
         $this->get(QuizHandler::class)->handleDelete($quiz);
 
-        return  View::create(null,Response::HTTP_NO_CONTENT);
+        return View::create(null, Response::HTTP_NO_CONTENT);
     }
 
     /**

@@ -26,6 +26,6 @@ class UserHandler
      */
     public function handleGetUser(User $user): UserDTO
     {
-        return $this->userTransformer->reverseTransform($user);
+        return $this->userTransformer->transform($user);
     }
 }

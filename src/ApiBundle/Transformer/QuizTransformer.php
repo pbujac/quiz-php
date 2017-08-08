@@ -15,37 +15,16 @@ class QuizTransformer
     private $em;
 
     /** @var QuestionTransformer */
-    private $transformQuestion;
+    private $questionTransformer;
 
     /**
      * @param EntityManagerInterface $em
-     * @param QuestionTransformer $transformQuestion
+     * @param QuestionTransformer $questionTransform
      */
-    public function __construct(EntityManagerInterface $em, QuestionTransformer $transformQuestion)
+    public function __construct(EntityManagerInterface $em, QuestionTransformer $questionTransform)
     {
         $this->em = $em;
-        $this->transformQuestion = $transformQuestion;
-    }
-
-    /**
-     * @param Quiz $quiz
-     *
-     * @return QuizDTO
-     */
-    public function transform(Quiz $quiz): QuizDTO
-    {
-        $quizDTO = new QuizDTO();
-        $quizDTO->title = $quiz->getTitle();
-        $quizDTO->description = $quiz->getDescription();
-        $quizDTO->categoryId = $quiz->getCategory()->getId();
-        $quizDTO->authorId = $quiz->getAuthor()->getId();
-
-        $quizDTO->questions = new ArrayCollection();
-        foreach ($quiz->getQuestions() as $question) {
-            $quizDTO->questions->add($this->transformQuestion->transform($question));
-        }
-
-        return $quizDTO;
+        $this->questionTransformer = $questionTransform;
     }
 
     /**
@@ -53,7 +32,7 @@ class QuizTransformer
      *
      * @return Quiz
      */
-    public function reverseTransform(QuizDTO $quizDTO): Quiz
+    public function reverseTransform(QuizDTO $quizDTO):Quiz
     {
         $quiz = new Quiz();
         $quiz->setTitle($quizDTO->title);
@@ -72,9 +51,30 @@ class QuizTransformer
 
         foreach ($quizDTO->questions as $questionDTO) {
             $quiz->addQuestion(
-                $this->transformQuestion->reverseTransform($questionDTO, $quiz));
+                $this->questionTransformer->reverseTransformQuestion($questionDTO, $quiz));
         }
 
         return $quiz;
+    }
+
+    /**
+     * @param Quiz $quiz
+     *
+     * @return QuizDTO
+     */
+    public function transform(Quiz $quiz):QuizDTO
+    {
+        $quizDTO = new QuizDTO();
+        $quizDTO->title = $quiz->getTitle();
+        $quizDTO->description = $quiz->getDescription();
+        $quizDTO->categoryId = $quiz->getCategory()->getId();
+        $quizDTO->authorId = $quiz->getAuthor()->getId();
+
+        $quizDTO->questions = new ArrayCollection();
+        foreach ($quiz->getQuestions() as $question) {
+            $quizDTO->questions->add($this->questionTransformer->transform($question));
+        }
+
+        return $quizDTO;
     }
 }

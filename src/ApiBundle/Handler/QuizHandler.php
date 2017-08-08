@@ -5,9 +5,11 @@ namespace ApiBundle\Handler;
 use ApiBundle\DTO\QuizDTO;
 use ApiBundle\Transformer\QuizTransformer;
 use AppBundle\Entity\Quiz;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\FOSRestController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -36,6 +38,35 @@ class QuizHandler extends FOSRestController
         $this->em = $em;
         $this->validator = $validator;
         $this->quizTransformer = $quizTransformer;
+    }
+
+    /**
+     * @param int $page
+     * @param array $filter
+     *
+     * @return ArrayCollection|QuizDTO[]
+     */
+    public function searchByFilter(int $page, array $filter)
+    {
+        $quizzes = $this->em->getRepository(Quiz::class)
+            ->getQuizByQueryAndPage($filter, $page);
+
+        return $this->transformQuizzes($quizzes);
+    }
+
+    /**
+     * @param $quizzes
+     * @return ArrayCollection
+     */
+    public function transformQuizzes($quizzes): ArrayCollection
+    {
+        $quizzesDTO = new ArrayCollection();
+        foreach ($quizzes as $quiz) {
+            $quizzesDTO->add(
+                $this->quizTransformer->transform($quiz)
+            );
+        }
+        return $quizzesDTO;
     }
 
     /**
