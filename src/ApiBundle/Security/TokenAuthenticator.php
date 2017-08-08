@@ -190,7 +190,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
                 $this->secretKey,
                 ['HS256']
             );
-        } catch (SignatureInvalidException $e) {
+        } catch (\Exception $e) {
 
             throw new UnauthorizedHttpException(null);
         }

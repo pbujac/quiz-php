@@ -96,3 +96,10 @@ fos_rest:
             - { path: '^/api/v1', priorities: ['json'], fallback_format: json  }
             - { path: '^/', stop: true }
 
+nelmio_cors:
+    paths:
+        '^/':
+            allow_origin: ['*']
+            allow_headers: ['*']
+            allow_methods: ['HEAD', 'POST', 'PUT', 'GET', 'DELETE', 'PATCH', 'OPTIONS']
+            max_age: 3600

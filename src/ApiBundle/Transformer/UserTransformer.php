@@ -35,8 +35,7 @@ class UserTransformer implements TransformerInterface
 
         !$userDTO->firstName ?: $user->setFirstName($userDTO->firstName);
         !$userDTO->lastName ?: $user->setLastName($userDTO->lastName);
-        !$userDTO->roles ?: $user->addRole(User::ROLE_USER);
-
+        $user->addRole(User::ROLE_USER);
         $user->setActive(true);
 
         return $user;
