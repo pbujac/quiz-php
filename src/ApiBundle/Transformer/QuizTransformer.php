@@ -51,8 +51,8 @@ class QuizTransformer implements TransformerInterface
 
     /**
      * @param QuizDTO $quizDTO
-     *
      * @param Quiz|null $quiz
+     *
      * @return Quiz
      */
     public function reverseTransform($quizDTO, $quiz = null): Quiz

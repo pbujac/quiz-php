@@ -25,7 +25,7 @@ class AnswerTransformer implements TransformerInterface
 
     /**
      * @param AnswerDTO $answerDTO
-     * @param null $answer
+     * @param Answer|null $answer
      *
      * @return Answer
      */

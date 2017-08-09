@@ -42,7 +42,7 @@ class QuestionTransformer implements TransformerInterface
 
     /**
      * @param QuestionDTO $questionDTO
-     * @param null $question
+     * @param Question|null $question
      *
      * @return Question
      */
