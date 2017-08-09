@@ -69,5 +69,4 @@ class QuizRepository extends EntityRepository
         }
         return $paginator->paginate($qb->getQuery(), $page);
     }
-
 }
