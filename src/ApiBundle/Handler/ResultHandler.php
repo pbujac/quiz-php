@@ -54,7 +54,7 @@ class ResultHandler
         return ApiPaginatorManager::paginate(
             $quizzesPagination,
             $page,
-            'api.user.quizzes'
+            'api.user.results'
         );
     }
 
