@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 class QuizController extends FOSRestController
 {
     /**
-     * @Rest\Get("/{quiz_id}", name="quizzes.quiz.get")
+     * @Rest\Get("quizzes/{quiz_id}", name="quizzes.quiz.get")
      *
      * @param Quiz $quiz
      *
