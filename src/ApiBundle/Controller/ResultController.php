@@ -3,16 +3,10 @@
 namespace ApiBundle\Controller;
 
 use AdminBundle\Manager\PaginatorManager;
-use ApiBundle\DTO\QuizDTO;
-use ApiBundle\DTO\ResultDTO;
-use ApiBundle\Handler\QuizHandler;
 use ApiBundle\Handler\ResultHandler;
-use AppBundle\Entity\Category;
-use AppBundle\Entity\Quiz;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

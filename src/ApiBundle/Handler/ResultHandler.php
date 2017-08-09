@@ -2,24 +2,16 @@
 
 namespace ApiBundle\Handler;
 
-use ApiBundle\DTO\QuizDTO;
-use ApiBundle\DTO\ResultDTO;
 use ApiBundle\Manager\ApiPaginatorManager;
 use ApiBundle\Traits\ValidationErrorTrait;
-use ApiBundle\Transformer\QuizTransformer;
 use ApiBundle\Transformer\ResultTransformer;
-use AppBundle\Entity\Category;
-use AppBundle\Entity\Quiz;
 use AppBundle\Entity\Result;
-use AppBundle\Entity\ResultAnswer;
 use AppBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Hateoas\Representation\CollectionRepresentation;
 use Hateoas\Representation\PaginatedRepresentation;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ResultHandler
 {
