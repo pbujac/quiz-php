@@ -26,22 +26,26 @@ class QuizController extends FOSRestController
      *
      * @Rest\QueryParam(
      *   name="title",
-     *   default=null
+     *   default=null,
+     *   nullable=true
      * )
      *
      * @Rest\QueryParam(
      *   name="description",
-     *     default=null
+     *   default=null,
+     *   nullable=true
      * )
      *
      * @Rest\QueryParam(
      *   name="category",
-     *     default=null
+     *   default=null,
+     *   nullable=true
      * )
      *
      * @Rest\QueryParam(
      *   name="author",
-     *     default=null
+     *   default=null,
+     *   nullable=true
      * )
      *
      * @param ParamFetcher $paramFetcher
