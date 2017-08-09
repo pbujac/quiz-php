@@ -35,25 +35,6 @@ class QuizRepository extends EntityRepository
     }
 
     /**
-     * @param User $user
-     * @param int $page
-     * @param int $count
-     *
-     * @return Paginator
-     */
-    public function getQuizzesByAuthorAndPage(User $user, int $page, int $count)
-    {
-        $paginator = new PaginatorManager();
-
-        $query = $this->createQueryBuilder('quiz')
-            ->where('quiz.author = :user')
-            ->setParameter('user', $user)
-            ->getQuery();
-
-        return $paginator->paginate($query, $page, $count);
-    }
-
-    /**
      * @param Category $category
      * @param int $page
      * @param int $count

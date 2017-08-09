@@ -64,12 +64,15 @@ class QuestionTransformer implements TransformerInterface
      */
     public function addAnswers(QuestionDTO $questionDTO, Question $question): void
     {
-        foreach ($questionDTO->answers as $answerDTO) {
-            $answer = new Answer();
-            $answer->setQuestion($question);
-            $answer = $this->answerTransformer->reverseTransform($answerDTO, $answer);
+        if($questionDTO->answers){
 
-            $question->addAnswer($answer);
+            foreach ($questionDTO->answers as $answerDTO) {
+                $answer = new Answer();
+                $answer->setQuestion($question);
+                $answer = $this->answerTransformer->reverseTransform($answerDTO, $answer);
+
+                $question->addAnswer($answer);
+            }
         }
     }
 

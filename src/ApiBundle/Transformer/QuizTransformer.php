@@ -106,12 +106,15 @@ class QuizTransformer implements TransformerInterface
      */
     private function addQuestions(QuizDTO $quizDTO, Quiz $quiz): void
     {
-        foreach ($quizDTO->questions as $questionDTO) {
-            $question = new Question();
-            $question->setQuiz($quiz);
-            $question = $this->transformQuestion->reverseTransform($questionDTO, $question);
+        if ($quizDTO->questions) {
 
-            $quiz->addQuestion($question);
+            foreach ($quizDTO->questions as $questionDTO) {
+                $question = new Question();
+                $question->setQuiz($quiz);
+                $question = $this->transformQuestion->reverseTransform($questionDTO, $question);
+
+                $quiz->addQuestion($question);
+            }
         }
     }
 
