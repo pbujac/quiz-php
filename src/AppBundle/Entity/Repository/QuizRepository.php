@@ -56,7 +56,7 @@ class QuizRepository extends EntityRepository
 
         if ($filter['description'] ?? null) {
             $qb->orWhere('q.description  LIKE :description')
-                ->setParameter('description', '%' .  $filter['description'] . '%' );
+                ->setParameter('description', '%' . $filter['description'] . '%');
         }
 
         if ($filter['category'] ?? null) {
