@@ -30,7 +30,7 @@ class QuestionTransformer implements TransformerInterface
         $questionDTO = new QuestionDTO();
         $questionDTO->id = $question->getId();
         $questionDTO->text = $question->getText();
-        $this->addAnswers($questionDTO, $question);
+        $this->addAnswersDTO($questionDTO, $question);
 
         return $questionDTO;
     }
@@ -64,7 +64,7 @@ class QuestionTransformer implements TransformerInterface
      */
     public function addAnswers(QuestionDTO $questionDTO, Question $question): void
     {
-        if($questionDTO->answers){
+        if ($question->getAnswers()) {
 
             foreach ($questionDTO->answers as $answerDTO) {
                 $answer = new Answer();
@@ -84,11 +84,15 @@ class QuestionTransformer implements TransformerInterface
     {
         $questionDTO->answers = new ArrayCollection();
 
-        foreach ($question->getAnswers() as $answer) {
-            $answerDTO = $this->answerTransformer->transform($answer);
+        if ($question->getAnswers()) {
 
-            $questionDTO->answers->add($answerDTO);
+            foreach ($question->getAnswers() as $answer) {
+                $answerDTO = $this->answerTransformer->transform($answer);
+
+                $questionDTO->answers->add($answerDTO);
+            }
         }
+
     }
 
 }
