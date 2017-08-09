@@ -16,4 +16,3 @@ root:
     defaults:
         _controller: AdminBundle:Security:login
         permanent: true
-
