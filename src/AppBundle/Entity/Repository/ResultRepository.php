@@ -16,7 +16,7 @@ class ResultRepository extends EntityRepository
      *
      * @return Paginator
      */
-    public function getQuizzesByUserAndPage(User $user, int $page, int $count)
+    public function getResultsByUserAndPage(User $user, int $page, int $count)
     {
         $paginator = new PaginatorManager();
 

@@ -91,8 +91,8 @@ class QuizHandler
      */
     public function handleGetQuizzesByUser(User $user, int $page, int $count): PaginatedRepresentation
     {
-        $quizzes = $this->em->getRepository(Result::class)
-            ->getQuizzesByUserAndPage($user, $page, $count);
+        $quizzes = $this->em->getRepository(Quiz::class)
+            ->getQuizzesByAuthorAndPage($user, $page, $count);
 
         $quizzesDTO = $this->addQuizzesDTO($quizzes);
 

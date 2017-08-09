@@ -48,7 +48,7 @@ class ResultDTO
     public $score;
 
     /**
-     * @Type("bool")
+     * @Type("boolean")
      *
      * @var bool
      */
