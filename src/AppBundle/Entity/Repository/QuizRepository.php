@@ -35,6 +35,44 @@ class QuizRepository extends EntityRepository
     }
 
     /**
+     * @param array $filter
+     * @param int $page
+     *
+     * @return Paginator
+     */
+    public function getQuizByQueryAndPage(array $filter, int $page = 1)
+    {
+        $paginator = new PaginatorManager();
+
+        $qb = $this->createQueryBuilder('q')
+            ->addSelect('c, a')
+            ->join('q.category', 'c')
+            ->join('q.author', 'a');
+
+        if ($filter['title'] ?? null) {
+            $qb->orWhere('q.title LIKE :title')
+                ->setParameter('title', '%' . $filter['title'] . '%');
+        }
+
+        if ($filter['description'] ?? null) {
+            $qb->orWhere('q.description  LIKE :description')
+                ->setParameter('description', '%' .  $filter['description'] . '%' );
+        }
+
+        if ($filter['category'] ?? null) {
+            $qb->orWhere('c.title  LIKE :category')
+                ->setParameter('category', '%' . $filter['category'] . '%');
+        }
+
+        if ($filter['author'] ?? null) {
+            $qb->orWhere('a.firstName  LIKE :author')
+                ->orWhere('a.lastName  LIKE :author')
+                ->setParameter('author', '%' . $filter['author'] . '%');
+        }
+        return $paginator->paginate($qb->getQuery(), $page);
+    }
+
+    /**
      * @param User $user
      * @param int $page
      * @param int $count

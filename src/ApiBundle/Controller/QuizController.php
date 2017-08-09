@@ -10,6 +10,7 @@ use AppBundle\Entity\Category;
 use AppBundle\Entity\Quiz;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\View\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +18,47 @@ use Symfony\Component\HttpFoundation\Response;
 
 class QuizController extends FOSRestController
 {
+    /**
+     * @Rest\Get("/quizzes", name="api.quizzes.list")
+     *
+     * @Rest\QueryParam(
+     *   name="title",
+     *   default=null,
+     *   nullable=true
+     * )
+     * @Rest\QueryParam(
+     *   name="description",
+     *   default=null,
+     *   nullable=true
+     * )
+     * @Rest\QueryParam(
+     *   name="category",
+     *   default=null,
+     *   nullable=true
+     * )
+     * @Rest\QueryParam(
+     *   name="author",
+     *   default=null,
+     *   nullable=true
+     * )
+     *
+     * @param ParamFetcher $paramFetcher
+     * @param int $page
+     *
+     * @return View
+     */
+    public function search(ParamFetcher $paramFetcher, int $page = 1)
+    {
+        $filter = $paramFetcher->all();
+
+        $quizzes = $this->get(QuizHandler::class)->searchByFilter(
+            $page,
+            $filter
+        );
+
+        return View::create($quizzes, Response::HTTP_OK);
+    }
+
     /**
      * @Rest\Get("quizzes/{quiz_id}", name="quizzes.quiz.get")
      *

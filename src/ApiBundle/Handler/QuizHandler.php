@@ -65,6 +65,20 @@ class QuizHandler
         return $this->quizTransformer->transform($quiz);
     }
 
+    /**
+     * @param int $page
+     * @param array $filter
+     *
+     * @return ArrayCollection|QuizDTO[]
+     */
+    public function searchByFilter(int $page, array $filter)
+    {
+        $quizzes = $this->em->getRepository(Quiz::class)
+            ->getQuizByQueryAndPage($filter, $page);
+
+        return $this->addQuizzesDTO($quizzes);
+    }
+
 
     /**
      * @param QuizDTO $quizDTO
