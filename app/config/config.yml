@@ -95,6 +95,7 @@ fos_rest:
         rules:
             - { path: '^/api/v1', priorities: ['json'], fallback_format: json  }
             - { path: '^/', stop: true }
+    param_fetcher_listener: force
 
 nelmio_cors:
     paths:

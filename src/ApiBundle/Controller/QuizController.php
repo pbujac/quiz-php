@@ -47,7 +47,7 @@ class QuizController extends FOSRestController
      *
      * @return View
      */
-    public function search(ParamFetcher $paramFetcher, int $page = 1)
+    public function searchAction(ParamFetcher $paramFetcher, int $page = 1)
     {
         $filter = $paramFetcher->all();
 
@@ -60,7 +60,36 @@ class QuizController extends FOSRestController
     }
 
     /**
-     * @Rest\Get("quizzes/{quiz_id}", name="quizzes.quiz.get")
+     * @Rest\Post("/quizzes", name="quizzes.create")
+     *
+     * @param QuizDTO $quizDTO
+     *
+     * @return View
+     */
+    public function postAction(QuizDTO $quizDTO): View
+    {
+        $this->get(QuizHandler::class)->handleCreate($quizDTO);
+
+        return View::create($quizDTO, Response::HTTP_CREATED);
+    }
+
+    /**
+     * @Rest\Delete("/quizzes/{id}",name="api.quiz.delete")
+     *
+     * @param Quiz $quiz
+     * @ParamConverter("quiz")
+     *
+     * @return View
+     */
+    public function deleteAction(Quiz $quiz): View
+    {
+        $this->get(QuizHandler::class)->handleDelete($quiz);
+
+        return View::create(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * @Rest\Get("/quizzes/{quiz_id}", name="quizzes.quiz.get")
      *
      * @param Quiz $quiz
      *

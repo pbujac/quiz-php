@@ -69,14 +69,21 @@ class QuizHandler
      * @param int $page
      * @param array $filter
      *
-     * @return ArrayCollection|QuizDTO[]
+     * @return PaginatedRepresentation
      */
     public function searchByFilter(int $page, array $filter)
     {
         $quizzes = $this->em->getRepository(Quiz::class)
             ->getQuizByQueryAndPage($filter, $page);
 
-        return $this->addQuizzesDTO($quizzes);
+        $quizzesDTO = $this->addQuizzesDTO($quizzes);
+        $quizzesPagination = $this->getQuizzesPagination($quizzesDTO);
+
+        return ApiPaginatorManager::paginate(
+            $quizzesPagination,
+            $page,
+            'api.quizzes.list'
+        );
     }
 
 
