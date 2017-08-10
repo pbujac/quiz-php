@@ -37,10 +37,11 @@ class QuizRepository extends EntityRepository
     /**
      * @param array $filter
      * @param int $page
+     * @param $count
      *
      * @return Paginator
      */
-    public function getQuizByQueryAndPage(array $filter, int $page = 1)
+    public function getQuizByQueryAndPage(array $filter, int $page = 1, int $count)
     {
         $paginator = new PaginatorManager();
 
@@ -69,7 +70,7 @@ class QuizRepository extends EntityRepository
                 ->orWhere('a.lastName  LIKE :author')
                 ->setParameter('author', '%' . $filter['author'] . '%');
         }
-        return $paginator->paginate($qb->getQuery(), $page);
+        return $paginator->paginate($qb->getQuery(), $page, $count);
     }
 
     /**

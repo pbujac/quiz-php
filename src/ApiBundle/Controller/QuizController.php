@@ -42,17 +42,21 @@ class QuizController extends FOSRestController
      *   nullable=true
      * )
      *
+     * @param Request $request
      * @param ParamFetcher $paramFetcher
-     * @param int $page
      *
      * @return View
      */
-    public function searchAction(ParamFetcher $paramFetcher, int $page = 1)
+    public function searchAction(Request $request, ParamFetcher $paramFetcher)
     {
         $filter = $paramFetcher->all();
 
+        $page = $request->get('page') ?: 1;
+        $count = $request->get('count') ?: PaginatorManager::PAGE_LIMIT;
+
         $quizzes = $this->get(QuizHandler::class)->searchByFilter(
             $page,
+            $count,
             $filter
         );
 

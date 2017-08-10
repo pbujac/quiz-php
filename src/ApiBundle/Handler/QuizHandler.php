@@ -67,14 +67,15 @@ class QuizHandler
 
     /**
      * @param int $page
+     * @param int $count
      * @param array $filter
      *
      * @return PaginatedRepresentation
      */
-    public function searchByFilter(int $page, array $filter)
+    public function searchByFilter(int $page, int $count, array $filter)
     {
         $quizzes = $this->em->getRepository(Quiz::class)
-            ->getQuizByQueryAndPage($filter, $page);
+            ->getQuizByQueryAndPage($filter, $page, $count);
 
         $quizzesDTO = $this->addQuizzesDTO($quizzes);
         $quizzesPagination = $this->getQuizzesPagination($quizzesDTO);
