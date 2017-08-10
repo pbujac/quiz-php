@@ -5,6 +5,7 @@ namespace AppBundle\Entity\Repository;
 use AdminBundle\Manager\PaginatorManager;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Category;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\ORM\EntityRepository;
 
@@ -14,7 +15,7 @@ class QuizRepository extends EntityRepository
      * @param string $filter
      * @param int $page
      *
-     * @return Paginator
+     * @return array|ArrayCollection
      */
     public function getQuizByFilter(?string $filter = null, int $page)
     {
@@ -39,7 +40,7 @@ class QuizRepository extends EntityRepository
      * @param int $page
      * @param $count
      *
-     * @return Paginator
+     * @return array|ArrayCollection
      */
     public function getQuizByQueryAndPage(array $filter, int $page = 1, int $count)
     {
@@ -78,7 +79,7 @@ class QuizRepository extends EntityRepository
      * @param int $page
      * @param int $count
      *
-     * @return Paginator
+     * @return array|ArrayCollection
      */
     public function getQuizzesByAuthorAndPage(User $user, int $page, int $count)
     {
@@ -97,7 +98,7 @@ class QuizRepository extends EntityRepository
      * @param int $page
      * @param int $count
      *
-     * @return Paginator
+     * @return array|ArrayCollection
      */
     public function getQuizzesByCategoryAndPage(Category $category, int $page, int $count)
     {

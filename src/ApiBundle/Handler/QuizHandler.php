@@ -77,13 +77,15 @@ class QuizHandler
         $quizzes = $this->em->getRepository(Quiz::class)
             ->getQuizByQueryAndPage($filter, $page, $count);
 
-        $quizzesDTO = $this->addQuizzesDTO($quizzes);
+        $quizzesDTO = $this->addQuizzesDTO($quizzes['paginator']);
         $quizzesPagination = $this->getQuizzesPagination($quizzesDTO);
 
         return ApiPaginatorManager::paginate(
             $quizzesPagination,
             $page,
-            'api.quizzes.list'
+            'api.quizzes.list',
+            $quizzes['totalItems'],
+            $count
         );
     }
 
@@ -116,14 +118,16 @@ class QuizHandler
         $quizzes = $this->em->getRepository(Quiz::class)
             ->getQuizzesByAuthorAndPage($user, $page, $count);
 
-        $quizzesDTO = $this->addQuizzesDTO($quizzes);
+        $quizzesDTO = $this->addQuizzesDTO($quizzes['paginator']);
 
         $quizzesPagination = $this->getQuizzesPagination($quizzesDTO);
 
         return ApiPaginatorManager::paginate(
             $quizzesPagination,
             $page,
-            'api.user.quizzes'
+            'api.user.quizzes',
+            $quizzes['totalItems'],
+            $count
         );
     }
 
@@ -139,7 +143,7 @@ class QuizHandler
         $quizzes = $this->em->getRepository(Quiz::class)
             ->getQuizzesByCategoryAndPage($category, $page, $count);
 
-        $quizzesDTO = $this->addQuizzesDTO($quizzes);
+        $quizzesDTO = $this->addQuizzesDTO($quizzes['paginator']);
 
         $quizzesPagination = $this->getQuizzesPagination($quizzesDTO);
 
@@ -147,6 +151,8 @@ class QuizHandler
             $quizzesPagination,
             $page,
             'api.category.quizzes',
+            $quizzes['totalItems'],
+            $count,
             ['category_id' => $category->getId()]
         );
     }

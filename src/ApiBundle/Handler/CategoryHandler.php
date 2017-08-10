@@ -44,14 +44,17 @@ class CategoryHandler
         $categories = $this->em->getRepository(Category::class)
             ->getCategoriesByPage($page, $count);
 
-        $categoriesDTO = $this->addCategoriesDTO($categories);
+
+        $categoriesDTO = $this->addCategoriesDTO($categories['paginator']);
 
         $categoriesPagination = $this->getCategoriesPagination($categoriesDTO);
 
         return ApiPaginatorManager::paginate(
             $categoriesPagination,
             $page,
-            'api.categories.list'
+            'api.categories.list',
+            $categories['totalItems'],
+            $count
         );
     }
 
