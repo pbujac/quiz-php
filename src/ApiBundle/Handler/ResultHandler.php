@@ -47,14 +47,16 @@ class ResultHandler
         $quizzes = $this->em->getRepository(Result::class)
             ->getResultsByUserAndPage($user, $page, $count);
 
-        $quizzesDTO = $this->addResultsDTO($quizzes);
+        $quizzesDTO = $this->addResultsDTO($quizzes['paginator']);
 
         $quizzesPagination = $this->getResultsPagination($quizzesDTO);
 
         return ApiPaginatorManager::paginate(
             $quizzesPagination,
             $page,
-            'api.user.results'
+            'api.user.results',
+            $quizzes['totalItems'],
+            $count
         );
     }
 
