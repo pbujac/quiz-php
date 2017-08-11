@@ -27,10 +27,10 @@ class UserController extends Controller
             ->getRepository(User::class)
             ->getAllUsersByPage($page);
 
-        $maxPages = ceil($users->count() / PaginatorManager::PAGE_LIMIT);
+        $maxPages = ceil($users['paginator']->count() / PaginatorManager::PAGE_LIMIT);
 
         return $this->render('admin/user/list.html.twig', [
-            'users' => $users->getQuery()->getResult(),
+            'users' => $users['paginator']->getQuery()->getResult(),
             'maxPages' => $maxPages,
             'currentPage' => $page,
         ]);

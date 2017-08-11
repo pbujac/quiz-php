@@ -27,10 +27,10 @@ class CategoryController extends Controller
             ->getRepository(Category::class)
             ->getCategoriesByPage($page);
 
-        $maxPages = ceil($categories->count() / PaginatorManager::PAGE_LIMIT);
+        $maxPages = ceil($categories['paginator']->count() / PaginatorManager::PAGE_LIMIT);
 
         return $this->render('admin/category/list.html.twig', [
-            'categories' => $categories->getQuery()->getResult(),
+            'categories' => $categories['paginator']->getQuery()->getResult(),
             'maxPages' => $maxPages,
             'currentPage' => $page,
         ]);

@@ -31,10 +31,10 @@ class QuizController extends Controller
             ->getRepository(Quiz::class)
             ->getQuizByFilter($filter, $page);
 
-        $maxPages = ceil($quizzes->count() / PaginatorManager::PAGE_LIMIT);
+        $maxPages = ceil($quizzes['paginator']->count() / PaginatorManager::PAGE_LIMIT);
 
         return $this->render('admin/quiz/list.html.twig', [
-            'quizzes' => $quizzes->getQuery()->getResult(),
+            'quizzes' => $quizzes['paginator']->getQuery()->getResult(),
             'maxPages' => $maxPages,
             'currentPage' => $page,
         ]);
