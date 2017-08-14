@@ -9,12 +9,14 @@ use ApiBundle\Traits\ValidationErrorTrait;
 use ApiBundle\Transformer\QuizTransformer;
 use ApiBundle\Transformer\ResultTransformer;
 use AppBundle\Entity\Category;
+use AppBundle\Entity\Question;
 use AppBundle\Entity\Quiz;
 use AppBundle\Entity\Result;
 use AppBundle\Entity\ResultAnswer;
 use AppBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Hateoas\Representation\CollectionRepresentation;
 use Hateoas\Representation\PaginatedRepresentation;
@@ -169,10 +171,9 @@ class QuizHandler
         $result = new Result();
         $result->setQuiz($quiz);
         $result->setUser($user);
-
         $result = $this->resultTransformer->reverseTransform($resultDTO, $result);
 
-        $score = $this->calculateScore($result->getResultAnswers());
+        $score = $this->calculateScore($quiz->getQuestions(), $result->getResultAnswers());
         $result->setScore($score);
 
         $this->em->persist($result);
@@ -198,22 +199,32 @@ class QuizHandler
     }
 
     /**
+     * @param PersistentCollection|Question[] $questions
      * @param ArrayCollection|ResultAnswer[] $resultAnswers
      *
      * @return int
      */
-    private function calculateScore(ArrayCollection $resultAnswers): int
+    private function calculateScore(PersistentCollection $questions, ArrayCollection $resultAnswers): int
     {
-        $correctAnswers = 0;
+        $scorePoints = 0;
 
-        foreach ($resultAnswers as $resultAnswer) {
+        foreach ($questions as $question) {
 
-            if ($resultAnswer->getAnswer()->isCorrect()) {
-                ++$correctAnswers;
+            $questionScorePoints = 0;
+            $correctAnswers = $this->getCorrectAnswers($question);
+            $choseAnswers = $this->getChoseAnswers($resultAnswers, $question);
+
+            if (count($choseAnswers) > 0) {
+
+                $questionScorePoints = $this->getQuestionScorePoints($question, $correctAnswers, $choseAnswers,
+                    $questionScorePoints);
+                $scorePoints += $questionScorePoints / $question->getAnswers()->count();
             }
         }
 
-        return ceil(($correctAnswers / $resultAnswers->count()) * 100);
+        $finalScore = ceil($scorePoints * 100) / $questions->count();
+
+        return $finalScore;
     }
 
     /**
@@ -221,16 +232,20 @@ class QuizHandler
      *
      * @return CollectionRepresentation
      */
-    private function getQuizzesPagination(ArrayCollection $quizzesDTO): CollectionRepresentation
-    {
+    private
+    function getQuizzesPagination(
+        ArrayCollection $quizzesDTO
+    ): CollectionRepresentation {
         return new CollectionRepresentation($quizzesDTO, 'quizzes');
     }
 
     /**
      * @param QuizDTO $quizDTO
      */
-    private function validateQuizDTO(QuizDTO $quizDTO): void
-    {
+    private
+    function validateQuizDTO(
+        QuizDTO $quizDTO
+    ): void {
         $errors = $this->validator->validate($quizDTO);
 
         if (count($errors) > 0) {
@@ -243,8 +258,10 @@ class QuizHandler
     /**
      * @param ResultDTO $resultDTO
      */
-    private function validateResultDTO(ResultDTO $resultDTO): void
-    {
+    private
+    function validateResultDTO(
+        ResultDTO $resultDTO
+    ): void {
         $errors = $this->validator->validate($resultDTO, null, ['quiz_solve']);
 
         if (count($errors) > 0) {
@@ -252,6 +269,68 @@ class QuizHandler
 
             throw new BadRequestHttpException($errorMessage);
         }
+    }
+
+    /**
+     * @param Question $question
+     *
+     * @return array
+     */
+    private function getCorrectAnswers(Question $question): array
+    {
+        $correctAnswers = [];
+
+        foreach ($question->getAnswers() as $answer) {
+
+            if ($answer->isCorrect()) {
+                $correctAnswers[] = $answer->getId();
+            }
+        }
+
+        return $correctAnswers;
+    }
+
+    /**
+     * @param ArrayCollection $resultAnswers
+     * @param Question $question
+     *
+     * @return array
+     */
+    private function getChoseAnswers(ArrayCollection $resultAnswers, $question): array
+    {
+        $choseAnswers = [];
+
+        foreach ($resultAnswers as $resultAnswer) {
+
+            if ($resultAnswer->getAnswer()->getQuestion()->getId() === $question->getId()) {
+
+                $choseAnswers[] = $resultAnswer->getAnswer()->getId();
+            }
+        }
+
+        return $choseAnswers;
+    }
+
+    /**
+     * @param $question
+     * @param $correctAnswers
+     * @param $choseAnswers
+     * @param $questionScorePoints
+     * @return mixed
+     */
+    private function getQuestionScorePoints($question, $correctAnswers, $choseAnswers, $questionScorePoints)
+    {
+        foreach ($question->getAnswers() as $answer) {
+
+            if (
+                in_array($answer->getId(), $correctAnswers) && in_array($answer->getId(), $choseAnswers)
+                ||
+                !in_array($answer->getId(), $correctAnswers) && !in_array($answer->getId(), $choseAnswers)
+            ) {
+                ++$questionScorePoints;
+            }
+        }
+        return $questionScorePoints;
     }
 
 }

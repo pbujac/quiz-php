@@ -2,9 +2,9 @@
 
 namespace ApiBundle\DTO;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation\Type;
-use Hateoas\Configuration\Annotation as Hateoas;
 
 class ResultAnswerDTO
 {
@@ -26,14 +26,14 @@ class ResultAnswerDTO
     public $question;
 
     /**
-     * @Type("ApiBundle\DTO\AnswerDTO")
+     * @Type("ArrayCollection<ApiBundle\DTO\AnswerDTO>")
      *
      * @Assert\NotBlank(groups={"quiz_solve"})
      * @Assert\Valid
      *
-     * @var AnswerDTO
+     * @var ArrayCollection
      */
-    public $answer;
+    public $answers;
 
     /**
      * @Type("ApiBundle\DTO\ResultDTO")

@@ -2,12 +2,19 @@
 
 namespace ApiBundle\Transformer;
 
+use ApiBundle\DTO\AnswerDTO;
 use ApiBundle\DTO\ResultDTO;
+use AppBundle\Entity\Answer;
 use AppBundle\Entity\Result;
+use AppBundle\Entity\ResultAnswer;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ResultTransformer implements TransformerInterface
 {
+    /** @var EntityManagerInterface $em */
+    private $em;
+
     /** @var QuizTransformer */
     private $quizTransformer;
 
@@ -24,6 +31,7 @@ class ResultTransformer implements TransformerInterface
     private $answerTransformer;
 
     /**
+     * @param EntityManagerInterface $em
      * @param QuizTransformer $quizTransformer
      * @param UserTransformer $userTransformer
      * @param ResultAnswerTransformer $resultAnswerTransformer
@@ -31,12 +39,14 @@ class ResultTransformer implements TransformerInterface
      * @param AnswerTransformer $answerTransformer
      */
     public function __construct(
+        EntityManagerInterface $em,
         QuizTransformer $quizTransformer,
         UserTransformer $userTransformer,
         ResultAnswerTransformer $resultAnswerTransformer,
         QuestionTransformer $questionTransformer,
         AnswerTransformer $answerTransformer
     ) {
+        $this->em = $em;
         $this->quizTransformer = $quizTransformer;
         $this->userTransformer = $userTransformer;
         $this->resultAnswerTransformer = $resultAnswerTransformer;
@@ -115,8 +125,25 @@ class ResultTransformer implements TransformerInterface
     {
         foreach ($resultDTO->resultAnswers as $resultAnswerDTO) {
 
-            $resultAnswer = $this->resultAnswerTransformer->reverseTransform($resultAnswerDTO);
+            $this->addAnswers($result, $resultAnswerDTO->answers);
+        }
+    }
+
+    /**
+     * @param Result $result
+     * @param ArrayCollection|AnswerDTO[] $answersDTO
+     */
+    public function addAnswers(Result $result, ArrayCollection $answersDTO)
+    {
+        foreach ($answersDTO as $answerDTO) {
+
+            $answer = $this->em->getRepository(Answer::class)
+                ->find($answerDTO->id);
+
+            $resultAnswer = new ResultAnswer();
             $resultAnswer->setResult($result);
+            $resultAnswer->setAnswer($answer);
+            $resultAnswer->setQuestion($answer->getQuestion());
 
             $result->addResultAnswer($resultAnswer);
         }

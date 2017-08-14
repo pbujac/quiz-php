@@ -5,6 +5,7 @@ namespace ApiBundle\Transformer;
 use ApiBundle\DTO\ResultAnswerDTO;
 use AppBundle\Entity\Answer;
 use AppBundle\Entity\ResultAnswer;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ResultAnswerTransformer implements TransformerInterface
@@ -43,13 +44,7 @@ class ResultAnswerTransformer implements TransformerInterface
     public function reverseTransform($resultAnswerDTO, $resultAnswer = null): ResultAnswer
     {
         $resultAnswer = $resultAnswer ?: new ResultAnswer();
-
-        $answer = $this->em->getRepository(Answer::class)
-            ->find($resultAnswerDTO->answer->id);
-
-        $resultAnswer->setAnswer($answer);
-        $resultAnswer->setQuestion($answer->getQuestion());
-
+        
         return $resultAnswer;
     }
 
@@ -63,7 +58,9 @@ class ResultAnswerTransformer implements TransformerInterface
         $resultAnswerDTO = new ResultAnswerDTO();
         $resultAnswerDTO->id = $resultAnswer->getId();
         $resultAnswerDTO->question = $this->questionTransformer->transform($resultAnswer->getQuestion());
-        $resultAnswerDTO->answer = $this->answerTransformer->transform($resultAnswer->getAnswer());
+
+        !$resultAnswerDTO->answers ?: $resultAnswerDTO->answers = new ArrayCollection();
+        $resultAnswerDTO->answers->add($this->answerTransformer->transform($resultAnswer->getAnswer()));
 
         return $resultAnswerDTO;
     }
