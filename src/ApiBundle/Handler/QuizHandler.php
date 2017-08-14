@@ -210,16 +210,9 @@ class QuizHandler
 
         foreach ($questions as $question) {
 
-            $questionScorePoints = 0;
             $correctAnswers = $this->getCorrectAnswers($question);
             $choseAnswers = $this->getChoseAnswers($resultAnswers, $question);
-
-            if (count($choseAnswers) > 0) {
-
-                $questionScorePoints = $this->getQuestionScorePoints($question, $correctAnswers, $choseAnswers,
-                    $questionScorePoints);
-                $scorePoints += $questionScorePoints / $question->getAnswers()->count();
-            }
+            $scorePoints = $this->calculateQuestionScorePoints($question, $choseAnswers, $correctAnswers, $scorePoints);
         }
 
         $finalScore = ceil($scorePoints * 100) / $questions->count();
@@ -312,14 +305,19 @@ class QuizHandler
     }
 
     /**
-     * @param $question
-     * @param $correctAnswers
-     * @param $choseAnswers
-     * @param $questionScorePoints
-     * @return mixed
+     * @param Question $question
+     * @param array $correctAnswers
+     * @param array $choseAnswers
+     * @param int $questionScorePoints
+     *
+     * @return int
      */
-    private function getQuestionScorePoints($question, $correctAnswers, $choseAnswers, $questionScorePoints)
-    {
+    private function getQuestionScorePoints(
+        Question $question,
+        array $correctAnswers,
+        array $choseAnswers,
+        int $questionScorePoints
+    ) {
         foreach ($question->getAnswers() as $answer) {
 
             if (
@@ -331,6 +329,33 @@ class QuizHandler
             }
         }
         return $questionScorePoints;
+    }
+
+    /**
+     * @param Question $question
+     * @param array $choseAnswers
+     * @param array $correctAnswers
+     * @param int $scorePoints
+     *
+     * @return float|int
+     */
+    private function calculateQuestionScorePoints(
+        Question $question,
+        array $choseAnswers,
+        array $correctAnswers,
+        int $scorePoints
+    ) {
+        $questionScorePoints = 0;
+
+        if (count($choseAnswers) > 0) {
+
+            $questionScorePoints = $this->getQuestionScorePoints($question, $correctAnswers, $choseAnswers,
+                $questionScorePoints);
+
+            $scorePoints += $questionScorePoints / $question->getAnswers()->count();
+        }
+
+        return $scorePoints;
     }
 
 }
