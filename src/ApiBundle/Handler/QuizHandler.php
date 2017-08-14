@@ -21,6 +21,8 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Hateoas\Representation\CollectionRepresentation;
 use Hateoas\Representation\PaginatedRepresentation;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class QuizHandler
@@ -167,6 +169,7 @@ class QuizHandler
     public function handleSolveQuiz(ResultDTO $resultDTO, Quiz $quiz, User $user): void
     {
         $this->validateResultDTO($resultDTO);
+        $this->checkExistResult($quiz);
 
         $result = new Result();
         $result->setQuiz($quiz);
@@ -212,7 +215,7 @@ class QuizHandler
 
             $correctAnswers = $this->getCorrectAnswers($question);
             $choseAnswers = $this->getChoseAnswers($resultAnswers, $question);
-            $scorePoints = $this->calculateQuestionScorePoints($question, $choseAnswers, $correctAnswers, $scorePoints);
+            $scorePoints += $this->calculateQuestionScorePoints($question, $choseAnswers, $correctAnswers);
         }
 
         $finalScore = ceil($scorePoints * 100) / $questions->count();
@@ -240,22 +243,6 @@ class QuizHandler
         QuizDTO $quizDTO
     ): void {
         $errors = $this->validator->validate($quizDTO);
-
-        if (count($errors) > 0) {
-            $errorMessage = $this->getErrorMessage($errors);
-
-            throw new BadRequestHttpException($errorMessage);
-        }
-    }
-
-    /**
-     * @param ResultDTO $resultDTO
-     */
-    private
-    function validateResultDTO(
-        ResultDTO $resultDTO
-    ): void {
-        $errors = $this->validator->validate($resultDTO, null, ['quiz_solve']);
 
         if (count($errors) > 0) {
             $errorMessage = $this->getErrorMessage($errors);
@@ -306,6 +293,33 @@ class QuizHandler
 
     /**
      * @param Question $question
+     * @param array $choseAnswers
+     * @param array $correctAnswers
+     *
+     * @return float|int
+     */
+    private function calculateQuestionScorePoints(
+        Question $question,
+        array $choseAnswers,
+        array $correctAnswers
+    ) {
+        $questionScorePoints = 0;
+        $finalScore = 0;
+
+        if (count($choseAnswers) > 0) {
+
+            $questionScorePoints = $this->getQuestionScorePoints($question, $correctAnswers, $choseAnswers,
+                $questionScorePoints);
+
+            $finalScore += $questionScorePoints / $question->getAnswers()->count();
+        }
+
+        return $finalScore;
+    }
+
+
+    /**
+     * @param Question $question
      * @param array $correctAnswers
      * @param array $choseAnswers
      * @param int $questionScorePoints
@@ -317,7 +331,7 @@ class QuizHandler
         array $correctAnswers,
         array $choseAnswers,
         int $questionScorePoints
-    ) {
+    ): int {
         foreach ($question->getAnswers() as $answer) {
 
             if (
@@ -328,34 +342,48 @@ class QuizHandler
                 ++$questionScorePoints;
             }
         }
+
         return $questionScorePoints;
     }
 
     /**
-     * @param Question $question
-     * @param array $choseAnswers
-     * @param array $correctAnswers
-     * @param int $scorePoints
-     *
-     * @return float|int
+     * @param ResultDTO $resultDTO
      */
-    private function calculateQuestionScorePoints(
-        Question $question,
-        array $choseAnswers,
-        array $correctAnswers,
-        int $scorePoints
-    ) {
-        $questionScorePoints = 0;
+    private function validateResultDTO(ResultDTO $resultDTO): void
+    {
+        $errors = $this->validator->validate($resultDTO, null, ['quiz_solve']);
 
-        if (count($choseAnswers) > 0) {
+        if (count($errors) > 0) {
+            $errorMessage = $this->getErrorMessage($errors);
 
-            $questionScorePoints = $this->getQuestionScorePoints($question, $correctAnswers, $choseAnswers,
-                $questionScorePoints);
-
-            $scorePoints += $questionScorePoints / $question->getAnswers()->count();
+            throw new BadRequestHttpException($errorMessage);
         }
+    }
 
-        return $scorePoints;
+    /**
+     * @param Quiz $quiz
+     */
+    private function checkExistResult(Quiz $quiz): void
+    {
+        $result = $this->em->getRepository(Result::class)->findBy([
+            'quiz' => $quiz,
+        ]);
+
+        if ($result) {
+            $error = new ConstraintViolation(
+                'Result on this quiz already exist',
+                '', [],
+                null,
+                'quiz',
+                'id'
+            );
+            $errors = new ConstraintViolationList();
+            $errors->add($error);
+
+            $errorMessage = $this->getErrorMessage($errors);
+
+            throw new BadRequestHttpException($errorMessage);
+        }
     }
 
 }
