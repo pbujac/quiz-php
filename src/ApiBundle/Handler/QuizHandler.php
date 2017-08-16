@@ -169,7 +169,7 @@ class QuizHandler
     public function handleSolveQuiz(ResultDTO $resultDTO, Quiz $quiz, User $user): void
     {
         $this->validateResultDTO($resultDTO);
-        $this->checkExistResult($quiz);
+//        $this->checkExistResult($quiz);
 
         $result = new Result();
         $result->setQuiz($quiz);

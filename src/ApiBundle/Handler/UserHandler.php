@@ -8,6 +8,8 @@ use ApiBundle\Transformer\UserTransformer;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UserHandler
@@ -46,6 +48,38 @@ class UserHandler
     public function handleGetUser(User $user): UserDTO
     {
         return $this->userTransformer->transform($user);
+    }
+
+    /**
+     * @param string|null $username
+     *
+     * @return UserDTO
+     */
+    public function handleGetUserByUsername(string $username = ''): UserDTO
+    {
+        $user = $this->em->getRepository(User::class)
+            ->findOneBy([
+                'username' => $username,
+            ]);
+
+        if (!$user) {
+            $error = new ConstraintViolation(
+                'User with username: ' . $username . ' does not exist',
+                '', [],
+                null,
+                'username',
+                'username'
+            );
+            $errors = new ConstraintViolationList();
+            $errors->add($error);
+
+            $errorMessage = $this->getErrorMessage($errors);
+
+            throw new BadRequestHttpException($errorMessage);
+        }
+        $userDTO = $this->userTransformer->transform($user);
+
+        return $userDTO;
     }
 
     /**

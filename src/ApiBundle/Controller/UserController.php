@@ -9,6 +9,7 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -35,6 +36,21 @@ class UserController extends FOSRestController
         $userDTO = $this->get(UserHandler::class)->handleGetUser($user);
 
         return View::create($userDTO, Response::HTTP_OK);
+    }
+
+    /**
+     * @Rest\Get()
+     *
+     * @param Request $request
+     *
+     * @return View
+     */
+    public function getByUsernameAction(Request $request)
+    {
+        $username = $request->get('username');
+        $userDTO = $this->get(UserHandler::class)->handleGetUserByUsername($username);
+
+        return View::create($userDTO, Response::HTTP_CREATED);
     }
 
     /**
