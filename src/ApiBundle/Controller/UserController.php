@@ -47,7 +47,7 @@ class UserController extends FOSRestController
      */
     public function getByUsernameAction(Request $request)
     {
-        $username = $request->get('username');
+        $username = $request->get('username') ?: '';
         $userDTO = $this->get(UserHandler::class)->handleGetUserByUsername($username);
 
         return View::create($userDTO, Response::HTTP_CREATED);

@@ -192,10 +192,10 @@ class QuizController extends FOSRestController
     {
         $user = $this->getUser();
 
-        $this->get(QuizHandler::class)
+        $result = $this->get(QuizHandler::class)
             ->handleSolveQuiz($resultDTO, $quiz, $user);
 
-        return View::create(null, Response::HTTP_CREATED);
+        return View::create($result, Response::HTTP_CREATED);
     }
 
 }

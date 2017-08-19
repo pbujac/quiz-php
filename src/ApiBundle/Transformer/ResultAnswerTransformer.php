@@ -3,7 +3,6 @@
 namespace ApiBundle\Transformer;
 
 use ApiBundle\DTO\ResultAnswerDTO;
-use AppBundle\Entity\Answer;
 use AppBundle\Entity\ResultAnswer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -59,7 +58,7 @@ class ResultAnswerTransformer implements TransformerInterface
         $resultAnswerDTO->id = $resultAnswer->getId();
         $resultAnswerDTO->question = $this->questionTransformer->transform($resultAnswer->getQuestion());
 
-        !$resultAnswerDTO->answers ?: $resultAnswerDTO->answers = new ArrayCollection();
+        $resultAnswerDTO->answers = new ArrayCollection();
         $resultAnswerDTO->answers->add($this->answerTransformer->transform($resultAnswer->getAnswer()));
 
         return $resultAnswerDTO;

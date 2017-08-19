@@ -3,6 +3,7 @@
 namespace ApiBundle\Transformer;
 
 use ApiBundle\DTO\AnswerDTO;
+use ApiBundle\DTO\ResultAnswerDTO;
 use ApiBundle\DTO\ResultDTO;
 use AppBundle\Entity\Answer;
 use AppBundle\Entity\Result;
@@ -158,10 +159,36 @@ class ResultTransformer implements TransformerInterface
         $resultDTO->resultAnswers = new ArrayCollection();
 
         foreach ($result->getResultAnswers() as $resultAnswer) {
+
             $resultAnswerDTO = $this->resultAnswerTransformer->transform($resultAnswer);
 
-            $resultDTO->resultAnswers->add($resultAnswerDTO);
+            $checkExistQuestion = $this->groupAnswersByQuestion($resultDTO->resultAnswers, $resultAnswerDTO);
+
+            if (!$checkExistQuestion) {
+                $resultDTO->resultAnswers->add($resultAnswerDTO);
+            }
         }
     }
 
+    /**
+     * @param ArrayCollection|ResultAnswerDTO[] $resultAnswersDTO
+     * @param ResultAnswerDTO $resultAnswerDTO
+     *
+     * @return bool
+     */
+    private function groupAnswersByQuestion(ArrayCollection $resultAnswersDTO, ResultAnswerDTO $resultAnswerDTO)
+    {
+        foreach ($resultAnswersDTO as $rA) {
+
+            if ($rA->question->id === $resultAnswerDTO->question->id) {
+                $rA->answers = new ArrayCollection(
+                    array_merge($rA->answers->toArray(), $resultAnswerDTO->answers->toArray())
+                );
+
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

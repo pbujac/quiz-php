@@ -4,7 +4,6 @@ namespace ApiBundle\DTO;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation\Type;
-use Hateoas\Configuration\Annotation as Hateoas;
 
 class AnswerDTO
 {

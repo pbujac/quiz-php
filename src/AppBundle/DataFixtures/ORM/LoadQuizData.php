@@ -26,7 +26,6 @@ class LoadQuizData extends AbstractFixture implements OrderedFixtureInterface, F
             $quiz = new Quiz();
             $quiz->setTitle($faker->title);
             $quiz->setAuthor($faker->randomElement($users));
-            $quiz->setCreatedAt($faker->dateTime);
             $quiz->setCategory($faker->randomElement($categories));
             $quiz->setDescription($faker->text);
 

@@ -165,12 +165,13 @@ class QuizHandler
      * @param ResultDTO $resultDTO
      * @param Quiz $quiz
      * @param User $user
+     *
+     * @return ResultDTO
      */
-    public function handleSolveQuiz(ResultDTO $resultDTO, Quiz $quiz, User $user): void
+    public function handleSolveQuiz(ResultDTO $resultDTO, Quiz $quiz, User $user): ResultDTO
     {
         $this->validateResultDTO($resultDTO);
 //        $this->checkExistResult($quiz);
-
         $result = new Result();
         $result->setQuiz($quiz);
         $result->setUser($user);
@@ -181,6 +182,8 @@ class QuizHandler
 
         $this->em->persist($result);
         $this->em->flush();
+
+        return $this->resultTransformer->transform($result);
     }
 
     /**

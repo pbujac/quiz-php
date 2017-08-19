@@ -19,6 +19,11 @@ security:
         register_api:
             anonymous: true
             pattern: ^/api/v1/users/register
+
+        get_user_api:
+            anonymous: true
+            pattern: ^/api/v1/users
+            
         api:
             pattern: ^/api/v1
             stateless: true
