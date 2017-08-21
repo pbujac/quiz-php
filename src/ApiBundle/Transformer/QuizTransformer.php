@@ -72,10 +72,10 @@ class QuizTransformer implements TransformerInterface
     public function reverseTransform($quizDTO, $quiz = null): Quiz
     {
         $quiz = $quiz ?: new Quiz();
-        $quiz->setTitle($quizDTO->title);
-        $quiz->setDescription($quizDTO->description);
-        $this->setQuizCategory($quiz, $quizDTO->category->id);
-        $this->setQuizAuthor($quiz, $quizDTO->author->id);
+        !$quizDTO->title ?: $quiz->setTitle($quizDTO->title);
+        !$quizDTO->description ?: $quiz->setDescription($quizDTO->description);
+        !$quizDTO->category ?: $this->setQuizCategory($quiz, $quizDTO->category->id);
+        !$quizDTO->author?: $this->setQuizAuthor($quiz, $quizDTO->author->id);
         $this->addQuestions($quizDTO, $quiz);
 
         return $quiz;
