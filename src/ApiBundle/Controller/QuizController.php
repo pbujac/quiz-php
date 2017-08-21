@@ -16,10 +16,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-
-/**
- * @Rest\Route("/quizzes")
- */
 class QuizController extends FOSRestController
 {
     /**
@@ -115,7 +111,7 @@ class QuizController extends FOSRestController
     }
 
     /**
-     * @Rest\Patch("/{id}", name="quizzes.quiz.patch")
+     * @Rest\Patch("/quizzes/{id}", name="quizzes.quiz.patch")
      *
      * @param Quiz $quiz
      * @param QuizDTO $quizDTO
