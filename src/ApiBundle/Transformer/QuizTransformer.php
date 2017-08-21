@@ -6,6 +6,7 @@ use ApiBundle\DTO\QuizDTO;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Question;
 use AppBundle\Entity\Quiz;
+use AppBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -74,6 +75,7 @@ class QuizTransformer implements TransformerInterface
         $quiz->setTitle($quizDTO->title);
         $quiz->setDescription($quizDTO->description);
         $this->setQuizCategory($quiz, $quizDTO->category->id);
+        $this->setQuizAuthor($quiz, $quizDTO->author->id);
         $this->addQuestions($quizDTO, $quiz);
 
         return $quiz;
@@ -100,6 +102,18 @@ class QuizTransformer implements TransformerInterface
     }
 
     /**
+     * @param Quiz $quiz
+     * @param int $authorId
+     */
+    private function setQuizAuthor(Quiz $quiz, int $authorId): void
+    {
+        $author = $this->em->getRepository(User::class)
+            ->findOneBy(["id" => $authorId]);
+
+        $quiz->setAuthor($author);
+    }
+
+    /**
      * @param QuizDTO $quizDTO
      * @param Quiz $quiz
      */
@@ -119,9 +133,9 @@ class QuizTransformer implements TransformerInterface
 
     /**
      * @param Quiz $quiz
-     * @param $quizDTO
+     * @param QuizDTO $quizDTO
      */
-    public function addQuestionsDTO(Quiz $quiz, $quizDTO): void
+    public function addQuestionsDTO(Quiz $quiz, QuizDTO $quizDTO): void
     {
         $quizDTO->questions = new ArrayCollection();
 

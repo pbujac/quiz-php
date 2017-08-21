@@ -70,31 +70,6 @@ class QuizHandler
     }
 
     /**
-     * @param int $page
-     * @param int $count
-     * @param array $filter
-     *
-     * @return PaginatedRepresentation
-     */
-    public function searchByFilter(int $page, int $count, array $filter)
-    {
-        $quizzes = $this->em->getRepository(Quiz::class)
-            ->getQuizByQueryAndPage($filter, $page, $count);
-
-        $quizzesDTO = $this->addQuizzesDTO($quizzes['paginator']);
-        $quizzesPagination = $this->getQuizzesPagination($quizzesDTO);
-
-        return ApiPaginatorManager::paginate(
-            $quizzesPagination,
-            $page,
-            'api.quizzes.list',
-            $quizzes['totalItems'],
-            $count
-        );
-    }
-
-
-    /**
      * @param QuizDTO $quizDTO
      * @param User $user
      */
@@ -108,6 +83,20 @@ class QuizHandler
 
         $this->em->persist($quiz);
         $this->em->flush();
+    }
+
+    /**
+     * @param QuizDTO $quizDTO
+     * @param Quiz $quiz
+     *
+     * @return QuizDTO
+     */
+    public function handlePatch(QuizDTO $quizDTO, Quiz $quiz)
+    {
+        $this->quizTransformer->reverseTransform($quizDTO, $quiz);
+        $this->em->flush();
+
+        return $quizDTO;
     }
 
     /**
@@ -187,6 +176,30 @@ class QuizHandler
     }
 
     /**
+     * @param int $page
+     * @param int $count
+     * @param array $filter
+     *
+     * @return PaginatedRepresentation
+     */
+    public function searchByFilter(int $page, int $count, array $filter)
+    {
+        $quizzes = $this->em->getRepository(Quiz::class)
+            ->getQuizByQueryAndPage($filter, $page, $count);
+
+        $quizzesDTO = $this->addQuizzesDTO($quizzes['paginator']);
+        $quizzesPagination = $this->getQuizzesPagination($quizzesDTO);
+
+        return ApiPaginatorManager::paginate(
+            $quizzesPagination,
+            $page,
+            'api.quizzes.list',
+            $quizzes['totalItems'],
+            $count
+        );
+    }
+
+    /**
      * @param Paginator $quizzes
      *
      * @return ArrayCollection
@@ -227,24 +240,21 @@ class QuizHandler
     }
 
     /**
-     * @param ArrayCollection $quizzesDTO
-     *
-     * @return CollectionRepresentation
+     * @param QuizDTO $quizDTO
      */
-    private
-    function getQuizzesPagination(
-        ArrayCollection $quizzesDTO
-    ): CollectionRepresentation {
-        return new CollectionRepresentation($quizzesDTO, 'quizzes');
+    public function handleCreate(QuizDTO $quizDTO)
+    {
+        $this->validateQuizDTO($quizDTO);
+        $this->em->persist($this->quizTransformer->reverseTransform($quizDTO));
+        $this->em->flush();
     }
+
 
     /**
      * @param QuizDTO $quizDTO
      */
-    private
-    function validateQuizDTO(
-        QuizDTO $quizDTO
-    ): void {
+    private function validateQuizDTO(QuizDTO $quizDTO): void
+    {
         $errors = $this->validator->validate($quizDTO);
 
         if (count($errors) > 0) {
@@ -253,6 +263,7 @@ class QuizHandler
             throw new BadRequestHttpException($errorMessage);
         }
     }
+
 
     /**
      * @param Question $question
@@ -279,20 +290,20 @@ class QuizHandler
      *
      * @return array
      */
-    private function getChoseAnswers(ArrayCollection $resultAnswers, $question): array
+    private function getChoseAnswers(ArrayCollection $resultAnswers, Question $question): array
     {
         $choseAnswers = [];
 
         foreach ($resultAnswers as $resultAnswer) {
 
             if ($resultAnswer->getAnswer()->getQuestion()->getId() === $question->getId()) {
-
                 $choseAnswers[] = $resultAnswer->getAnswer()->getId();
             }
         }
 
         return $choseAnswers;
     }
+
 
     /**
      * @param Question $question
@@ -301,18 +312,14 @@ class QuizHandler
      *
      * @return float|int
      */
-    private function calculateQuestionScorePoints(
-        Question $question,
-        array $choseAnswers,
-        array $correctAnswers
-    ) {
+    private function calculateQuestionScorePoints(Question $question, array $choseAnswers, array $correctAnswers)
+    {
         $questionScorePoints = 0;
         $finalScore = 0;
 
         if (count($choseAnswers) > 0) {
 
-            $questionScorePoints = $this->getQuestionScorePoints($question, $correctAnswers, $choseAnswers,
-                $questionScorePoints);
+            $questionScorePoints = $this->getQuestionScorePoints($question, $correctAnswers, $choseAnswers, $questionScorePoints);
 
             $finalScore += $questionScorePoints / $question->getAnswers()->count();
         }
@@ -349,6 +356,7 @@ class QuizHandler
         return $questionScorePoints;
     }
 
+
     /**
      * @param ResultDTO $resultDTO
      */
@@ -361,6 +369,16 @@ class QuizHandler
 
             throw new BadRequestHttpException($errorMessage);
         }
+    }
+
+    /**
+     * @param ArrayCollection $quizzesDTO
+     *
+     * @return CollectionRepresentation
+     */
+    private function getQuizzesPagination(ArrayCollection $quizzesDTO): CollectionRepresentation
+    {
+        return new CollectionRepresentation($quizzesDTO, 'quizzes');
     }
 
     /**

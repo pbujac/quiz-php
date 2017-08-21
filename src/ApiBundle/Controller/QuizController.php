@@ -16,6 +16,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+
+/**
+ * @Rest\Route("/quizzes")
+ */
 class QuizController extends FOSRestController
 {
     /**
@@ -109,6 +113,22 @@ class QuizController extends FOSRestController
 
         return View::create($quizDTO, Response::HTTP_OK);
     }
+
+    /**
+     * @Rest\Patch("/{id}", name="quizzes.quiz.patch")
+     *
+     * @param Quiz $quiz
+     * @param QuizDTO $quizDTO
+     *
+     * @return View
+     */
+    public function patchAction(QuizDTO $quizDTO, Quiz $quiz): View
+    {
+        $quizDTO = $this->get(QuizHandler::class)->handlePatch($quizDTO, $quiz);
+
+        return View::create($quizDTO, Response::HTTP_OK);
+    }
+
 
 
     /**
