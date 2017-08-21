@@ -57,7 +57,6 @@ class QuizTransformer implements TransformerInterface
         $quizDTO->description = $quiz->getDescription();
         $quizDTO->category = $this->categoryTransformer->transform($quiz->getCategory());
         $quizDTO->author = $this->userTransformer->transform($quiz->getAuthor());
-        $quizDTO->author = $this->userTransformer->transform($quiz->getAuthor());
         $this->addQuestionsDTO($quiz, $quizDTO);
 
         return $quizDTO;
