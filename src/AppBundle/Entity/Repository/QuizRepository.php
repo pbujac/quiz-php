@@ -47,22 +47,22 @@ class QuizRepository extends EntityRepository
             ->join('q.category', 'c')
             ->join('q.author', 'a');
 
-        if (isset($filter['title']) ?? null) {
+        if ($filter['title'] ?? null) {
             $qb->orWhere('q.title LIKE :title')
                 ->setParameter('title', '%' . $filter['title'] . '%');
         }
 
-        if (isset($filter['description']) ?? null) {
+        if ($filter['description'] ?? null) {
             $qb->orWhere('q.description  LIKE :description')
-                ->setParameter('description', '%' .  $filter['description'] . '%' );
+                ->setParameter('description', '%' . $filter['description'] . '%');
         }
 
-        if (isset($filter['category']) ?? null) {
+        if ($filter['category'] ?? null) {
             $qb->orWhere('c.title  LIKE :category')
                 ->setParameter('category', '%' . $filter['category'] . '%');
         }
 
-        if (isset($filter['author']) ?? null) {
+        if ($filter['author'] ?? null) {
             $qb->orWhere('a.firstName  LIKE :author')
                 ->orWhere('a.lastName  LIKE :author')
                 ->setParameter('author', '%' . $filter['author'] . '%');
