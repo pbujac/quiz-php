@@ -12,7 +12,7 @@ class CategoryTransformer
      *
      * @return CategoryDTO
      */
-    public function transform(Category $category): CategoryDTO
+    public function transform($category): CategoryDTO
     {
         $categoryDTO = new CategoryDTO();
         $categoryDTO->title = $category->getTitle();

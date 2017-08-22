@@ -7,7 +7,7 @@ use AppBundle\Entity\Question;
 use AppBundle\Entity\Quiz;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class QuestionTransformer
+class QuestionTransformer implements TransformerInterface
 {
     /** @var AnswerTransformer */
     private $transformAnswer;
@@ -25,14 +25,16 @@ class QuestionTransformer
      *
      * @return QuestionDTO
      */
-    public function transform(Question $question): QuestionDTO
+    public function transform($question): QuestionDTO
     {
         $questionDTO = new QuestionDTO();
+        $questionDTO->id = $question->getId();
         $questionDTO->text = $question->getText();
 
         $questionDTO->answers = new ArrayCollection();
         foreach ($question->getAnswers() as $answer) {
-            $questionDTO->answers->add($this->transformAnswer->transform($answer));
+            $questionDTO->answers->add(
+                $this->transformAnswer->transform($answer));
         }
 
         return $questionDTO;
@@ -40,21 +42,26 @@ class QuestionTransformer
 
     /**
      * @param QuestionDTO $questionDTO
-     * @param Quiz $quiz
+     * @param Question|null $question
      *
      * @return Question
      */
-    public function reverseTransform(QuestionDTO $questionDTO, Quiz $quiz): Question
+    public function reverseTransform($questionDTO, $question = null): Question
     {
-        $question = new Question();
+        $question = $question ?: new Question();
         $question->setText($questionDTO->text);
-        $question->setQuiz($quiz);
 
         foreach ($questionDTO->answers as $answerDTO) {
-            $question->addAnswer(
-                $this->transformAnswer->reverseTransform($answerDTO, $question));
+             $question->addAnswer(
+                $this->transformAnswer->reverseTransform($answerDTO));
         }
 
         return $question;
     }
+
+    public function getEntityClass(): string
+    {
+        return Question::class;
+    }
+
 }

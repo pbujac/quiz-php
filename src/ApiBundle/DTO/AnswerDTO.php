@@ -8,6 +8,12 @@ use JMS\Serializer\Annotation\Type;
 class AnswerDTO
 {
     /**
+     * @var int
+     * @Type("int")
+     */
+    public $id;
+
+    /**
      * @var string
      * @Type("string")
      *

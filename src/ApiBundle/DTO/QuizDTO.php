@@ -2,7 +2,6 @@
 
 namespace ApiBundle\DTO;
 
-use AdminBundle\Validator\Constraints\UniqueQuiz;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\Type;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -15,7 +14,6 @@ class QuizDTO
      *
      * @Assert\NotBlank(message="title isn't specified")
      * @Assert\Length(max=255, maxMessage="too long")
-     * @UniqueQuiz(message="the quiz with this title already exist")
      */
     public $title;
 

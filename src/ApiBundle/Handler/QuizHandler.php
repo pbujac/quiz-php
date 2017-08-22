@@ -97,10 +97,22 @@ class QuizHandler extends FOSRestController
 
     /**
      * @param QuizDTO $quizDTO
+     * @param Quiz $quiz
+     *
+     * @return QuizDTO
+     */
+    public function handlePatch(QuizDTO $quizDTO, Quiz $quiz)
+    {
+        $this->quizTransformer->reverseTransform($quizDTO, $quiz);
+        $this->em->flush();
+    }
+
+    /**
+     * @param QuizDTO $quizDTO
      */
     public function validateQuizDTO(QuizDTO $quizDTO): void
     {
-        $errors = $this->validator->validate($quizDTO);
+        $errors = $this->validator->validate($quizDTO, null, ['QuizDTO']);
 
         if (count($errors) > 0) {
             $errorMessage = "";
@@ -121,6 +133,6 @@ class QuizHandler extends FOSRestController
         $em = $this->getDoctrine()->getManager();
         $em->remove($quiz);
         $em->flush();
-
     }
+
 }
