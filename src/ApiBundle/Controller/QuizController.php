@@ -125,25 +125,6 @@ class QuizController extends FOSRestController
         return View::create($quizDTO, Response::HTTP_OK);
     }
 
-
-
-    /**
-     * @Rest\Post(
-     *     "/quizzes",
-     *     name="api.quizzes.quiz.post"
-     * )
-     * @param QuizDTO $quizDTO
-     *
-     * @return View
-     */
-    public function createAction(QuizDTO $quizDTO)
-    {
-        $this->get(QuizHandler::class)
-            ->postAction($quizDTO, $this->getUser());
-
-        return View::create($quizDTO, Response::HTTP_CREATED);
-    }
-
     /**
      * @Rest\Get(
      *     "/user/quizzes" ,

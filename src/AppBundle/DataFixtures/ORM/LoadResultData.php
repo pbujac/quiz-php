@@ -21,16 +21,16 @@ class LoadResultData extends AbstractFixture implements OrderedFixtureInterface
         $users = $manager->getRepository(User::class)->findAll();
         $quizzes = $manager->getRepository(Quiz::class)->findAll();
 
-        for ($i = 0; $i < 100; $i++) {
-            $result = new Result();
-            $result->setUser($faker->randomElement($users));
-            $result->setQuiz($faker->randomElement($quizzes));
-            $result->setCreatedAt($faker->dateTime);
-            $result->setScore($faker->numberBetween(0, 100));
-            $result->setFinished($faker->boolean());
-
-            $manager->persist($result);
-        }
+//        for ($i = 0; $i < 100; $i++) {
+//            $result = new Result();
+//            $result->setUser($faker->randomElement($users));
+//            $result->setQuiz($faker->randomElement($quizzes));
+//            $result->setCreatedAt($faker->dateTime);
+//            $result->setScore($faker->numberBetween(0, 100));
+//            $result->setFinished($faker->boolean());
+//
+//            $manager->persist($result);
+//        }
 
         $manager->flush();
     }

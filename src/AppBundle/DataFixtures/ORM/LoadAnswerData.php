@@ -16,14 +16,14 @@ class LoadAnswerData implements FixtureInterface,OrderedFixtureInterface
         $faker = Factory::create();
         $questions = $manager->getRepository(Question::class)->findAll();
 
-        for ($i = 0; $i < 10; $i++) {
-            $answer = new Answer();
-            $answer->setText($faker->text);
-            $answer->setCorrect($faker->boolean());
-            $answer->setQuestion($faker->randomElement($questions));
-
-            $manager->persist($answer);
-        }
+//        for ($i = 0; $i < 10; $i++) {
+//            $answer = new Answer();
+//            $answer->setText($faker->text);
+//            $answer->setCorrect($faker->boolean());
+//            $answer->setQuestion($faker->randomElement($questions));
+//
+//            $manager->persist($answer);
+//        }
 
         $manager->flush();
     }

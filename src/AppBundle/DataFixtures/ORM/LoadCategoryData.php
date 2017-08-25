@@ -16,12 +16,12 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
     {
         $faker = Factory::create();
 
-        for ($i = 0; $i < 100; $i++) {
-            $category = new Category();
-            $category->setTitle($faker->title);
-
-            $manager->persist($category);
-        }
+//        for ($i = 0; $i < 100; $i++) {
+//            $category = new Category();
+//            $category->setTitle($faker->title);
+//
+//            $manager->persist($category);
+//        }
 
         $manager->flush();
     }

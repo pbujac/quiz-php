@@ -16,13 +16,13 @@ class LoadQuestionData implements FixtureInterface, OrderedFixtureInterface
         $faker = Factory::create();
         $quizzes = $manager->getRepository(Quiz::class)->findAll();
 
-        for ($i = 0; $i < 100; $i++) {
-            $question = new Question();
-            $question->setText($faker->text);
-            $question->setQuiz($faker->randomElement($quizzes));
-
-            $manager->persist($question);
-        }
+//        for ($i = 0; $i < 100; $i++) {
+//            $question = new Question();
+//            $question->setText($faker->text);
+//            $question->setQuiz($faker->randomElement($quizzes));
+//
+//            $manager->persist($question);
+//        }
 
         $manager->flush();
     }

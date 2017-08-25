@@ -23,14 +23,14 @@ class LoadResultAnswerData extends AbstractFixture implements OrderedFixtureInte
         $questions = $manager->getRepository(Question::class)->findAll();
         $answers = $manager->getRepository(Answer::class)->findAll();
 
-        for ($i = 0; $i < 10; $i++) {
-            $resultAnswer = new ResultAnswer();
-            $resultAnswer->setResult($faker->randomElement($results));
-            $resultAnswer->setQuestion($faker->randomElement($questions));
-            $resultAnswer->setAnswer($faker->randomElement($answers));
-
-            $manager->persist($resultAnswer);
-        }
+//        for ($i = 0; $i < 10; $i++) {
+//            $resultAnswer = new ResultAnswer();
+//            $resultAnswer->setResult($faker->randomElement($results));
+//            $resultAnswer->setQuestion($faker->randomElement($questions));
+//            $resultAnswer->setAnswer($faker->randomElement($answers));
+//
+//            $manager->persist($resultAnswer);
+//        }
 
         $manager->flush();
     }
