@@ -240,12 +240,16 @@ class QuizHandler
     }
 
     /**
+     * @param User $user
      * @param QuizDTO $quizDTO
      */
-    public function handleCreate(QuizDTO $quizDTO)
+    public function handleCreate(User $user,QuizDTO $quizDTO)
     {
         $this->validateQuizDTO($quizDTO);
-        $this->em->persist($this->quizTransformer->reverseTransform($quizDTO));
+        $quiz = $this->quizTransformer->reverseTransform($quizDTO);
+        $quiz->setAuthor($user);
+
+        $this->em->persist($quiz);
         $this->em->flush();
     }
 

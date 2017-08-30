@@ -22,15 +22,15 @@ class LoadQuizData extends AbstractFixture implements OrderedFixtureInterface, F
         $categories = $manager->getRepository(Category::class)->findAll();
 
 
-//        for ($i = 0; $i < 100; $i++) {
-//            $quiz = new Quiz();
-//            $quiz->setTitle($faker->title);
-//            $quiz->setAuthor($faker->randomElement($users));
-//            $quiz->setCategory($faker->randomElement($categories));
-//            $quiz->setDescription($faker->text);
-//
-//            $manager->persist($quiz);
-//        }
+        for ($i = 0; $i < 100; $i++) {
+            $quiz = new Quiz();
+            $quiz->setTitle($faker->title);
+            $quiz->setAuthor($faker->randomElement($users));
+            $quiz->setCategory($faker->randomElement($categories));
+            $quiz->setDescription($faker->text);
+
+            $manager->persist($quiz);
+        }
 
         $manager->flush();
     }
